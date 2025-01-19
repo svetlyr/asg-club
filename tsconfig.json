@@ -21,6 +21,8 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "paths": {
+            "@assets/*": ["src/assets/*"],
+            "@layouts/*": ["src/layouts/*"],
             "@components/*": ["src/components/*"]
         }
     }

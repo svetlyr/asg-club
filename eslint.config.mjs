@@ -2,12 +2,12 @@ import globals from "globals";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginAstro from "eslint-plugin-astro";
-import pluginTailwind from "eslint-plugin-tailwindcss";
 import pluginSolid from "eslint-plugin-solid";
+import pluginTailwind from "eslint-plugin-tailwindcss";
 import pluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
-    { ignores: ["**/dist", "**/node_modules", "**/.astro", "**/.github", "**/.changeset", "**/eslint.config.*"] },
+    { ignores: ["**/dist", "**/node_modules", "**/.astro", "**/.github", "**/.changeset", "**/*.mjs"] },
 
     eslint.configs.recommended,
     tseslint.configs.recommendedTypeChecked,
