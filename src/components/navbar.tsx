@@ -14,12 +14,12 @@ const Navbar: Component = () => {
         const currentScrollY = window.scrollY;
         const shouldCollapse = currentScrollY > lastScrollY;
 
+        if (ticking) return;
+
         if (isCollapsed() === shouldCollapse) {
             lastScrollY = currentScrollY;
             return;
         }
-
-        if (ticking) return;
 
         ticking = true;
         window.requestAnimationFrame(() => {
