@@ -27,7 +27,7 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
     let observer: IntersectionObserver;
 
     const handleScroll = (): void => {
-        if (ticking) return;
+        if (ticking || !targetOutOfView) return;
 
         ticking = true;
         window.requestAnimationFrame(() => {
@@ -74,13 +74,10 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
     return (
         <header
             style={{ height: `${navbarHeight}px` }}
-            classList={{
-                "-translate-y-full": isCollapsed(),
-                "translate-y-0": !isCollapsed(),
-            }}
+            classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
             class="fixed top-0 w-full bg-black-primary shadow-md transition-transform duration-300"
         >
-            <div class="mx-auto flex h-full max-w-screen-xl items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12">
+            <div class="container mx-auto flex h-full items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12">
                 <Link href="/" class="flex items-center">
                     <img src={logo.src} alt="Logo" class="size-12 sm:size-14 md:size-16" />
                     {/*  TODO: custom font this*/}
@@ -104,35 +101,6 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
             </div>
         </header>
     );
-
-    // return (
-    //     <header
-    //         style={{ height: `${navbarHeight}px` }}
-    //         classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
-    //         class="fixed top-0 w-full bg-black-primary shadow-md transition-transform duration-300"
-    //     >
-    //         <div class="mx-auto flex h-full items-center justify-between sm:px-4">
-    //             <Link href="/" class="flex items-center">
-    //                 <img src={logo.src} alt="Logo" class="size-16" />
-    //                 {/* TODO: custom font this */}
-    //                 <span class="ml-1 text-5xl font-bold">Club</span>
-    //             </Link>
-    //             <ul class="flex items-center space-x-6 font-poppins text-white">
-    //                 <For each={NAV_ITEMS}>
-    //                     {({ name, href }) => (
-    //                         <li>
-    //                             <Link href={href}>{name}</Link>
-    //                         </li>
-    //                     )}
-    //                 </For>
-    //                 <button class="flex items-center bg-[#FC5030] px-6 py-2.5 font-poppins font-semibold text-white">
-    //                     <Motorcycle class="mr-2 size-5" />
-    //                     ORDER
-    //                 </button>
-    //             </ul>
-    //         </div>
-    //     </header>
-    // );
 };
 
 export default Navbar;
