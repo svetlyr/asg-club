@@ -8,11 +8,6 @@ export default {
     bracketSpacing: true,
     arrowParens: "always",
 
-    overrides: [
-        {
-            files: "*.astro",
-            options: { parser: "astro" },
-        },
-    ],
+    overrides: [{ files: "*.astro", options: { parser: "astro" } }],
     plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
 };

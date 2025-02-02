@@ -1,16 +1,19 @@
 {
     "extends": "astro/tsconfigs/strictest",
-    "include": [".astro/types.d.ts", "**/*", ".prettierrc.*"],
     "exclude": ["dist", "node_modules"],
+    "include": [".astro/types.d.ts", "src/**/*", "**/*.mjs", "**/*.ts"],
     "compilerOptions": {
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
+
+        // * Handled by eslint rule
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
 
         "baseUrl": ".",
         "incremental": true,
         "skipLibCheck": false,
         "removeComments": true,
-        "noUnusedLocals": false,
         "strictNullChecks": true,
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
@@ -24,6 +27,7 @@
             "@assets/*": ["src/assets/*"],
             "@layouts/*": ["src/layouts/*"],
             "@components/*": ["src/components/*"]
-        }
+        },
+        "types": ["unplugin-icons/types/solid"]
     }
 }
