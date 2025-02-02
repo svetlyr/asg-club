@@ -2,8 +2,7 @@ import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
-    // mode: "jit",
-    content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+    content: ["./src/**/*.{astro,tsx}"],
     theme: {
         extend: {
             backgroundColor: {
