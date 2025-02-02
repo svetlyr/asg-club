@@ -1,5 +1,11 @@
 ---
+import "@fontsource/roboto";
+import "@fontsource/poppins";
+import "@fontsource-variable/roboto-slab";
+
 import Navbar from "@components/navbar";
+
+const navCollapseId = "balls";
 ---
 
 <!doctype html>
@@ -7,15 +13,56 @@ import Navbar from "@components/navbar";
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <!-- TODO: favicon -->
+        <meta name="color-scheme" content="dark" />
+        {/* TODO: favicon */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>ASG Club</title>
     </head>
-    <!-- TODO: remove this class -->
+    {/* TODO: remove this class */}
     <body class="min-h-screen bg-gray-900">
-        <Navbar client:load />
+        <Navbar client:load navCollapseId={navCollapseId} />
         <slot />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div id={navCollapseId} class="border border-red-500 text-white">balls</div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <br />
         <br />
         <br />
