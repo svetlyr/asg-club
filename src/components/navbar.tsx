@@ -3,7 +3,8 @@ import type { Component } from "solid-js";
 
 import Link from "./link";
 
-import logo from "@assets/logo.svg";
+import asgLogo from "@assets/asg-logo.svg";
+import clubLogo from "@assets/club-logo.svg";
 import Motorcycle from "@icons/fa6-solid/motorcycle";
 
 const NAV_ITEMS = [
@@ -75,13 +76,12 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
         <header
             style={{ height: `${navbarHeight}px` }}
             classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
-            class="fixed top-0 w-full bg-black-primary shadow-md transition-transform duration-300"
+            class="sticky top-0 w-full bg-black-primary shadow-md transition-transform duration-300"
         >
             <div class="container mx-auto flex h-full items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12">
                 <Link href="/" class="flex items-center">
-                    <img src={logo.src} alt="Logo" class="size-12 sm:size-14 md:size-16" />
-                    {/*  TODO: custom font this*/}
-                    <span class="ml-1 text-3xl font-bold md:text-4xl lg:text-5xl"> Club</span>
+                    <img src={asgLogo.src} alt="Logo" class="mr-2 size-12 sm:size-14 md:size-16" />
+                    <img src={clubLogo.src} alt="Club text" class="size-12 sm:size-14 md:size-28" />
                 </Link>
 
                 <ul class="hidden items-center space-x-4 font-poppins text-white md:flex md:space-x-6 lg:space-x-8">
