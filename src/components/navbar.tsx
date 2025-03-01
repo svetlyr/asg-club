@@ -25,8 +25,8 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
     let lastScrollY = 0;
     let ticking = false;
     let targetOutOfView = false;
-    let observer: IntersectionObserver;
 
+    // TODO: add a threshold for scroll off
     const handleScroll = (): void => {
         if (ticking || !targetOutOfView) return;
 
@@ -56,6 +56,7 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
         lastScrollY = window.scrollY;
         window.addEventListener("scroll", handleScroll, { passive: true });
 
+        let observer: IntersectionObserver;
         const target = document.getElementById(navCollapseId);
         if (target) {
             observer = new IntersectionObserver(observeTarget, {

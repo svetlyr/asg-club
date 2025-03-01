@@ -8,6 +8,9 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
     output: "static",
+    base: "/asg-club/",
+    site: "https://svetlyr.github.io",
+
     integrations: [solid(), tailwind()],
     vite: {
         plugins: [Icons({ compiler: "solid" })],

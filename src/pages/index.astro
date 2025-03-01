@@ -1,7 +1,48 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "@layouts/Layout.astro";
+
+const gradientStyle = {
+    background: "linear-gradient(45deg, rgb(224, 4, 11) 15%, rgb(252, 81, 48) 65%) border-box",
+    WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
+    WebkitMaskComposite: "xor",
+    maskComposite: "exclude",
+};
+
+const textGradientStyle = {
+    backgroundImage: "linear-gradient(45deg, rgb(224, 4, 11) 15%, rgb(252, 81, 48) 65%)",
+};
+
+const borderStyle = {
+    border: "2px solid rgb(224, 4, 11)",
+};
 ---
 
 <Layout>
-    <div>index.astro</div>
+    <!-- <div
+        class="relative flex h-screen w-full items-center justify-start overflow-hidden bg-black-primary px-8 md:px-20"
+    >
+        <div class="absolute inset-0 flex items-center justify-center">
+            <div class="absolute size-3/4 rotate-6" style={borderStyle}></div>
+        </div>
+
+        <div class="relative z-10 max-w-2xl">
+            <h1 class="mb-4 text-6xl font-bold md:text-7xl lg:text-8xl">
+                <span class="bg-clip-text text-transparent" style={textGradientStyle}>Let's Build</span>
+                <br />
+                <span class="bg-clip-text text-transparent" style={textGradientStyle}>Something.</span>
+            </h1>
+            <p class="mb-8 text-lg text-gray-400 md:text-xl">
+                We work with the most innovative solutions on the market
+                <br />
+                to help you get the best results.
+            </p>
+            <a
+                href="#"
+                class="relative inline-block border-2 border-transparent px-8 py-3 font-medium text-white transition-transform duration-300 hover:scale-105"
+                style={borderStyle}
+            >
+                GET STARTED
+            </a>
+        </div>
+    </div> -->
 </Layout>

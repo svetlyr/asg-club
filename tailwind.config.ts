@@ -18,7 +18,6 @@ export default {
                 "roboto-slab": ["Roboto Slab Variable"],
                 poppins: ["Poppins"],
             },
-            colors: {},
         },
     },
     plugins: [],

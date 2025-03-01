@@ -25,6 +25,7 @@
         "forceConsistentCasingInFileNames": true,
         "paths": {
             "@assets/*": ["src/assets/*"],
+            "@styles/*": ["src/styles/*"],
             "@layouts/*": ["src/layouts/*"],
             "@components/*": ["src/components/*"]
         },
