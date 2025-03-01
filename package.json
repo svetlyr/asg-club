@@ -38,6 +38,7 @@
         "typescript-eslint": "^8.25.0",
         "unplugin-icons": "^22.1.0"
     },
+    "packageManager": "pnpm@10.2.0",
     "pnpm": {
         "onlyBuiltDependencies": [
             "esbuild",
