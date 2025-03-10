@@ -8,7 +8,9 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
     output: "static",
-    base: "/asg-club/",
+
+    // TODO: change before production deployment
+    base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
     site: "https://svetlyr.github.io",
 
     integrations: [solid(), tailwind()],

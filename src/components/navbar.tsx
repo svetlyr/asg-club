@@ -24,32 +24,39 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
 
     let lastScrollY = 0;
     let ticking = false;
-    let targetOutOfView = false;
+    let targetHidden = false;
 
     // TODO: add a threshold for scroll off
+    let lastHiddenY = 0;
     const handleScroll = (): void => {
-        if (ticking || !targetOutOfView) return;
+        if (ticking) return;
 
         ticking = true;
         window.requestAnimationFrame(() => {
             const currentScrollY = window.scrollY;
             const scrollUp = currentScrollY < lastScrollY;
 
-            if (scrollUp) {
+            // TODO: refactor this
+            if (targetHidden) {
+                if (!scrollUp) {
+                    lastHiddenY = Math.max(lastHiddenY, currentScrollY);
+                    setIsCollapsed(true);
+                } else if (currentScrollY <= lastHiddenY - 200) {
+                    setIsCollapsed(false);
+                }
+            } else {
+                lastHiddenY = 0;
                 setIsCollapsed(false);
-            } else if (targetOutOfView) {
-                setIsCollapsed(true);
             }
 
             lastScrollY = currentScrollY;
             ticking = false;
         });
     };
-
     const observeTarget = ([entry]: IntersectionObserverEntry[]): void => {
         if (!entry) return;
 
-        targetOutOfView = !entry.isIntersecting;
+        targetHidden = !entry.isIntersecting;
     };
 
     onMount(() => {
