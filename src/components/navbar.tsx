@@ -20,39 +20,46 @@ type Props = {
 // eslint-disable-next-line solid/no-destructure
 const Navbar: Component<Props> = ({ navCollapseId }) => {
     const navbarHeight = 84;
+    const scrollThreshold = 200;
     const [isCollapsed, setIsCollapsed] = createSignal<boolean>(false);
 
     let lastScrollY = 0;
+    let accumulatedScroll = 0;
     let ticking = false;
     let targetHidden = false;
 
-    // TODO: add a threshold for scroll off
-    let lastHiddenY = 0;
+    const updateAccumulatedScroll = (delta: number): void => {
+        if (Math.sign(delta) !== Math.sign(accumulatedScroll)) {
+            accumulatedScroll = 0;
+        }
+        accumulatedScroll += delta;
+    };
+
     const handleScroll = (): void => {
-        if (ticking) return;
+        if (ticking || !targetHidden) return;
 
         ticking = true;
         window.requestAnimationFrame(() => {
             const currentScrollY = window.scrollY;
             const scrollUp = currentScrollY < lastScrollY;
+            const delta = currentScrollY - lastScrollY;
 
-            // TODO: refactor this
-            if (targetHidden) {
-                if (!scrollUp) {
-                    lastHiddenY = Math.max(lastHiddenY, currentScrollY);
-                    setIsCollapsed(true);
-                } else if (currentScrollY <= lastHiddenY - 200) {
-                    setIsCollapsed(false);
-                }
-            } else {
-                lastHiddenY = 0;
+            updateAccumulatedScroll(delta);
+
+            const acc = Math.abs(accumulatedScroll);
+            if (scrollUp && acc >= scrollThreshold) {
                 setIsCollapsed(false);
+                accumulatedScroll = 0;
+            } else if (!scrollUp) {
+                setIsCollapsed(true);
+                accumulatedScroll = 0;
             }
 
             lastScrollY = currentScrollY;
             ticking = false;
         });
     };
+
     const observeTarget = ([entry]: IntersectionObserverEntry[]): void => {
         if (!entry) return;
 
@@ -67,7 +74,6 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
         const target = document.getElementById(navCollapseId);
         if (target) {
             observer = new IntersectionObserver(observeTarget, {
-                root: null,
                 threshold: 1,
                 rootMargin: `-${navbarHeight}px 0px 0px 0px`,
             });
