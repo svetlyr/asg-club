@@ -1,7 +1,8 @@
-import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import type { Component } from "solid-js";
 
 import Link from "./link";
+import createIsMobile from "@hooks/isMobile";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
@@ -21,6 +22,7 @@ type Props = {
 const Navbar: Component<Props> = ({ navCollapseId }) => {
     const navbarHeight = 84;
     const scrollThreshold = 200;
+    const isMobile = createIsMobile(767);
     const [isCollapsed, setIsCollapsed] = createSignal<boolean>(false);
 
     let lastScrollY = 0;
@@ -86,6 +88,7 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
         });
     });
 
+    // TODO: add global padding
     return (
         <header
             style={{ height: `${navbarHeight}px` }}
@@ -97,7 +100,9 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
                     <img src={asgLogo.src} alt="Logo" class="mr-2 size-12 sm:size-14 md:size-16" />
                     <img src={clubLogo.src} alt="Club text" class="size-12 sm:size-14 md:size-28" />
                 </Link>
-
+                <Show when={isMobile()}>
+                    <div class="text-white">mobile device</div>
+                </Show>
                 <ul class="hidden items-center space-x-4 font-poppins text-white md:flex md:space-x-6 lg:space-x-8">
                     <For each={NAV_ITEMS}>
                         {({ name, href }) => (
