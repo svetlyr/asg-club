@@ -9,9 +9,9 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
     output: "static",
 
-    // TODO: change before production deployment
-    base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
+    trailingSlash: "never",
     site: "https://svetlyr.github.io",
+    base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
 
     integrations: [solid(), tailwind()],
     vite: {
