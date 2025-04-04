@@ -10,8 +10,8 @@ export default defineConfig({
     output: "static",
 
     // TODO: change before production deployment
-    base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
-    site: "https://svetlyr.github.io",
+    // base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
+    site: "https://svetlyr.github.io/asg-club",
 
     integrations: [solid(), tailwind()],
     vite: {
