@@ -5,7 +5,9 @@ export default {
     content: ["./src/**/*.{astro,tsx}"],
     theme: {
         extend: {
-            backgroundColor: {
+            colors: {
+                red: { primary: "#fc5130" },
+                orange: { primary: "#FC5030" },
                 black: {
                     primary: "#030301",
                     secondary: "#101010",

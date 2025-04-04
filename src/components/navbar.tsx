@@ -1,26 +1,33 @@
-import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import type { Component } from "solid-js";
 
 import Link from "./link";
+import createIsMobile from "@hooks/isMobile";
+
+import XMark from "@icons/fa6-solid/xmark";
+import HamburgerMenu from "@icons/fa6-solid/bars";
+import Motorcycle from "@icons/fa6-solid/motorcycle";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
-import Motorcycle from "@icons/fa6-solid/motorcycle";
 
-const NAV_ITEMS = [
-    { name: "Services", href: "/" },
-    { name: "About Us", href: "/" },
-    { name: "Contact Us", href: "/" },
+const NAV_LINKS = [
+    { name: "Services", href: "/services" },
+    { name: "About Us", href: "/about" },
+    { name: "Contact Us", href: "/contact" },
 ];
 
 type Props = {
+    path: string;
     navCollapseId: string;
 };
 
 // eslint-disable-next-line solid/no-destructure
-const Navbar: Component<Props> = ({ navCollapseId }) => {
-    const navbarHeight = 84;
+const Navbar: Component<Props> = ({ navCollapseId, path }) => {
+    const navbarHeight = 74;
     const scrollThreshold = 200;
+    const isMobile = createIsMobile("md");
+    const [isMenuOpen, setIsMenuOpen] = createSignal<boolean>(false);
     const [isCollapsed, setIsCollapsed] = createSignal<boolean>(false);
 
     let lastScrollY = 0;
@@ -64,6 +71,8 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
         if (!entry) return;
 
         targetHidden = !entry.isIntersecting;
+
+        if (!targetHidden) setIsCollapsed(false);
     };
 
     onMount(() => {
@@ -87,33 +96,74 @@ const Navbar: Component<Props> = ({ navCollapseId }) => {
     });
 
     return (
-        <header
-            style={{ height: `${navbarHeight}px` }}
-            classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
-            class="sticky top-0 w-full bg-black-primary shadow-md transition-transform duration-300"
-        >
-            <div class="container mx-auto flex h-full items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12">
-                <Link href="/" class="flex items-center">
-                    <img src={asgLogo.src} alt="Logo" class="mr-2 size-12 sm:size-14 md:size-16" />
-                    <img src={clubLogo.src} alt="Club text" class="size-12 sm:size-14 md:size-28" />
-                </Link>
-
-                <ul class="hidden items-center space-x-4 font-poppins text-white md:flex md:space-x-6 lg:space-x-8">
-                    <For each={NAV_ITEMS}>
-                        {({ name, href }) => (
-                            <li>
-                                <Link href={href} class="text-sm hover:text-gray-300 md:text-base lg:text-lg">
-                                    {name}
-                                </Link>
-                            </li>
-                        )}
-                    </For>
-                    <button class="flex items-center bg-[#FC5030] px-4 py-2 font-poppins font-semibold text-white md:px-6 md:py-2.5">
-                        <Motorcycle class="mr-2 size-4 md:size-5" /> <span class="text-sm md:text-base">ORDER</span>
-                    </button>
-                </ul>
-            </div>
-        </header>
+        <>
+            <header
+                style={{ height: `${navbarHeight}px` }}
+                classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
+                class="sticky top-0 w-full bg-black-primary shadow-md transition-transform duration-300"
+            >
+                <div class="container mx-auto flex h-full items-center justify-between px-6 sm:px-8 md:px-10 lg:px-16">
+                    <Link href="/" class="flex items-center">
+                        <img src={asgLogo.src} alt="Logo" class="mr-2 size-14 sm:size-16 md:size-16" />
+                        <img src={clubLogo.src} alt="Club text" class="size-20 sm:size-24 md:size-24" />
+                    </Link>
+                    <div class="flex items-center gap-4">
+                        <Show when={isMobile()}>
+                            <HamburgerMenu
+                                class="size-6 cursor-pointer text-white"
+                                onClick={() => setIsMenuOpen(true)}
+                            />
+                        </Show>
+                        <ul class="items-center space-x-4 font-poppins text-white md:flex md:space-x-6 lg:space-x-8">
+                            <For each={NAV_LINKS}>
+                                {({ name, href }) => (
+                                    <li class="hidden md:block">
+                                        <Link
+                                            href={href}
+                                            classList={{ "text-red-primary": path.includes(href) }}
+                                            class="text-sm transition-colors duration-500 ease-in-out hover:text-red-primary md:text-base lg:text-lg"
+                                        >
+                                            {name}
+                                        </Link>
+                                    </li>
+                                )}
+                            </For>
+                            <button class="flex items-center bg-orange-primary px-4 py-2 font-poppins font-semibold text-white md:px-6">
+                                <Motorcycle class="mr-2 size-4 md:size-5" />
+                                <span class="text-sm md:text-base">ORDER</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+            {/* TODO: add animations */}
+            <Show when={isMenuOpen()}>
+                <div class="pointer-events-none fixed inset-0 z-50">
+                    <div
+                        class="pointer-events-auto absolute inset-0 bg-black-primary/40"
+                        onClick={() => setIsMenuOpen(false)}
+                    />
+                    <ul class="pointer-events-auto relative h-[33vh] w-full bg-black-primary p-8 px-14 shadow-md">
+                        <For each={NAV_LINKS}>
+                            {({ name, href }) => (
+                                <li class="py-2">
+                                    <Link
+                                        href={href}
+                                        class="block px-4 font-poppins text-base font-bold text-white md:text-base lg:text-lg"
+                                    >
+                                        {name}
+                                    </Link>
+                                </li>
+                            )}
+                        </For>
+                        <XMark
+                            class="absolute right-6 top-6 size-6 cursor-pointer text-white"
+                            onClick={() => setIsMenuOpen(false)}
+                        />
+                    </ul>
+                </div>
+            </Show>
+        </>
     );
 };
 

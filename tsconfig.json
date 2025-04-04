@@ -24,6 +24,7 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "paths": {
+            "@hooks/*": ["src/hooks/*"],
             "@assets/*": ["src/assets/*"],
             "@styles/*": ["src/styles/*"],
             "@layouts/*": ["src/layouts/*"],

@@ -3,11 +3,9 @@ import "@fontsource/roboto";
 import "@fontsource/poppins";
 import "@fontsource-variable/roboto-slab";
 
-// import "@styles/global.css";
-
 import Navbar from "@components/navbar";
 
-const navCollapseId = "balls";
+const navCollapseId = "navCollapse";
 ---
 
 <!doctype html>
@@ -20,107 +18,10 @@ const navCollapseId = "balls";
         <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
         <title>ASG Club</title>
     </head>
-    {/* TODO: add global padding */}
     <body class="min-h-screen bg-gray-900">
-        <Navbar client:load navCollapseId={navCollapseId} />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <div id={navCollapseId} class="border border-red-500 text-white">balls</div>
-        <slot />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+        <Navbar client:load navCollapseId={navCollapseId} path={Astro.url.pathname} />
+        <div class="container mx-auto px-6 sm:px-8 md:px-10 lg:px-16">
+            <slot />
+        </div>
     </body>
 </html>
