@@ -10,7 +10,7 @@ export default tseslint.config(
     { ignores: ["**/dist", "**/node_modules", "**/.astro", "**/.github", "**/.changeset", "**/*.mjs"] },
 
     eslint.configs.recommended,
-    tseslint.configs.recommendedTypeChecked,
+    tseslint.configs.strictTypeChecked,
     pluginTailwind.configs["flat/recommended"],
 
     {
@@ -30,6 +30,8 @@ export default tseslint.config(
             ],
             "@typescript-eslint/consistent-type-imports": "warn",
             "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+            "@typescript-eslint/restrict-template-expressions": ["warn", { allowNumber: true }],
+            "@typescript-eslint/no-confusing-void-expression": ["warn", { ignoreArrowShorthand: true }],
 
             "@typescript-eslint/explicit-function-return-type": "error",
             "@typescript-eslint/explicit-module-boundary-types": "error",
