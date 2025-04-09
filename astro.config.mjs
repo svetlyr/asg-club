@@ -11,9 +11,10 @@ export default defineConfig({
 
     trailingSlash: "never",
     site: "https://svetlyr.github.io",
+    // TODO: change when domain name is ready
     base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
 
-    integrations: [solid(), tailwind()],
+    integrations: [solid(), tailwind({ applyBaseStyles: false })],
     vite: {
         plugins: [Icons({ compiler: "solid" })],
         resolve: {
