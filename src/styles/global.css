@@ -14,6 +14,6 @@
         font-display: swap;
 
         /* TODO: change when domain name is ready */
-        src: url("/asg-club/Gilroy-Black.woff") format("woff");
+        src: url("../Gilroy-Black.woff") format("woff");
     }
 }
