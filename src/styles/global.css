@@ -12,6 +12,8 @@
         font-weight: 900;
         font-style: normal;
         font-display: swap;
-        src: url("Gilroy-Black.woff") format("woff");
+
+        /* TODO: change when domain name is ready */
+        src: url("/asg-club/Gilroy-Black.woff") format("woff");
     }
 }
