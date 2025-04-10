@@ -51,7 +51,7 @@ export default {
                         top: "-100%",
                         left: "-100%",
                         width: "290%",
-                        height: "320%",
+                        height: "330%",
 
                         background: "var(--main-gradient)",
 
