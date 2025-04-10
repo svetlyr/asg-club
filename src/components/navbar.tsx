@@ -102,7 +102,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             <header
                 style={{ height: `${navbarHeight}px` }}
                 classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
-                class={`sticky top-0 w-full bg-black-primary shadow-md transition-transform duration-300 ${className}`}
+                class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 ${className}`}
             >
                 <div class="container mx-auto flex h-full items-center justify-between">
                     <Link href="/" class="flex items-center">
