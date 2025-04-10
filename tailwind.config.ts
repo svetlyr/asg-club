@@ -35,8 +35,6 @@ export default {
     },
     plugins: [
         plugin(({ addUtilities, addComponents, theme }) => {
-            console.log(theme("transitionTimingFunction"));
-
             addUtilities({
                 ".border-gradient": {
                     borderImage: "var(--main-gradient) 1",
