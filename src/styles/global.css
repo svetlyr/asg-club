@@ -9,8 +9,8 @@
 
     @font-face {
         font-family: "Gilroy";
-        font-style: normal;
         font-weight: 900;
+        font-style: normal;
         font-display: swap;
         src: url("src/assets/fonts/Gilroy-Black.woff") format("woff");
     }

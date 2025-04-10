@@ -34,10 +34,36 @@ export default {
         },
     },
     plugins: [
-        plugin(({ addUtilities }) => {
+        plugin(({ addUtilities, addComponents, theme }) => {
+            console.log(theme("transitionTimingFunction"));
+
             addUtilities({
                 ".border-gradient": {
                     borderImage: "var(--main-gradient) 1",
+                },
+            });
+            addComponents({
+                ".btn-bg-animate": {
+                    overflow: "hidden",
+                    position: "relative",
+
+                    "&::before": {
+                        content: '""',
+                        position: "absolute",
+                        top: "-100%",
+                        left: "-100%",
+                        width: "290%",
+                        height: "320%",
+
+                        background: "var(--main-gradient)",
+
+                        transitionProperty: "transform",
+                        transitionDuration: theme("transitionDuration.700"),
+                        transform: "translateX(100%) translateY(100%) rotate(-45deg)",
+                    },
+                    "&:hover::before": {
+                        transform: "translateX(0) translateY(0) rotate(-45deg)",
+                    },
                 },
             });
         }),

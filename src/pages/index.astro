@@ -1,7 +1,28 @@
 ---
+import Button from "@components/button";
 import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout>
-    <div class="text-white">index</div>
+    <div class="py-24 md:pb-28 lg:pb-32">
+        <section class="container relative m-auto text-center sm:text-left">
+            <div
+                class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
+                style={{
+                    clipPath: "polygon(41.74% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 75.62%, 42.75% 72.18%);",
+                }}
+            >
+            </div>
+            <h1
+                class="relative z-10 bg-main-gradient bg-clip-text font-gilroy text-5xl font-black text-transparent sm:text-6xl md:text-7xl lg:text-8xl"
+            >
+                Looking for <br />
+                Something?
+            </h1>
+            <p class="mt-3 text-xl text-gray-primary sm:text-2xl">Decals? Jacket Pins? T-Shirts? Posters?</p>
+            <Button class="btn-bg-animate mt-5 border-2 bg-transparent px-4 py-2 text-white border-gradient">
+                <span class="relative z-10">GET STARTED</span>
+            </Button>
+        </section>
+    </div>
 </Layout>
