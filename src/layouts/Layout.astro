@@ -22,15 +22,14 @@ const baseUrl = import.meta.env.BASE_URL;
         <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.ico`} />
         <title>ASG Club</title>
     </head>
-    <body class="min-h-screen bg-gray-900">
+    <!-- TODO: global padding with background  -->
+    <body class="bg-gray-900">
         <Navbar
             client:load
             class="px-6 sm:px-8 md:px-10 lg:px-16"
-            navCollapseId={navCollapseId}
             path={Astro.url.pathname}
+            navCollapseId={navCollapseId}
         />
-        <div class="bg-black-primary px-6 sm:px-8 md:px-10 lg:px-16">
-            <slot />
-        </div>
+        <slot />
     </body>
 </html>

@@ -4,7 +4,7 @@ import Layout from "@layouts/Layout.astro";
 ---
 
 <Layout>
-    <div class="py-24 md:pb-28 lg:pb-32">
+    <div class="bg-black-primary px-6 py-24 sm:px-8 md:px-10 md:pb-28 lg:px-16 lg:pb-32">
         <section class="container relative m-auto text-center sm:text-left">
             <div
                 class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
@@ -20,9 +20,16 @@ import Layout from "@layouts/Layout.astro";
                 Something?
             </h1>
             <p class="mt-3 text-xl text-gray-primary sm:text-2xl">Decals? Jacket Pins? T-Shirts? Posters?</p>
-            <Button class="btn-bg-animate mt-5 border-2 bg-transparent px-4 py-2 text-white border-gradient">
+            <Button class="btn-bg-animate mt-5 border-2 bg-transparent text-white border-gradient">
                 <span class="relative z-10">GET STARTED</span>
             </Button>
+        </section>
+    </div>
+    <div class="bg-black-secondary py-6">
+        <section class="container m-auto space-y-4 text-center font-poppins text-white">
+            <h4 class="text-3xl font-semibold">Our Services</h4>
+            <p class="pb-6 text-gray-primary">We are making top quality decals, jacket pins, t-shirts, and posters.</p>
+            <Button class="border-2 border-gradient">VIEW ALL</Button>
         </section>
     </div>
 </Layout>

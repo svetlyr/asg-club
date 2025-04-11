@@ -132,7 +132,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                     )}
                                 </For>
                             </Show>
-                            <Button class="flex items-center bg-orange-primary px-4 py-2 md:px-6">
+                            <Button class="flex items-center bg-orange-primary md:px-6">
                                 <Motorcycle class="mr-2 size-4 md:size-5" />
                                 <span class="text-sm md:text-base">ORDER</span>
                             </Button>
