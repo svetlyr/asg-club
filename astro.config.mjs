@@ -1,11 +1,10 @@
-// @ts-check
-import { defineConfig } from "astro/config";
-
 import solid from "@astrojs/solid-js";
 import Icons from "unplugin-icons/vite";
 import tailwind from "@astrojs/tailwind";
 
-// https://astro.build/config
+import { defineConfig } from "astro/config";
+import { FileSystemIconLoader } from "unplugin-icons/loaders";
+
 export default defineConfig({
     output: "static",
 
@@ -16,7 +15,16 @@ export default defineConfig({
 
     integrations: [solid(), tailwind({ applyBaseStyles: false })],
     vite: {
-        plugins: [Icons({ compiler: "solid" })],
+        plugins: [
+            Icons({
+                compiler: "solid",
+                customCollections: {
+                    gradient: FileSystemIconLoader("./src/assets/gradient-icons", (svg) =>
+                        svg.replace(/fill="currentColor"/g, 'fill="url(#main-gradient)"'),
+                    ),
+                },
+            }),
+        ],
         resolve: {
             alias: [{ find: "@icons", replacement: "~icons" }],
         },

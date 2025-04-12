@@ -1,6 +1,25 @@
 ---
 import Button from "@components/button";
+import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
+
+import PenNib from "@icons/gradient/pen-nib";
+import FillDrip from "@icons/gradient/fill-drip";
+
+const cards = [
+    {
+        icon: PenNib,
+        title: "Graphic Design",
+        description:
+            "Unleash creativity with bold designs that captivate, inspire, and differentiate your brand in a crowded market",
+    },
+    {
+        icon: FillDrip,
+        title: "Custom Merch",
+        description:
+            "Stand out with custom apparel and accessories designed to connect, leaving a lasting impression on every customer",
+    },
+];
 ---
 
 <Layout>
@@ -14,7 +33,7 @@ import Layout from "@layouts/Layout.astro";
             >
             </div>
             <h1
-                class="relative z-10 bg-main-gradient bg-clip-text font-gilroy text-5xl font-black text-transparent sm:text-6xl md:text-7xl lg:text-8xl"
+                class="relative z-10 bg-gradient bg-clip-text font-gilroy text-5xl font-black text-transparent sm:text-6xl md:text-7xl lg:text-8xl"
             >
                 Looking for <br />
                 Something?
@@ -28,8 +47,8 @@ import Layout from "@layouts/Layout.astro";
     <div class="bg-black-secondary py-6">
         <section class="container m-auto space-y-4 text-center font-poppins text-white">
             <h4 class="text-3xl font-semibold">Our Services</h4>
-            <p class="pb-6 text-gray-primary">We are making top quality decals, jacket pins, t-shirts, and posters.</p>
-            <Button class="border-2 border-gradient">VIEW ALL</Button>
+            <p class="pb-6 text-gray-primary">We are making top quality decals, jacket pins, t-shirts, and posters</p>
+            {cards.map(({ icon, title, description }) => <Card title={title} description={description} Icon={icon} />)}
         </section>
     </div>
 </Layout>

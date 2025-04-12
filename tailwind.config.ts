@@ -21,7 +21,7 @@ export default {
                 },
             },
             backgroundImage: {
-                "main-gradient": "var(--main-gradient)",
+                gradient: "var(--main-gradient)",
             },
             fontFamily: {
                 gilroy: ["Gilroy", ...serif],
@@ -52,7 +52,6 @@ export default {
                         left: "-100%",
                         width: "290%",
                         height: "330%",
-
                         background: "var(--main-gradient)",
 
                         transitionProperty: "transform",

@@ -1,2 +1,2 @@
 # ASG Club
-This website was built with Astro, Solid, Typescript and Tailwind.
+This website is built with Astro, Solid, Typescript and Tailwind.

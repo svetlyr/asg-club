@@ -1,0 +1,20 @@
+---
+import type { IconType } from "@icons";
+import { twMerge as tw } from "tailwind-merge";
+
+type Props = {
+    class?: string;
+    title: string;
+    Icon: IconType;
+    description: string;
+};
+
+const { title, description, Icon, class: className = "" }: Props = Astro.props;
+---
+
+<div class={tw(`bg-black-tertiary text-center space-y-4 ${className}`)}>
+    <Icon class="mx-auto size-5" />
+    <slot />
+    <p>{title}</p>
+    <p>{description}</p>
+</div>
