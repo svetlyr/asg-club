@@ -7,8 +7,8 @@ import "@styles/global.css";
 
 import Navbar from "@components/navbar";
 
-const navCollapseId = "navCollapseTarget";
 const baseUrl = import.meta.env.BASE_URL;
+const navCollapseId = "navCollapseTarget";
 ---
 
 <!doctype html>
@@ -23,7 +23,7 @@ const baseUrl = import.meta.env.BASE_URL;
         <title>ASG Club</title>
     </head>
 
-    <svg width="0" height="0" style={{ position: "absolute", visibility: "hidden" }}>
+    <svg width={0} height={0} style={{ position: "absolute", visibility: "hidden" }}>
         <defs>
             <linearGradient id="main-gradient" gradientTransform="rotate(45)">
                 <stop offset="15%" stop-color="rgb(224, 4, 11)"></stop>
@@ -32,13 +32,8 @@ const baseUrl = import.meta.env.BASE_URL;
         </defs>
     </svg>
 
-    <body class="bg-gray-900">
-        <Navbar
-            client:load
-            class="px-6 sm:px-8 md:px-10 lg:px-16"
-            path={Astro.url.pathname}
-            navCollapseId={navCollapseId}
-        />
+    <body>
+        <Navbar client:load path={Astro.url.pathname} navCollapseId={navCollapseId} />
         <slot />
     </body>
 

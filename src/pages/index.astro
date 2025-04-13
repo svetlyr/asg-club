@@ -2,19 +2,20 @@
 import Button from "@components/button";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
+import GradientIcon from "@components/gradient-icon.astro";
 
-import PenNib from "@icons/gradient/pen-nib";
-import FillDrip from "@icons/gradient/fill-drip";
+import FireRaw from "@icons/simple-line-icons/fire?raw";
+import NoteRaw from "@icons/simple-line-icons/note?raw";
 
 const cards = [
     {
-        icon: PenNib,
+        icon: FireRaw,
         title: "Graphic Design",
         description:
             "Unleash creativity with bold designs that captivate, inspire, and differentiate your brand in a crowded market",
     },
     {
-        icon: FillDrip,
+        icon: NoteRaw,
         title: "Custom Merch",
         description:
             "Stand out with custom apparel and accessories designed to connect, leaving a lasting impression on every customer",
@@ -23,18 +24,16 @@ const cards = [
 ---
 
 <Layout>
-    <div class="bg-black-primary px-6 py-24 sm:px-8 md:px-10 md:pb-28 lg:px-16 lg:pb-32">
+    <div class="bg-black-primary py-24 px-global md:pb-28 lg:pb-32">
         <section class="container relative m-auto text-center sm:text-left">
             <div
                 class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
                 style={{
                     clipPath: "polygon(41.74% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 75.62%, 42.75% 72.18%);",
-                }}
-            >
+                }}>
             </div>
             <h1
-                class="relative z-10 bg-gradient bg-clip-text font-gilroy text-5xl font-black text-transparent sm:text-6xl md:text-7xl lg:text-8xl"
-            >
+                class="relative z-10 bg-gradient bg-clip-text font-gilroy text-5xl font-black text-transparent sm:text-6xl md:text-7xl lg:text-8xl">
                 Looking for <br />
                 Something?
             </h1>
@@ -44,11 +43,19 @@ const cards = [
             </Button>
         </section>
     </div>
-    <div class="bg-black-secondary py-6">
-        <section class="container m-auto space-y-4 text-center font-poppins text-white">
+    <div class="bg-black-secondary py-6 px-global">
+        <section class="container m-auto space-y-4 text-center font-poppins text-white sm:px-0">
             <h4 class="text-3xl font-semibold">Our Services</h4>
             <p class="pb-6 text-gray-primary">We are making top quality decals, jacket pins, t-shirts, and posters</p>
-            {cards.map(({ icon, title, description }) => <Card title={title} description={description} Icon={icon} />)}
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {
+                    cards.map(({ icon, title, description }) => (
+                        <Card class="px-4 py-6" title={title} text={description}>
+                            <GradientIcon class="mx-auto size-11" rawSvg={icon} />
+                        </Card>
+                    ))
+                }
+            </div>
         </section>
     </div>
 </Layout>

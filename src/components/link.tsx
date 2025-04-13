@@ -14,8 +14,7 @@ const Link: ParentComponent<Props> = ({ href, newTab, class: className = "", chi
             target={newTab ? "_blank" : "_self"}
             rel={newTab ? "noopener noreferrer" : undefined}
             class={` ${className}`}
-            {...attrs}
-        >
+            {...attrs}>
             {children}
         </a>
     );

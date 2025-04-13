@@ -13,8 +13,7 @@ const Button: ParentComponent<Props> = ({ onClick, class: className = "", childr
             type="button"
             onClick={onClick}
             class={tw(`px-4 py-2 font-poppins font-semibold text-white ${className}`)}
-            {...attrs}
-        >
+            {...attrs}>
             {children}
         </button>
     );

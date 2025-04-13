@@ -102,8 +102,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             <header
                 style={{ height: `${navbarHeight}px` }}
                 classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
-                class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 ${className}`}
-            >
+                class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 ${className}`}>
                 <div class="container mx-auto flex h-full items-center justify-between">
                     <Link href="/" class="flex items-center">
                         <img src={asgLogo.src} alt="Logo" class="mr-2 size-14 sm:size-16 md:size-16" />
@@ -124,8 +123,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                             <Link
                                                 href={href}
                                                 classList={{ "text-red-primary": path.includes(href) }}
-                                                class="text-sm transition-colors duration-500 ease-in-out hover:text-red-primary md:text-base lg:text-lg"
-                                            >
+                                                class="text-sm transition-colors duration-500 ease-in-out hover:text-red-primary md:text-base lg:text-lg">
                                                 {name}
                                             </Link>
                                         </li>
@@ -154,8 +152,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                     <Link
                                         href={href}
                                         classList={{ "text-red-primary": path.includes(href) }}
-                                        class="block px-4 font-poppins text-base font-bold md:text-base lg:text-lg"
-                                    >
+                                        class="block px-4 font-poppins text-base font-bold md:text-base lg:text-lg">
                                         {name}
                                     </Link>
                                 </li>

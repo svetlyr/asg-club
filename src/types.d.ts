@@ -1,3 +1,8 @@
+declare module "@icons/*?raw" {
+    const rawSvg: string;
+    export default rawSvg;
+}
+
 declare module "@icons/*" {
     import type { ComponentProps, JSX } from "solid-js";
 

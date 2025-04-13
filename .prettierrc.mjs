@@ -7,6 +7,7 @@ export default {
     trailingComma: "all",
     bracketSpacing: true,
     arrowParens: "always",
+    bracketSameLine: true,
 
     overrides: [{ files: "*.astro", options: { parser: "astro" } }],
     plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],

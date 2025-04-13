@@ -39,6 +39,23 @@ export default {
                 ".border-gradient": {
                     borderImage: "var(--main-gradient) 1",
                 },
+                ".px-global": {
+                    paddingLeft: theme("spacing.6"),
+                    paddingRight: theme("spacing.6"),
+
+                    "@media (min-width: 640px)": {
+                        paddingLeft: theme("spacing.8"),
+                        paddingRight: theme("spacing.8"),
+                    },
+                    "@media (min-width: 768px)": {
+                        paddingLeft: theme("spacing.10"),
+                        paddingRight: theme("spacing.10"),
+                    },
+                    "@media (min-width: 1024px)": {
+                        paddingLeft: theme("spacing.16"),
+                        paddingRight: theme("spacing.16"),
+                    },
+                },
             });
             addComponents({
                 ".btn-bg-animate": {

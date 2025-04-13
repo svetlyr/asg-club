@@ -3,8 +3,6 @@
     "type": "module",
     "version": "0.0.1",
     "scripts": {
-        "predev": "tsx scripts/prepare-icons.ts",
-        "prebuild": "tsx scripts/prepare-icons.ts",
         "dev": "astro dev",
         "build": "astro check && astro build",
         "preview": "astro preview",
@@ -25,6 +23,7 @@
     "devDependencies": {
         "@eslint/js": "^9.24.0",
         "@iconify-json/fa6-solid": "^1.2.3",
+        "@iconify-json/simple-line-icons": "^1.2.1",
         "@total-typescript/ts-reset": "^0.6.1",
         "@types/node": "^22.14.0",
         "@typescript-eslint/parser": "^8.29.1",
@@ -38,7 +37,6 @@
         "prettier": "^3.5.3",
         "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.6.11",
-        "tsx": "^4.19.3",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.29.1",
         "unplugin-icons": "^22.1.0"

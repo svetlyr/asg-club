@@ -3,7 +3,6 @@ import Icons from "unplugin-icons/vite";
 import tailwind from "@astrojs/tailwind";
 
 import { defineConfig } from "astro/config";
-import { FileSystemIconLoader } from "unplugin-icons/loaders";
 
 export default defineConfig({
     output: "static",
@@ -15,16 +14,7 @@ export default defineConfig({
 
     integrations: [solid(), tailwind({ applyBaseStyles: false })],
     vite: {
-        plugins: [
-            Icons({
-                compiler: "solid",
-                customCollections: {
-                    gradient: FileSystemIconLoader("./src/assets/gradient-icons", (svg) =>
-                        svg.replace(/fill="currentColor"/g, 'fill="url(#main-gradient)"'),
-                    ),
-                },
-            }),
-        ],
+        plugins: [Icons({ compiler: "solid" })],
         resolve: {
             alias: [{ find: "@icons", replacement: "~icons" }],
         },
