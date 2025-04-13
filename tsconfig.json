@@ -24,7 +24,10 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "paths": {
+            "@utils": ["src/utils/index.ts"],
+
             "@hooks/*": ["src/hooks/*"],
+            "@utils/*": ["src/utils/*"],
             "@assets/*": ["src/assets/*"],
             "@styles/*": ["src/styles/*"],
             "@layouts/*": ["src/layouts/*"],
