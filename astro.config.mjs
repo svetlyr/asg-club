@@ -1,11 +1,13 @@
 import solid from "@astrojs/solid-js";
 import Icons from "unplugin-icons/vite";
 import tailwind from "@astrojs/tailwind";
+import bun from "@nurodev/astro-bun";
 
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-    output: "static",
+    adapter: bun(),
+    output: "server",
 
     trailingSlash: "never",
     site: "https://svetlyr.github.io",
