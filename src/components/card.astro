@@ -9,10 +9,10 @@ type Props = {
     children?: JSX.Element;
 };
 
-const { class: className = "", title, text }: Props = Astro.props;
+const { class: className = "", title, text, ...attrs }: Props = Astro.props;
 ---
 
-<div class={tw(`space-y-4 bg-black-tertiary text-center ${className}`)}>
+<div class={tw(`space-y-4 bg-black-tertiary text-center ${className}`)} {...attrs}>
     <slot />
     <p class="text-xl font-semibold">{title}</p>
     <p class="text-gray-primary">{text}</p>

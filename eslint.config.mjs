@@ -51,7 +51,7 @@ export default tseslint.config(
     {
         files: ["**/*.astro"],
         rules: {
-            "astro/no-unused-css-selector": "warn",
+            "astro/no-unused-css-selector": "off",
             "astro/no-set-html-directive": "error",
             "astro/no-set-text-directive": "error",
         },
