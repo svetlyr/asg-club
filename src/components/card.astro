@@ -1,19 +1,70 @@
 ---
-import type { JSX } from "astro/jsx-runtime";
+import type { IconType } from "@icons";
 import { twMerge as tw } from "tailwind-merge";
 
 type Props = {
-    class?: string;
-    title: string;
     text: string;
-    children?: JSX.Element;
+    title: string;
+    class?: string;
+    Icon: IconType;
 };
 
-const { class: className = "", title, text, ...attrs }: Props = Astro.props;
+const { class: className = "", title, text, Icon } = Astro.props;
 ---
 
-<div class={tw(`space-y-4 bg-black-tertiary text-center ${className}`)} {...attrs}>
-    <slot />
+<div
+    class={tw(
+        `card group cursor-pointer space-y-4 bg-black-tertiary text-center drop-shadow-md transition-transform duration-500 ease-in-out hover:-translate-y-1.5 ${className}`,
+    )}>
+    <Icon class="mx-auto size-11 [&_path]:fill-[url(#main-gradient)] group-hover:[&_path]:fill-white" />
     <p class="text-xl font-semibold">{title}</p>
-    <p class="text-gray-primary">{text}</p>
+    <p class="text-gray-primary group-hover:text-white">{text}</p>
 </div>
+
+<style lang="scss">
+    .card {
+        position: relative;
+        z-index: 1;
+
+        &:first-child::before {
+            top: -10px;
+            left: -10px;
+        }
+
+        &:last-child::before {
+            bottom: -10px;
+            right: -10px;
+        }
+
+        &:first-child,
+        &:last-child {
+            &::after {
+                position: absolute;
+                z-index: -1;
+                content: "";
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: inherit;
+
+                &:hover {
+                    @apply bg-gradient;
+                }
+            }
+            &::before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                width: calc(50% + 10px);
+                height: calc(50% + 10px);
+
+                @apply bg-gradient transition-opacity duration-500;
+
+                &:hover {
+                    @apply opacity-30;
+                }
+            }
+        }
+    }
+</style>

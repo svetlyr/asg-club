@@ -4,34 +4,35 @@ export const prerender = true;
 import Button from "@components/button";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
-import GradientIcon from "@components/gradient-icon.astro";
 
-import FireRaw from "@icons/simple-line-icons/fire?raw";
-import NoteRaw from "@icons/simple-line-icons/note?raw";
+import Fire from "@icons/simple-line-icons/fire";
+import Note from "@icons/simple-line-icons/note";
 
 const cards = [
     {
-        icon: FireRaw,
+        Icon: Fire,
         title: "Graphic Design",
         description:
             "Unleash creativity with bold designs that captivate, inspire, and differentiate your brand in a crowded market",
     },
     {
-        icon: FireRaw,
+        Icon: Fire,
         title: "Balls",
-        description: "TODO: balls description",
+        description: "Balls description",
     },
     {
-        icon: NoteRaw,
+        Icon: Note,
         title: "Custom Merch",
         description:
             "Stand out with custom apparel and accessories designed to connect, leaving a lasting impression on every customer",
     },
 ];
+
+const navCollapseId = "navCollapseTarget";
 ---
 
-<Layout>
-    <div class="bg-black-primary py-24 px-global md:pb-28 lg:pb-32">
+<Layout navCollapseId={navCollapseId}>
+    <div class="bg-black-primary py-24 px-global md:pb-32 lg:pb-36">
         <section class="container relative m-auto text-center sm:text-left">
             <div
                 class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
@@ -50,64 +51,22 @@ const cards = [
             </Button>
         </section>
     </div>
-    <div class="bg-black-secondary py-6 px-global">
+    <div id={navCollapseId} class="bg-black-secondary py-6 px-global">
         <section class="container m-auto space-y-4 text-center font-poppins text-white sm:px-0">
             <h4 class="text-3xl font-semibold">Our Services</h4>
             <p class="pb-6 text-gray-primary">We are making top quality decals, jacket pins, t-shirts, and posters</p>
-            <div class="grid auto-cols-fr grid-flow-col gap-4">
+            <div class="grid grid-cols-1 gap-5 lg:auto-cols-fr lg:grid-flow-col">
                 {
-                    // TODO: card size and hover animation
-                    cards.map(({ icon, title, description }) => (
-                        <Card class="card px-4 py-6" title={title} text={description}>
-                            <GradientIcon class="mx-auto size-11" rawSvg={icon} />
-                        </Card>
+                    cards.map(({ Icon, title, description }) => (
+                        <Card
+                            class="size-full p-6 hover:bg-gradient lg:px-6 lg:py-10"
+                            Icon={Icon}
+                            title={title}
+                            text={description}
+                        />
                     ))
                 }
             </div>
         </section>
     </div>
 </Layout>
-
-<!-- * This is a hacky and simple way to achieve external corner borders while preserving global padding -->
-<style lang="scss">
-    .card {
-        position: relative;
-        z-index: 1;
-
-        &:first-child::before {
-            top: -10px;
-            left: -10px;
-        }
-
-        &:last-child::before {
-            bottom: -10px;
-            right: -10px;
-        }
-
-        &:first-child,
-        &:last-child {
-            &::after {
-                position: absolute;
-                z-index: -1;
-                content: "";
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-                border: none;
-                border-radius: inherit;
-                background-color: inherit;
-            }
-            &::before {
-                content: "";
-                border: none;
-                position: absolute;
-                z-index: -1;
-                width: calc(50% + 10px);
-                height: calc(50% + 10px);
-
-                @apply bg-gradient;
-            }
-        }
-    }
-</style>

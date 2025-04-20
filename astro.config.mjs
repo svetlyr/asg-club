@@ -1,7 +1,7 @@
+import bun from "@nurodev/astro-bun";
 import solid from "@astrojs/solid-js";
 import Icons from "unplugin-icons/vite";
 import tailwind from "@astrojs/tailwind";
-import bun from "@nurodev/astro-bun";
 
 import { defineConfig } from "astro/config";
 
