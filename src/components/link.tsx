@@ -1,12 +1,14 @@
 import type { JSX, ParentComponent } from "solid-js";
 
-type Props = JSX.IntrinsicElements["a"] & {
+type BaseLinkProps = JSX.IntrinsicElements["a"];
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface Props extends BaseLinkProps {
     href: string;
     newTab?: boolean;
     class?: string;
-};
+}
 
-// eslint-disable-next-line solid/no-destructure -- Safe since we dont need any reactivity
+// eslint-disable-next-line solid/no-destructure
 const Link: ParentComponent<Props> = ({ href, newTab, class: className = "", children, ...attrs }) => {
     return (
         <a

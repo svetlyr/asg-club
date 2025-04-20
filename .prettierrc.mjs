@@ -8,6 +8,7 @@ export default {
     bracketSpacing: true,
     arrowParens: "always",
     bracketSameLine: true,
+    tailwindFunctions: ["tw"],
 
     overrides: [{ files: "*.astro", options: { parser: "astro" } }],
     plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],

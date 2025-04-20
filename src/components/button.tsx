@@ -1,10 +1,12 @@
 import type { JSX, ParentComponent } from "solid-js";
 import { twMerge as tw } from "tailwind-merge";
 
-type Props = JSX.IntrinsicElements["button"] & {
+type BaseButtonProps = JSX.IntrinsicElements["button"];
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface Props extends BaseButtonProps {
     class?: string;
     onClick?: () => void;
-};
+}
 
 // eslint-disable-next-line solid/no-destructure
 const Button: ParentComponent<Props> = ({ onClick, class: className = "", children, ...attrs }) => {
