@@ -70,9 +70,12 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
     };
 
     const observeTarget = ([entry]: IntersectionObserverEntry[]): void => {
-        if (!entry) return;
+        if (!entry || !entry.rootBounds) return;
 
-        targetHidden = !entry.isIntersecting;
+        const { top: rootTop } = entry.rootBounds;
+        const { top: elemTop } = entry.boundingClientRect;
+
+        targetHidden = elemTop <= rootTop;
 
         if (!targetHidden) setIsCollapsed(false);
     };
@@ -85,7 +88,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
         const target = document.getElementById(navCollapseId);
         if (target) {
             observer = new IntersectionObserver(observeTarget, {
-                threshold: 1,
+                threshold: [0, 1],
                 rootMargin: `-${navbarHeight}px 0px 0px 0px`,
             });
             observer.observe(target);
@@ -102,7 +105,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             <header
                 style={{ height: `${navbarHeight}px` }}
                 classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
-                class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 ${className}`}>
+                class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 px-global ${className}`}>
                 <div class="container mx-auto flex h-full items-center justify-between">
                     <Link href="/" class="flex items-center">
                         <img src={asgLogo.src} alt="Logo" class="mr-2 size-14 sm:size-16 md:size-16" />
