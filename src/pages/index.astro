@@ -58,12 +58,7 @@ const navCollapseId = "navCollapseTarget";
             <div class="grid grid-cols-1 gap-5 lg:auto-cols-fr lg:grid-flow-col">
                 {
                     cards.map(({ Icon, title, description }) => (
-                        <Card
-                            class="size-full p-6 hover:bg-gradient lg:px-6 lg:py-10"
-                            Icon={Icon}
-                            title={title}
-                            text={description}
-                        />
+                        <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} text={description} />
                     ))
                 }
             </div>
