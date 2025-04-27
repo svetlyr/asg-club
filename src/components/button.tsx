@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
+import { tw } from "@utils";
 import type { JSX, ParentComponent } from "solid-js";
-import { twMerge as tw } from "tailwind-merge";
 
 type BaseButtonProps = JSX.IntrinsicElements["button"];
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface Props extends BaseButtonProps {
     class?: string;
     onClick?: () => void;

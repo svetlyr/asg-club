@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import type { JSX, ParentComponent } from "solid-js";
 
 type BaseLinkProps = JSX.IntrinsicElements["a"];
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface Props extends BaseLinkProps {
     href: string;
     newTab?: boolean;
