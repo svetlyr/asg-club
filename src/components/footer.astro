@@ -1,0 +1,69 @@
+---
+import Link from "./link";
+
+import Speech from "@icons/sli/speech";
+import Rocket from "@icons/sli/rocket";
+import Envelope from "@icons/sli/envelope";
+import LocationPin from "@icons/sli/location-pin";
+import SocialYoutube from "@icons/sli/social-youtube";
+import SocialFacebook from "@icons/sli/social-facebook";
+import SocialInstagram from "@icons/sli/social-instagram";
+
+import asgLogo from "@assets/asg-logo.svg";
+import clubLogo from "@assets/club-logo.svg";
+import Button from "./button";
+---
+
+<div class="bg-black-quaternary px-global">
+    <section class="container mx-auto text-nowrap py-16 text-white">
+        <div
+            class="grid justify-items-center text-center heir-h4:text-2xl heir-h4:font-bold md:flex md:gap-20 md:text-left lg:gap-32">
+            <div>
+                <Link href="/" class="flex items-center">
+                    <img
+                        alt="Logo"
+                        loading="lazy"
+                        decoding="async"
+                        src={asgLogo.src}
+                        class="mr-2 size-14 sm:size-16 md:size-16"
+                    />
+                    <img
+                        alt="Club text"
+                        loading="lazy"
+                        decoding="async"
+                        src={clubLogo.src}
+                        class="size-20 sm:size-24 md:size-24"
+                    />
+                </Link>
+                <div class="flex justify-center gap-7 child:size-6 child-svg:cursor-pointer md:justify-normal">
+                    {/* TODO: socials */}
+                    <SocialInstagram class="icon-gradient" />
+                    <SocialYoutube class="icon-gradient" />
+                    <SocialFacebook class="icon-gradient" />
+                </div>
+            </div>
+            <div
+                class="py-16 child-p:flex child-p:cursor-pointer child-p:justify-center child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary md:py-8 md:child-p:justify-normal">
+                <h4 class="pb-6">Get in Touch</h4>
+                {/* TODO: change email */}
+                <p class="items-center"><Envelope class="mr-3" />orders@asg-club.com</p>
+                <p class="items-center"><LocationPin class="mr-3" />Chisinau, Moldova</p>
+                {/* TODO: button href */}
+                <Button
+                    class="group btn-bg-animate mx-auto my-5 flex items-center border-2 bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
+                    <Speech class="mr-2 size-4 md:size-5 group-hover:[&_path]:fill-white" />
+                    <span class="text-sm md:text-base">CONTACT US</span>
+                </Button>
+            </div>
+            <div
+                class="pb-8 child-p:cursor-pointer child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary md:py-8">
+                <h4 class="pb-6">Our Services</h4>
+                <p>Custom Decals</p>
+                <p>Jacket Pins</p>
+                <p>Merch</p>
+                <p>Design</p>
+                <p class="flex items-center gap-3"><Rocket />Bike Restoration</p>
+            </div>
+        </div>
+    </section>
+</div>
