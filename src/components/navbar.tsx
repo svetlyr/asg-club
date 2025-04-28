@@ -156,7 +156,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             </header>
             {/* TODO: add animations */}
             <Show when={isMenuOpen()}>
-                <div class="pointer-events-none fixed inset-0 z-50 text-white">
+                <div class="pointer-events-none fixed inset-0 z-30 text-white">
                     <div
                         class="pointer-events-auto absolute inset-0 bg-black-primary/40"
                         onClick={() => setIsMenuOpen(false)}

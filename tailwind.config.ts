@@ -66,6 +66,11 @@ export default {
                 },
             });
             addComponents({
+                ".text-gradient": {
+                    color: "transparent",
+                    backgroundClip: "text",
+                    backgroundImage: theme("backgroundImage.gradient"),
+                },
                 ".btn-bg-animate": {
                     overflow: "hidden",
                     position: "relative",
