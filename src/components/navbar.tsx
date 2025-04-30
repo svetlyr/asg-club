@@ -5,9 +5,9 @@ import Link from "./link";
 import Button from "./button";
 import createIsMobile from "@hooks/isMobile";
 
-import XMark from "@icons/fa6-solid/xmark";
-import HamburgerMenu from "@icons/fa6-solid/bars";
-import Motorcycle from "@icons/fa6-solid/motorcycle";
+import XMark from "@icons/fa/xmark";
+import HamburgerMenu from "@icons/fa/bars";
+import Motorcycle from "@icons/fa/motorcycle";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
@@ -108,8 +108,21 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                 class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 px-global ${className}`}>
                 <div class="container mx-auto flex h-full items-center justify-between">
                     <Link href="/" class="flex items-center">
-                        <img src={asgLogo.src} alt="Logo" class="mr-2 size-14 sm:size-16 md:size-16" />
-                        <img src={clubLogo.src} alt="Club text" class="size-20 sm:size-24 md:size-24" />
+                        {/* TODO: logo size*/}
+                        <img
+                            alt="Logo"
+                            loading="eager"
+                            fetchpriority="high"
+                            src={asgLogo.src}
+                            class="mr-2 size-14 sm:size-16 md:size-16"
+                        />
+                        <img
+                            alt="Club text"
+                            loading="eager"
+                            fetchpriority="high"
+                            src={clubLogo.src}
+                            class="size-20 sm:size-24 md:size-24"
+                        />
                     </Link>
                     <div class="flex items-center gap-4">
                         <Show when={isMobile()}>
@@ -118,7 +131,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                 onClick={() => setIsMenuOpen(true)}
                             />
                         </Show>
-                        <ul class="items-center space-x-4 font-poppins text-white md:flex md:space-x-6 lg:space-x-8">
+                        <ul class="items-center space-x-4 text-white md:flex md:space-x-6 lg:space-x-8">
                             <Show when={!isMobile()}>
                                 <For each={NAV_LINKS}>
                                     {({ name, href }) => (
@@ -133,9 +146,9 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                     )}
                                 </For>
                             </Show>
-                            <Button class="flex items-center bg-orange-primary md:px-6">
+                            <Button class="group btn-bg-animate flex items-center border-2 bg-transparent border-gradient md:px-6">
                                 <Motorcycle class="mr-2 size-4 md:size-5" />
-                                <span class="text-sm md:text-base">ORDER</span>
+                                <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
                             </Button>
                         </ul>
                     </div>
@@ -143,7 +156,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             </header>
             {/* TODO: add animations */}
             <Show when={isMenuOpen()}>
-                <div class="pointer-events-none fixed inset-0 z-50 text-white">
+                <div class="pointer-events-none fixed inset-0 z-30 text-white">
                     <div
                         class="pointer-events-auto absolute inset-0 bg-black-primary/40"
                         onClick={() => setIsMenuOpen(false)}
@@ -155,7 +168,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                     <Link
                                         href={href}
                                         classList={{ "text-red-primary": path.includes(href) }}
-                                        class="block px-4 font-poppins text-base font-bold md:text-base lg:text-lg">
+                                        class="block px-4 text-base font-bold md:text-base lg:text-lg">
                                         {name}
                                     </Link>
                                 </li>

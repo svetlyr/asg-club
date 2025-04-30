@@ -3,6 +3,8 @@ import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
+import tailwindChildren from "tailwind-children";
+
 const { sans, serif } = fontFamily;
 
 export default {
@@ -34,8 +36,14 @@ export default {
         },
     },
     plugins: [
+        tailwindChildren,
         plugin(({ addUtilities, addComponents, theme }) => {
             addUtilities({
+                ".icon-gradient": {
+                    "& path": {
+                        fill: "url(#main-gradient)",
+                    },
+                },
                 ".border-gradient": {
                     borderImage: "var(--main-gradient) 1",
                 },
@@ -58,9 +66,18 @@ export default {
                 },
             });
             addComponents({
+                ".text-gradient": {
+                    color: "transparent",
+                    backgroundClip: "text",
+                    backgroundImage: theme("backgroundImage.gradient"),
+                },
                 ".btn-bg-animate": {
                     overflow: "hidden",
                     position: "relative",
+
+                    "> *": {
+                        zIndex: "10",
+                    },
 
                     "&::before": {
                         content: '""',
@@ -68,7 +85,7 @@ export default {
                         top: "-100%",
                         left: "-100%",
                         width: "290%",
-                        height: "330%",
+                        height: "410%",
                         background: "var(--main-gradient)",
 
                         transitionProperty: "transform",

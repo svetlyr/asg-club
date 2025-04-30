@@ -16,4 +16,25 @@
         /* TODO: change when domain name is ready */
         src: url("../Gilroy-Black.woff") format("woff");
     }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-poppins font-semibold text-white;
+    }
+
+    a {
+        @apply font-poppins;
+    }
+
+    p {
+        @apply font-poppins text-gray-primary;
+    }
+
+    button {
+        @apply font-poppins text-white;
+    }
 }

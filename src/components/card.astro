@@ -1,6 +1,6 @@
 ---
 import type { IconType } from "@icons";
-import { twMerge as tw } from "tailwind-merge";
+import { tw } from "@utils";
 
 type Props = {
     text: string;
@@ -16,9 +16,9 @@ const { class: className = "", title, text, Icon } = Astro.props;
     class={tw(
         `card group cursor-pointer space-y-4 bg-black-tertiary text-center drop-shadow-md transition-transform duration-500 ease-in-out hover:-translate-y-1.5 hover:bg-gradient ${className}`,
     )}>
-    <Icon class="mx-auto size-11 [&_path]:fill-[url(#main-gradient)] group-hover:[&_path]:fill-white" />
-    <p class="text-xl font-semibold">{title}</p>
-    <p class="text-gray-primary group-hover:text-white">{text}</p>
+    <Icon class="mx-auto size-11 icon-gradient group-hover:[&_path]:fill-white" />
+    <h4 class="text-xl">{title}</h4>
+    <p class="group-hover:text-white">{text}</p>
 </div>
 
 <style lang="scss">

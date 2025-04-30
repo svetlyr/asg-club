@@ -18,7 +18,11 @@ export default defineConfig({
     vite: {
         plugins: [Icons({ compiler: "solid" })],
         resolve: {
-            alias: [{ find: "@icons", replacement: "~icons" }],
+            alias: [
+                { find: "@icons/sli", replacement: "~icons/simple-line-icons" },
+                { find: "@icons/fa", replacement: "~icons/fa6-solid" },
+                { find: "@icons", replacement: "~icons" },
+            ],
         },
     },
 });
