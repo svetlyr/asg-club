@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 
+import Form from "@components/form";
 import Button from "@components/button";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
@@ -63,4 +64,5 @@ const navCollapseId = "navCollapseTarget";
             </div>
         </section>
     </div>
+    <Form client:only />
 </Layout>
