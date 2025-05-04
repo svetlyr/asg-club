@@ -7,6 +7,9 @@ import { defineConfig } from "astro/config";
 
 import type { Plugin } from "vite";
 
+import "./src/env/client";
+import "./src/env/server";
+
 export default defineConfig({
     adapter: bun(),
     output: "server",
