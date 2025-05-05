@@ -1,5 +1,7 @@
-import { createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import type { Component } from "solid-js";
+import { createComputed, createSignal, For, Show } from "solid-js";
+import { useWindowScrollPosition } from "@solid-primitives/scroll";
+import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
 
 import Link from "./link";
 import Button from "./button";
@@ -29,75 +31,56 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
     const navbarHeight = 74;
     const scrollThreshold = 200;
     const isMobile = createIsMobile("md");
+    const scroll = useWindowScrollPosition();
     const [isMenuOpen, setIsMenuOpen] = createSignal<boolean>(false);
     const [isCollapsed, setIsCollapsed] = createSignal<boolean>(false);
 
-    let lastScrollY = 0;
     let accumulatedScroll = 0;
-    let ticking = false;
-    let targetHidden = false;
+    let lastScrollY = scroll.y;
 
-    const updateAccumulatedScroll = (delta: number): void => {
-        if (Math.sign(delta) !== Math.sign(accumulatedScroll)) {
+    const isTargetVisible = createVisibilityObserver(
+        {
+            threshold: [0, 1],
+            rootMargin: `-${navbarHeight}px 0px 0px 0px`,
+        },
+        (entry) => {
+            console.log(entry);
+
+            if (!entry.rootBounds) return false;
+
+            const { top: rootTop } = entry.rootBounds;
+            const { top: elemTop } = entry.boundingClientRect;
+
+            const targetHidden = elemTop <= rootTop;
+            return !targetHidden;
+        },
+    )(() => document.getElementById(navCollapseId));
+
+    createComputed(() => {
+        if (isTargetVisible()) return;
+
+        const currentScrollY = scroll.y;
+        const delta = currentScrollY - lastScrollY;
+
+        lastScrollY = currentScrollY;
+
+        // TODO: fix bug
+        // * when collapsing navbar and quickly scrolling up
+        // * navbar stays collpased because of the early return guard
+
+        // * scroll down
+        if (delta > 0) {
+            setIsCollapsed(true);
+            accumulatedScroll = 0;
+            return;
+        }
+
+        // * scroll up
+        accumulatedScroll += -delta;
+        if (accumulatedScroll >= scrollThreshold) {
+            setIsCollapsed(false);
             accumulatedScroll = 0;
         }
-        accumulatedScroll += delta;
-    };
-
-    const handleScroll = (): void => {
-        if (ticking || !targetHidden) return;
-
-        ticking = true;
-        window.requestAnimationFrame(() => {
-            const currentScrollY = window.scrollY;
-            const scrollUp = currentScrollY < lastScrollY;
-            const delta = currentScrollY - lastScrollY;
-
-            updateAccumulatedScroll(delta);
-
-            const acc = Math.abs(accumulatedScroll);
-            if (scrollUp && acc >= scrollThreshold) {
-                setIsCollapsed(false);
-                accumulatedScroll = 0;
-            } else if (!scrollUp) {
-                setIsCollapsed(true);
-                accumulatedScroll = 0;
-            }
-
-            lastScrollY = currentScrollY;
-            ticking = false;
-        });
-    };
-
-    const observeTarget = ([entry]: IntersectionObserverEntry[]): void => {
-        if (!entry || !entry.rootBounds) return;
-
-        const { top: rootTop } = entry.rootBounds;
-        const { top: elemTop } = entry.boundingClientRect;
-
-        targetHidden = elemTop <= rootTop;
-
-        if (!targetHidden) setIsCollapsed(false);
-    };
-
-    onMount(() => {
-        lastScrollY = window.scrollY;
-        window.addEventListener("scroll", handleScroll, { passive: true });
-
-        let observer: IntersectionObserver | null;
-        const target = document.getElementById(navCollapseId);
-        if (target) {
-            observer = new IntersectionObserver(observeTarget, {
-                threshold: [0, 1],
-                rootMargin: `-${navbarHeight}px 0px 0px 0px`,
-            });
-            observer.observe(target);
-        }
-
-        onCleanup(() => {
-            window.removeEventListener("scroll", handleScroll);
-            if (observer) observer.disconnect();
-        });
     });
 
     return (
