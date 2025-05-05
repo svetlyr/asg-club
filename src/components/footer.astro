@@ -12,6 +12,8 @@ import SocialInstagram from "@icons/sli/social-instagram";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
+
+import { SOCIAL_INSTAGRAM, SOCIAL_YOUTUBE, SOCIAL_FACEBOOK } from "astro:env/server";
 ---
 
 <div class="bg-black-quaternary px-global">
@@ -36,10 +38,16 @@ import clubLogo from "@assets/club-logo.svg";
                     />
                 </Link>
                 <div class="flex justify-center gap-7 child:size-6 child-svg:cursor-pointer md:justify-normal">
-                    {/* TODO: socials */}
-                    <SocialInstagram class="icon-gradient" />
-                    <SocialYoutube class="icon-gradient" />
-                    <SocialFacebook class="icon-gradient" />
+                    {/* TODO: add tiktok */}
+                    <Link newTab href={SOCIAL_INSTAGRAM}>
+                        <SocialInstagram class="icon-gradient" />
+                    </Link>
+                    <Link newTab href={SOCIAL_YOUTUBE}>
+                        <SocialYoutube class="icon-gradient" />
+                    </Link>
+                    <Link newTab href={SOCIAL_FACEBOOK}>
+                        <SocialFacebook class="icon-gradient" />
+                    </Link>
                 </div>
             </div>
             <div

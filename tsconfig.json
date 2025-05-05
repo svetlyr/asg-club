@@ -24,7 +24,6 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "paths": {
-            "@env": ["src/types/env.d.ts"],
             "@utils": ["src/utils/index.ts"],
 
             "@hooks/*": ["src/hooks/*"],
