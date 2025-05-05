@@ -44,8 +44,6 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             rootMargin: `-${navbarHeight}px 0px 0px 0px`,
         },
         (entry) => {
-            console.log(entry);
-
             if (!entry.rootBounds) return false;
 
             const { top: rootTop } = entry.rootBounds;
