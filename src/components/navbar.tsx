@@ -49,22 +49,17 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
             const { top: rootTop } = entry.rootBounds;
             const { top: elemTop } = entry.boundingClientRect;
 
-            const targetHidden = elemTop <= rootTop;
-            return !targetHidden;
+            return elemTop >= rootTop;
         },
     )(() => document.getElementById(navCollapseId));
 
     createComputed(() => {
-        if (isTargetVisible()) return;
+        if (isTargetVisible() && !isCollapsed()) return;
 
         const currentScrollY = scroll.y;
         const delta = currentScrollY - lastScrollY;
 
         lastScrollY = currentScrollY;
-
-        // TODO: fix bug
-        // * when collapsing navbar and quickly scrolling up
-        // * navbar stays collpased because of the early return guard
 
         // * scroll down
         if (delta > 0) {
