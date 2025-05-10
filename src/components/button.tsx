@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
-import { tw } from "@utils";
+import { tw } from "@utils/tw";
 import type { JSX, ParentComponent } from "solid-js";
 
 type BaseButtonProps = JSX.IntrinsicElements["button"];

@@ -13,8 +13,22 @@ import SocialInstagram from "@icons/sli/social-instagram";
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
 
-import { SOCIAL_INSTAGRAM, SOCIAL_YOUTUBE, SOCIAL_FACEBOOK } from "astro:env/server";
+import { INSTAGRAM, YOUTUBE, FACEBOOK } from "astro:env/server";
+
+/* TODO: add tiktok */
+const socials = [
+    { href: INSTAGRAM, Icon: SocialInstagram },
+    { href: YOUTUBE, Icon: SocialYoutube },
+    { href: FACEBOOK, Icon: SocialFacebook },
+];
 ---
+
+<script>
+    import { addOnClick } from "@utils/dom";
+
+    const button = document.getElementById("footer-contact-btn");
+    addOnClick(button, () => (window.location.href = "/contact"));
+</script>
 
 <div class="bg-black-quaternary px-global">
     <section class="container mx-auto text-nowrap py-16 text-white">
@@ -38,16 +52,13 @@ import { SOCIAL_INSTAGRAM, SOCIAL_YOUTUBE, SOCIAL_FACEBOOK } from "astro:env/ser
                     />
                 </Link>
                 <div class="flex justify-center gap-7 child:size-6 child-svg:cursor-pointer md:justify-normal">
-                    {/* TODO: add tiktok */}
-                    <Link newTab href={SOCIAL_INSTAGRAM}>
-                        <SocialInstagram class="icon-gradient" />
-                    </Link>
-                    <Link newTab href={SOCIAL_YOUTUBE}>
-                        <SocialYoutube class="icon-gradient" />
-                    </Link>
-                    <Link newTab href={SOCIAL_FACEBOOK}>
-                        <SocialFacebook class="icon-gradient" />
-                    </Link>
+                    {
+                        socials.map(({ href, Icon }) => (
+                            <Link newTab href={href}>
+                                <Icon class="icon-gradient" />
+                            </Link>
+                        ))
+                    }
                 </div>
             </div>
             <div
@@ -56,8 +67,9 @@ import { SOCIAL_INSTAGRAM, SOCIAL_YOUTUBE, SOCIAL_FACEBOOK } from "astro:env/ser
                 {/* TODO: change email */}
                 <p class="items-center"><Envelope class="mr-3" />orders@asg-club.com</p>
                 <p class="items-center"><LocationPin class="mr-3" />Chisinau, Moldova</p>
-                {/* TODO: button href */}
+
                 <Button
+                    id="footer-contact-btn"
                     class="group btn-bg-animate mx-auto my-5 flex items-center border-2 bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
                     <Speech class="mr-2 size-4 md:size-5 group-hover:[&_path]:fill-white" />
                     <span class="text-sm md:text-base">CONTACT US</span>
