@@ -2,8 +2,6 @@ import type { Component } from "solid-js";
 import type { DOMElement } from "solid-js/jsx-runtime";
 import type { OrderDetailsSchema } from "@utils/schema";
 
-import FormWrapper from "./formWrapper";
-
 interface SecondFormPros extends OrderDetailsSchema {
     updateFields: (
         event: Event & {
@@ -22,10 +20,7 @@ const SecondForm: Component<SecondFormPros> = ({
     updateFields,
 }) => {
     return (
-        <FormWrapper
-            title="Details"
-            paragraph="We need some important information to understand the basics of your order and have a better idea of what you want."
-            imageName="bike2">
+        <>
             <select name="serviceType" value={serviceType} onChange={updateFields}>
                 <option value="Decals">Decals</option>
                 <option value="Jacket Pins">Jacket Pins</option>
@@ -37,8 +32,9 @@ const SecondForm: Component<SecondFormPros> = ({
                 onChange={updateFields}
                 rows={3}
                 placeholder="Description"
+                required
             />
-            <input type="number" name="quantity" value={quantity} onChange={updateFields} placeholder="Quantity" />
+            <input type="number" name="quantity" value={quantity} onChange={updateFields} placeholder="Quantity" required/>
             <div class="flex gap-x-4">
                 <input
                     type="number"
@@ -46,6 +42,7 @@ const SecondForm: Component<SecondFormPros> = ({
                     value={dimensions}
                     onChange={updateFields}
                     placeholder="Dimensions"
+                    required
                 />
                 <select name="unitType" value={unitType} onChange={updateFields}>
                     <option value="cm">cm</option>
@@ -56,7 +53,7 @@ const SecondForm: Component<SecondFormPros> = ({
                 <input type="checkbox" name="terms" />
                 <p>I have read and agree with the Terms of Use.</p>
             </div>
-        </FormWrapper>
+        </>
     );
 };
 
