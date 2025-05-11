@@ -11,6 +11,8 @@ interface SecondFormPros extends OrderDetailsSchema {
     ) => void;
 }
 
+// TODO: add photo upload
+
 const SecondForm: Component<SecondFormPros> = ({
     serviceType,
     description,
@@ -34,7 +36,14 @@ const SecondForm: Component<SecondFormPros> = ({
                 placeholder="Description"
                 required
             />
-            <input type="number" name="quantity" value={quantity} onChange={updateFields} placeholder="Quantity" required/>
+            <input
+                type="number"
+                name="quantity"
+                value={quantity}
+                onChange={updateFields}
+                placeholder="Quantity"
+                required
+            />
             <div class="flex gap-x-4">
                 <input
                     type="number"
