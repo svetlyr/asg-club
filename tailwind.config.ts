@@ -79,6 +79,10 @@ export default {
                         zIndex: "10",
                     },
 
+                    "astro-slot > *": {
+                        zIndex: "10",
+                    },
+
                     "&::before": {
                         content: '""',
                         position: "absolute",

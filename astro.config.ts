@@ -28,10 +28,10 @@ export default defineConfig({
     env: {
         schema: {
             BALLS: envField.string({ context: "client", access: "public" }),
-            SOCIAL_TIKTOK: envField.string({ context: "server", access: "public" }),
-            SOCIAL_YOUTUBE: envField.string({ context: "server", access: "public" }),
-            SOCIAL_FACEBOOK: envField.string({ context: "server", access: "public" }),
-            SOCIAL_INSTAGRAM: envField.string({ context: "server", access: "public" }),
+            TIKTOK: envField.string({ context: "server", access: "public" }),
+            YOUTUBE: envField.string({ context: "server", access: "public" }),
+            FACEBOOK: envField.string({ context: "server", access: "public" }),
+            INSTAGRAM: envField.string({ context: "server", access: "public" }),
 
             EMAIL: envField.string({ context: "server", access: "secret" }),
         },

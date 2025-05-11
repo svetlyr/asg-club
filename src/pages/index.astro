@@ -1,10 +1,10 @@
 ---
 export const prerender = true;
 
-// import Form from "@components/form";
 import Button from "@components/button";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
+import { navCollapseId } from "@constants";
 
 import Fire from "@icons/sli/fire";
 import Note from "@icons/sli/note";
@@ -29,8 +29,6 @@ const cards = [
             "Stand out with custom apparel and accessories designed to connect, leaving a lasting impression on every customer",
     },
 ];
-
-const navCollapseId = "navCollapseTarget";
 ---
 
 <Layout navCollapseId={navCollapseId}>

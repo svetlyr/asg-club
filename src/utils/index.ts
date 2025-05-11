@@ -1,5 +1,3 @@
-import { extendTailwindMerge } from "tailwind-merge";
-
 type Success<T> = [data: T, error: null];
 
 type Failure<E> = [data: null, error: E];
@@ -14,18 +12,3 @@ export const tryCatch = async <T, E = Error>(promise: Promise<T>): Promise<Resul
         return [null, error as E];
     }
 };
-export const tw = extendTailwindMerge({
-    extend: {
-        theme: {
-            color: [
-                "gray-primary",
-                "red-primary",
-                "orange-primary",
-                "black-primary",
-                "black-secondary",
-                "black-tertiary",
-                "black-quaternary",
-            ],
-        },
-    },
-});

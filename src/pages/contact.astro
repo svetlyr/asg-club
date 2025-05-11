@@ -1,7 +1,12 @@
 ---
+import { navCollapseId } from "@constants";
 import Layout from "@layouts/Layout.astro";
 ---
 
-<Layout>
-    <div class="text-white">contact</div>
+<Layout navCollapseId={navCollapseId}>
+    <div class="bg-black-primary px-global">
+        <section class="container mx-auto text-center">
+            <h1 class="text-gradient font-gilroy text-5xl">Contact Us</h1>
+        </section>
+    </div>
 </Layout>

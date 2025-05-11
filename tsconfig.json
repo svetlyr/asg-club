@@ -25,12 +25,14 @@
         "forceConsistentCasingInFileNames": true,
         "paths": {
             "@utils": ["src/utils/index.ts"],
+            "@constants": ["src/constants/index.ts"],
 
             "@hooks/*": ["src/hooks/*"],
             "@utils/*": ["src/utils/*"],
             "@assets/*": ["src/assets/*"],
             "@styles/*": ["src/styles/*"],
             "@layouts/*": ["src/layouts/*"],
+            "@constants/*": ["src/constants/*"],
             "@components/*": ["src/components/*"]
         },
         "types": ["unplugin-icons/types/solid"]
