@@ -16,6 +16,7 @@ export function useMultiStepForm(steps: JSXElement[]) {
   }
 
   return {
+    currentStepIndex,
     step,
     isFirstStep: isFirst,
     isLastStep : isLast,

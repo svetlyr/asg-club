@@ -8,6 +8,7 @@ import Layout from "@layouts/Layout.astro";
 
 import Fire from "@icons/sli/fire";
 import Note from "@icons/sli/note";
+import FormWrapper from "@components/form";
 
 const cards = [
     {
@@ -64,5 +65,7 @@ const navCollapseId = "navCollapseTarget";
             </div>
         </section>
     </div>
-    <!-- <Form client:only /> -->
+    <section class="bg-black-secondary py-6 px-global">
+        <FormWrapper client:only />
+    </section>
 </Layout>
