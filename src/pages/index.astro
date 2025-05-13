@@ -2,13 +2,13 @@
 export const prerender = true;
 
 import Button from "@components/button";
+import Form from "@components/form";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
 import { navCollapseId } from "@constants";
 
 import Fire from "@icons/sli/fire";
 import Note from "@icons/sli/note";
-import FormWrapper from "@components/form";
 
 const cards = [
     {
@@ -63,7 +63,9 @@ const cards = [
             </div>
         </section>
     </div>
-    <section class="bg-black-secondary py-6 px-global">
-        <FormWrapper client:only />
-    </section>
+    <div class="bg-black-secondary py-6 px-global">
+        <section class="container m-auto">
+            <Form client:only="solid" />
+        </section>
+    </div>
 </Layout>

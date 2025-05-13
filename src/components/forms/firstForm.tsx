@@ -1,8 +1,9 @@
 import type { Component } from "solid-js";
 import type { DOMElement } from "solid-js/jsx-runtime";
-import type { OrderNameSchema } from "@utils/schema";
+import type { BasicDetailsSchema } from "@utils/schema";
 
-interface FirstFormPros extends OrderNameSchema {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface FirstFormProps extends BasicDetailsSchema {
     updateFields: (
         event: Event & {
             currentTarget: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
@@ -11,7 +12,7 @@ interface FirstFormPros extends OrderNameSchema {
     ) => void;
 }
 
-const FirstForm: Component<FirstFormPros> = ({ email, fullname, tel, updateFields }) => {
+const FirstForm: Component<FirstFormProps> = ({ email, fullname, tel, updateFields }) => {
     return (
         <>
             <input type="email" value={email} onChange={updateFields} name="email" placeholder="Email" required />
@@ -24,7 +25,15 @@ const FirstForm: Component<FirstFormPros> = ({ email, fullname, tel, updateField
                 pattern="^[A-Za-zА-Яа-я]{2,}(?:\s+[A-Za-zА-Яа-я]{2,})+$"
                 required
             />
-            <input type="tel" value={tel} onChange={updateFields} name="tel" placeholder="Phone Number (Optional)" />
+            <div>
+                <input
+                    type="tel"
+                    value={tel}
+                    onChange={updateFields}
+                    name="tel"
+                    placeholder="Phone Number (Optional)"
+                />
+            </div>
         </>
     );
 };

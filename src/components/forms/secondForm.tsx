@@ -1,8 +1,9 @@
 import type { Component } from "solid-js";
 import type { DOMElement } from "solid-js/jsx-runtime";
-import type { OrderDetailsSchema } from "@utils/schema";
+import type { ServiceDetailsSchema } from "@utils/schema";
 
-interface SecondFormPros extends OrderDetailsSchema {
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+interface SecondFormPros extends ServiceDetailsSchema {
     updateFields: (
         event: Event & {
             currentTarget: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;

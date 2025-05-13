@@ -5,6 +5,7 @@
 @layer base {
     :root {
         --main-gradient: linear-gradient(45deg, rgb(224, 4, 11) 15%, rgb(252, 81, 48) 65%);
+        --animation-gradient: linear-gradient(to right, rgb(252, 81, 48), rgb(224, 4, 11));
     }
 
     @font-face {
@@ -17,17 +18,115 @@
         src: url("../Gilroy-Black.woff") format("woff");
     }
 
+    .stepper-item--label {
+        background-color: rgb(25, 25, 25);
+    }
+
+    .stepper-item--label__filled {
+        background: var(--animation-gradient);
+        background-size: 400% 400%;
+        animation: gradient 3s ease infinite;
+    }
+
+    .stepper-item {
+        position: relative;
+
+        &::before,
+        &::after {
+            content: "";
+            height: 6px;
+            width: 40%;
+            top: 25%;
+            position: absolute;
+            background-color: rgb(25, 25, 25);
+        }
+
+        &:before {
+            left: 0;
+        }
+
+        &::after {
+            right: 0;
+        }
+    }
+
+    .stepper-item__active {
+        position: relative;
+
+        &::before,
+        &::after {
+            content: "";
+            height: 6px;
+            width: 40%;
+            top: 25%;
+            position: absolute;
+        }
+
+        &:before {
+            left: 0;
+            background: var(--animation-gradient);
+            background-size: 400% 400%;
+            animation: gradient 3s ease infinite;
+        }
+
+        &::after {
+            right: 0;
+            background-color: rgb(25, 25, 25);
+        }
+    }
+
+    .stepper-item__completed {
+        position: relative;
+
+        &::before,
+        &::after {
+            content: "";
+            height: 6px;
+            width: 40%;
+            top: 25%;
+            position: absolute;
+            background-color: rgb(25, 25, 25);
+            background: var(--animation-gradient);
+            background-size: 400% 400%;
+            animation: gradient 3s ease infinite;
+        }
+
+        &:before {
+            left: 0;
+        }
+
+        &::after {
+            right: 0;
+        }
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
     textarea {
         resize: none;
     }
 
-    input, select, textarea {
-        font-family: Poppins, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    input,
+    select,
+    textarea {
+        font-family:
+            Poppins, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+            "Noto Color Emoji";
         color: white;
         padding: 10px 15px;
         border: 1px solid #ffffff40;
         background-color: transparent;
-        transition: border-color .15s ease-in-out;
+        transition: border-color 0.15s ease-in-out;
         /* transition: all 500ms linear; */
 
         &:focus {

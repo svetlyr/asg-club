@@ -3,6 +3,7 @@ import { Show, type Component, type JSX } from "solid-js";
 import { useMultiStepForm } from "@utils/useMultiStepForm";
 import type { OrderSchema } from "@utils/schema";
 
+import Stepper from "./stepper";
 import FirstForm from "./forms/firstForm";
 import SecondForm from "./forms/secondForm";
 import ThirdForm from "./forms/thirdForm";
@@ -42,11 +43,11 @@ const test: FormProps[] = [
     },
 ];
 
-interface FormProps {
+type FormProps = {
     title: string;
     paragraph: string;
     imageName: "coffee2" | "bike2" | "bike3";
-}
+};
 
 const Form: Component = () => {
     const [order, setOrder] = createStore<OrderSchema>(defaultOrder);
@@ -55,6 +56,7 @@ const Form: Component = () => {
         event,
     ) => {
         const { name, value } = event.currentTarget;
+        // TODO: refactor without typecast
         setOrder(name as keyof typeof order, value);
     };
 
@@ -71,15 +73,17 @@ const Form: Component = () => {
     };
 
     return (
-        <div class="flex max-w-[1170px] gap-x-16">
-            <form onSubmit={handleSubmit}>
+        <div class="mx-auto flex justify-around">
+            <form class="max-w-[555px]" onSubmit={handleSubmit}>
                 <h2 class="mb-6 text-5xl">{test[currentStepIndex()]?.title}</h2>
                 <p class="mb-20">{test[currentStepIndex()]?.paragraph}</p>
+                <Stepper currentStep={currentStepIndex} />
                 <div class="grid gap-y-4">{step()}</div>
                 <div class="mt-4 flex gap-x-5">
                     <Show when={!isFirstStep()}>
                         <button
                             onClick={back}
+                            type="button"
                             class="flex max-w-fit items-center gap-x-1 bg-red-primary px-6 py-3 font-bold">
                             <ArrowLeft /> PREV
                         </button>
@@ -91,7 +95,13 @@ const Form: Component = () => {
                     </button>
                 </div>
             </form>
-            <img width={522} height={575} src={`src/assets/images/${test[currentStepIndex()]?.imageName}.webp`} />
+            <img
+                width={522}
+                height={575}
+                src={`src/assets/images/${test[currentStepIndex()]?.imageName}.webp`}
+                loading="lazy"
+                decoding="async"
+            />
         </div>
     );
 };
