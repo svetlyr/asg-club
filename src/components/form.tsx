@@ -11,19 +11,13 @@ import ThirdForm from "./forms/thirdForm";
 import ArrowLeft from "@icons/simple-line-icons/arrow-left";
 import ArrowRight from "@icons/simple-line-icons/arrow-right";
 
-const defaultOrder: OrderSchema = {
-    email: "",
-    fullname: "",
-    tel: "",
-    serviceType: "Merch",
-    description: "",
-    quantity: 1,
-    dimensions: 1,
-    unitType: "cm",
-    comments: "",
+type FormProps = {
+    title: string;
+    paragraph: string;
+    imageName: "coffee2" | "bike2" | "bike3";
 };
 
-const test: FormProps[] = [
+const STEPS_DATA: FormProps[] = [
     {
         title: "Order",
         paragraph:
@@ -43,10 +37,16 @@ const test: FormProps[] = [
     },
 ];
 
-type FormProps = {
-    title: string;
-    paragraph: string;
-    imageName: "coffee2" | "bike2" | "bike3";
+const defaultOrder: OrderSchema = {
+    email: "",
+    fullname: "",
+    tel: "",
+    serviceType: "Merch",
+    description: "",
+    quantity: 1,
+    dimensions: 1,
+    unitType: "cm",
+    comments: "",
 };
 
 const Form: Component = () => {
@@ -74,9 +74,9 @@ const Form: Component = () => {
 
     return (
         <div class="mx-auto flex justify-around">
-            <form class="max-w-[555px]" onSubmit={handleSubmit}>
-                <h2 class="mb-6 text-5xl">{test[currentStepIndex()]?.title}</h2>
-                <p class="mb-20">{test[currentStepIndex()]?.paragraph}</p>
+            <form class="w-[555px]" onSubmit={handleSubmit}>
+                <h2 class="mb-6 text-5xl">{STEPS_DATA[currentStepIndex()]?.title}</h2>
+                <p class="mb-20">{STEPS_DATA[currentStepIndex()]?.paragraph}</p>
                 <Stepper currentStep={currentStepIndex} />
                 <div class="grid gap-y-4">{step()}</div>
                 <div class="mt-4 flex gap-x-5">
@@ -98,7 +98,7 @@ const Form: Component = () => {
             <img
                 width={522}
                 height={575}
-                src={`src/assets/images/${test[currentStepIndex()]?.imageName}.webp`}
+                src={`src/assets/images/${STEPS_DATA[currentStepIndex()]?.imageName}.webp`}
                 loading="lazy"
                 decoding="async"
             />

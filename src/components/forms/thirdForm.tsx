@@ -1,12 +1,11 @@
 import type { Component } from "solid-js";
-import type { DOMElement } from "solid-js/jsx-runtime";
 
 type ThirdFormPros = {
     comments: string;
     updateFields: (
         event: Event & {
             currentTarget: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-            target: DOMElement;
+            target: Element;
         },
     ) => void;
 };

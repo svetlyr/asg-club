@@ -1,6 +1,15 @@
-import { createSignal, createMemo, type JSXElement } from "solid-js";
+import { createSignal, createMemo, type JSXElement, type Accessor } from "solid-js";
 
-export function useMultiStepForm(steps: JSXElement[]) {
+type useMultiStepFormReturn = {
+    currentStepIndex: Accessor<number>;
+    step: Accessor<JSXElement>;
+    isFirstStep: Accessor<boolean>;
+    isLastStep: Accessor<boolean>;
+    next: () => void;
+    back: () => void;
+};
+
+export function useMultiStepForm(steps: JSXElement[]): useMultiStepFormReturn {
     const [currentStepIndex, setCurrentStepIndex] = createSignal(0);
 
     const step = createMemo(() => steps[currentStepIndex()]);

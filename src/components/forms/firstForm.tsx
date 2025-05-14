@@ -1,13 +1,13 @@
 import type { Component } from "solid-js";
-import type { DOMElement } from "solid-js/jsx-runtime";
 import type { BasicDetailsSchema } from "@utils/schema";
+import SimpleLineIconsPhone from "@icons/sli/phone";
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface FirstFormProps extends BasicDetailsSchema {
     updateFields: (
         event: Event & {
             currentTarget: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-            target: DOMElement;
+            target: Element;
         },
     ) => void;
 }
@@ -25,13 +25,15 @@ const FirstForm: Component<FirstFormProps> = ({ email, fullname, tel, updateFiel
                 pattern="^[A-Za-zА-Яа-я]{2,}(?:\s+[A-Za-zА-Яа-я]{2,})+$"
                 required
             />
-            <div>
+            <div class="flex items-center border border-[#ffffff40]">
+                <SimpleLineIconsPhone class="ml-3 text-gray-primary" />
                 <input
+                    class="flex-1 border-none"
                     type="tel"
                     value={tel}
                     onChange={updateFields}
                     name="tel"
-                    placeholder="Phone Number (Optional)"
+                    placeholder="123-456-7890 (Optional)"
                 />
             </div>
         </>
