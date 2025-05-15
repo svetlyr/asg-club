@@ -8,30 +8,70 @@ import { navCollapseId } from "@constants";
 
 import Fire from "@icons/sli/fire";
 import Note from "@icons/sli/note";
+import Cup from "@icons/sli/cup";
+import Key from "@icons/sli/key";
+import Basket from "@icons/sli/basket";
+import Pin from "@icons/sli/pin";
+import Picture from "@icons/sli/picture";
+import Tag from "@icons/sli/tag";
+import Handag from "@icons/sli/handbag";
 
+// TODO: every type of service should be automatically sent to the Designer and Printer
+// TODO: Custom Merch service should be sent only to Cristi for review first
+
+// TODO: add onClick form prefill
 const cards = [
     {
         Icon: Fire,
         title: "Graphic Design",
-        description:
-            "Unleash creativity with bold designs that captivate, inspire, and differentiate your brand in a crowded market",
+        description: "Craft visually compelling graphics that communicate your brand’s message clearly and memorably",
     },
     {
-        Icon: Fire,
-        title: "Balls",
-        description: "Balls description",
+        Icon: Tag,
+        title: "Stickers/Decals",
+        description:
+            "Produce durable, high-quality stickers and decals that elevate packaging and promotional materials",
+    },
+    {
+        Icon: Pin,
+        title: "Jacket Pins",
+        description: "Design custom enamel pins that add a touch of personality and professionalism to any garment",
+    },
+    {
+        Icon: Picture,
+        title: "Wall Posters/Banners",
+        description: "Create impactful posters and banners that capture attention and reinforce your brand identity",
+    },
+    {
+        Icon: Handag,
+        title: "T-Shirts",
+        description: "Deliver premium custom t-shirts that combine comfort and style to showcase your brand",
+    },
+    {
+        Icon: Cup,
+        title: "Mugs",
+        description: "Produce bespoke mugs featuring your logo for memorable promotional giveaways or corporate gifts",
+    },
+    {
+        Icon: Key,
+        title: "Keychains",
+        description: "Design durable keychains that keep your brand top of mind with every use",
+    },
+    {
+        Icon: Basket,
+        title: "Custom Merch",
+        description: "Offer a full range of branded merchandise tailored to engage your audience and drive loyalty",
     },
     {
         Icon: Note,
-        title: "Custom Merch",
-        description:
-            "Stand out with custom apparel and accessories designed to connect, leaving a lasting impression on every customer",
+        title: "Balls",
+        description: "TODO balls description",
     },
 ];
 ---
 
 <Layout navCollapseId={navCollapseId}>
-    <div class="bg-black-primary py-24 px-global md:pb-32 lg:pb-36">
+    <div class="bg-black-primary py-28 pb-32 px-global md:pb-36 lg:pb-40">
         <section class="container relative m-auto text-center sm:text-left">
             <div
                 class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
@@ -49,11 +89,11 @@ const cards = [
             </Button>
         </section>
     </div>
-    <div id={navCollapseId} class="bg-black-secondary py-6 px-global">
+    <div id={navCollapseId} class="bg-black-secondary py-20 px-global">
         <section class="container m-auto space-y-4 text-center sm:px-0">
             <h4 class="text-3xl">Our Services</h4>
             <p class="pb-6">We are making top quality decals, jacket pins, t-shirts, and posters</p>
-            <div class="grid grid-cols-1 gap-5 lg:auto-cols-fr lg:grid-flow-col">
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
                 {
                     cards.map(({ Icon, title, description }) => (
                         <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} text={description} />
@@ -62,5 +102,4 @@ const cards = [
             </div>
         </section>
     </div>
-    <!-- <Form client:only /> -->
 </Layout>
