@@ -3,40 +3,53 @@ import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
 import { navCollapseId } from "@constants";
 
-import Viber from "@icons/custom/viber";
+import Tiktok from "@icons/custom/tiktok";
 import Envolope from "@icons/sli/envolope";
 import Discord from "@icons/custom/discord";
-import Telegram from "@icons/custom/telegram";
-import Whatsapp from "@icons/custom/whatsapp";
+import Twitter from "@icons/sli/social-twitter";
+import Youtube from "@icons/sli/social-youtube";
+import Facebook from "@icons/sli/social-facebook";
+import Instagram from "@icons/sli/social-instagram";
 
-import { TELEGRAM, VIBER, WHATSAPP, DISCORD, EMAIL } from "astro:env/server";
+import { DISCORD, EMAIL, TWITTER, YOUTUBE, TIKTOK, FACEBOOK, INSTAGRAM } from "astro:env/server";
 
-// TODO: finish contacts
+// TODO: user tag for title
 const contacts = [
     {
-        href: TELEGRAM,
-        title: "Telegram",
-        Icon: Telegram,
+        href: TWITTER,
+        title: "Twitter",
+        description: "@ChristianArapu",
+        Icon: Twitter,
     },
     {
         href: DISCORD,
         title: "Discord",
+        description: "@axel_sniper94",
         Icon: Discord,
     },
     {
-        href: VIBER,
-        title: "Viber",
-        Icon: Viber,
+        href: YOUTUBE,
+        title: "YouTube",
+        description: "@axelsnipergarage3139",
+        Icon: Youtube,
     },
     {
-        href: WHATSAPP,
-        title: "WhatsApp",
-        Icon: Whatsapp,
+        href: TIKTOK,
+        title: "TikTok",
+        description: "@christian_arapu",
+        Icon: Tiktok,
     },
     {
-        href: EMAIL,
-        title: "Email",
-        Icon: Envolope,
+        href: FACEBOOK,
+        title: "Facebook",
+        description: "@christian.arapu",
+        Icon: Facebook,
+    },
+    {
+        href: INSTAGRAM,
+        title: "Instagram",
+        description: "@christian_arapu",
+        Icon: Instagram,
     },
 ];
 ---
@@ -48,11 +61,21 @@ const contacts = [
         </section>
     </div>
     <div class="bg-black-secondary px-global">
-        <section class="container mx-auto py-36 text-center">
+        <section class="container mx-auto py-20 text-center">
+            <div class="mx-auto flex w-fit items-center pb-8 align-middle">
+                <Envolope class="mr-4 size-12 icon-gradient" />
+                <h3 class="text-3xl">Email: TODO: add email</h3>
+            </div>
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
                 {
-                    contacts.map(({ Icon, title, href }) => (
-                        <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} href={href} />
+                    contacts.map(({ Icon, title, href, description }) => (
+                        <Card
+                            class="size-full p-6 lg:px-6 lg:py-10"
+                            Icon={Icon}
+                            title={title}
+                            href={href}
+                            text={description}
+                        />
                     ))
                 }
             </div>

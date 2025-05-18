@@ -36,18 +36,13 @@ export default defineConfig({
     },
     env: {
         schema: {
+            EMAIL: envField.string({ context: "server", access: "public" }),
             TIKTOK: envField.string({ context: "server", access: "public" }),
+            TWITTER: envField.string({ context: "server", access: "public" }),
             YOUTUBE: envField.string({ context: "server", access: "public" }),
+            DISCORD: envField.string({ context: "server", access: "public" }),
             FACEBOOK: envField.string({ context: "server", access: "public" }),
             INSTAGRAM: envField.string({ context: "server", access: "public" }),
-
-            EMAIL: envField.string({ context: "server", access: "public" }),
-            VIBER: envField.string({ context: "server", access: "public" }),
-            DISCORD: envField.string({ context: "server", access: "public" }),
-            WHATSAPP: envField.string({ context: "server", access: "public" }),
-            TELEGRAM: envField.string({ context: "server", access: "public" }),
-
-            // EMAIL: envField.string({ context: "server", access: "secret" }),
         },
         validateSecrets: true,
     },
