@@ -16,9 +16,9 @@ import clubLogo from "@assets/club-logo.svg";
 
 const baseUrl = import.meta.env.BASE_URL;
 const NAV_LINKS = [
-    { name: "Services", href: "/services" },
-    { name: "About Us", href: "/about" },
-    { name: "Contact Us", href: "/contact" },
+    { name: "Services", href: `${baseUrl}/services` },
+    { name: "About Us", href: `${baseUrl}/about` },
+    { name: "Contact Us", href: `${baseUrl}/contact` },
 ];
 
 type Props = {
