@@ -2,7 +2,7 @@ import solid from "@astrojs/solid-js";
 import Icons from "unplugin-icons/vite";
 import tailwind from "@astrojs/tailwind";
 
-import { fileURLToPath } from "bun";
+import { fileURLToPath, URL } from "node:url";
 import { defineConfig, envField } from "astro/config";
 import { FileSystemIconLoader } from "unplugin-icons/loaders";
 
