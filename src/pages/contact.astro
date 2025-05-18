@@ -1,12 +1,73 @@
 ---
-import { navCollapseId } from "@constants";
+import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
+import { navCollapseId } from "@constants";
+
+import Viber from "@icons/custom/viber";
+import Envolope from "@icons/sli/envolope";
+import Discord from "@icons/custom/discord";
+import Telegram from "@icons/custom/telegram";
+import Whatsapp from "@icons/custom/whatsapp";
+
+import { TELEGRAM, VIBER, WHATSAPP, DISCORD, EMAIL } from "astro:env/server";
+
+// TODO: finish contacts
+const contacts = [
+    {
+        href: TELEGRAM,
+        title: "Telegram",
+        Icon: Telegram,
+    },
+    {
+        href: DISCORD,
+        title: "Discord",
+        Icon: Discord,
+    },
+    {
+        href: VIBER,
+        title: "Viber",
+        Icon: Viber,
+    },
+    {
+        href: WHATSAPP,
+        title: "WhatsApp",
+        Icon: Whatsapp,
+    },
+    {
+        href: EMAIL,
+        title: "Email",
+        Icon: Envolope,
+    },
+];
 ---
 
 <Layout navCollapseId={navCollapseId}>
-    <div class="bg-black-primary px-global">
-        <section class="container mx-auto text-center">
-            <h1 class="text-gradient font-gilroy text-5xl">Contact Us</h1>
+    <div class="bg-image px-global">
+        <section class="container mx-auto py-40 text-center align-top">
+            <h1 class="text-gradient mb-28 font-gilroy text-8xl">Contact Us</h1>
         </section>
     </div>
+    <div class="bg-black-secondary px-global">
+        <section class="container mx-auto py-36 text-center">
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+                {
+                    contacts.map(({ Icon, title, href }) => (
+                        <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} href={href} />
+                    ))
+                }
+            </div>
+        </section>
+        <!-- TODO: add form -->
+    </div>
 </Layout>
+
+<style lang="scss">
+    .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("@assets/contact-us.jpg") center/cover no-repeat;
+    }
+</style>
