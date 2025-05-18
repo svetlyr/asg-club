@@ -2,20 +2,21 @@
 import Link from "./link";
 import Button from "./button";
 
+import asgLogo from "@assets/asg-logo.svg";
+import clubLogo from "@assets/club-logo.svg";
+
 import Speech from "@icons/sli/speech";
+import Tiktok from "@icons/custom/tiktok";
 import Envelope from "@icons/sli/envelope";
 import LocationPin from "@icons/sli/location-pin";
 import SocialYoutube from "@icons/sli/social-youtube";
 import SocialFacebook from "@icons/sli/social-facebook";
 import SocialInstagram from "@icons/sli/social-instagram";
 
-import asgLogo from "@assets/asg-logo.svg";
-import clubLogo from "@assets/club-logo.svg";
+import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK } from "astro:env/server";
 
-import { INSTAGRAM, YOUTUBE, FACEBOOK } from "astro:env/server";
-
-/* TODO: add tiktok */
 const socials = [
+    { href: TIKTOK, Icon: Tiktok },
     { href: INSTAGRAM, Icon: SocialInstagram },
     { href: YOUTUBE, Icon: SocialYoutube },
     { href: FACEBOOK, Icon: SocialFacebook },
@@ -54,7 +55,7 @@ const socials = [
                     {
                         socials.map(({ href, Icon }) => (
                             <Link newTab href={href}>
-                                <Icon class="icon-gradient" />
+                                <Icon class="size-6 icon-gradient" />
                             </Link>
                         ))
                     }
