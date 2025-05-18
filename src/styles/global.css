@@ -17,29 +17,26 @@
         src: url("../Gilroy-Black.woff") format("woff");
     }
 
+    html {
+        @apply bg-black-primary;
+    }
+
     textarea {
         resize: none;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
         color: white;
         padding: 10px 15px;
         border: 1px solid #ffffff40;
         background-color: transparent;
-        transition: border-color .15s ease-in-out;
-        /* transition: all 500ms linear; */
+        transition: border-color 0.15s ease-in-out;
 
         &:focus {
             outline: none;
         }
-
-        /* &:not(:placeholder-shown) {
-            border-color: crimson;
-        }
-
-        &:valid {
-            border-color: green;
-        } */
     }
 
     h1,
