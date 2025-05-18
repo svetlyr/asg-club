@@ -14,6 +14,7 @@ import Motorcycle from "@icons/fa/motorcycle";
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
 
+const baseUrl = import.meta.env.BASE_URL;
 const NAV_LINKS = [
     { name: "Services", href: "/services" },
     { name: "About Us", href: "/about" },

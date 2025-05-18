@@ -9,7 +9,7 @@ import { FileSystemIconLoader } from "unplugin-icons/loaders";
 export default defineConfig({
     output: "static",
 
-    trailingSlash: "never",
+    trailingSlash: "ignore",
     site: "https://svetlyr.github.io",
     // TODO: change when domain name is ready
     base: process.env.NODE_ENV === "production" ? "/asg-club/" : "/",
