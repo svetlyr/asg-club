@@ -1,6 +1,6 @@
 import { extendTailwindMerge } from "tailwind-merge";
 
-export const tw = extendTailwindMerge({
+const tw = extendTailwindMerge({
     extend: {
         theme: {
             color: [
@@ -15,3 +15,5 @@ export const tw = extendTailwindMerge({
         },
     },
 });
+
+export default tw;
