@@ -10,8 +10,10 @@
         "noUnusedLocals": false,
         "noUnusedParameters": false,
 
+        "noUncheckedIndexedAccess": false,
+
         "baseUrl": ".",
-        "incremental": true,
+        "incremental": false,
         "skipLibCheck": false,
         "removeComments": true,
         "strictNullChecks": true,
