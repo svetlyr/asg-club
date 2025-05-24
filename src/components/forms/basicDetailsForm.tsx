@@ -1,13 +1,14 @@
 import type { Component } from "solid-js";
-import SimpleLineIconsPhone from "@icons/sli/phone";
-import type { OrderSchema } from "@utils/schema";
+import type { OrderSchema } from "@schemas/formSchema";
 import { Field, type FormStore } from "@modular-forms/solid";
 
-type BasicDetailsFormProps = {
+import SimpleLineIconsPhone from "@icons/sli/phone";
+
+type Props = {
     form: FormStore<OrderSchema>;
 };
 
-const BasicDetailsForm: Component<BasicDetailsFormProps> = (props) => {
+const BasicDetailsForm: Component<Props> = (props) => {
     return (
         <>
             <Field of={props.form} name="email">
@@ -21,8 +22,7 @@ const BasicDetailsForm: Component<BasicDetailsFormProps> = (props) => {
                         class="transition-colors duration-300"
                         classList={{
                             "border-red-500": field.error !== "",
-                            "border-green-500":
-                                field.error !== "" && field.value !== undefined && field.value.trim() !== "",
+                            "border-green-500": field.error === "" && !!field.value,
                         }}
                     />
                 )}
@@ -34,13 +34,11 @@ const BasicDetailsForm: Component<BasicDetailsFormProps> = (props) => {
                         class="transition-colors duration-300"
                         classList={{
                             "border-red-500": field.error !== "",
-                            "border-green-500":
-                                field.error !== "" && field.value !== undefined && field.value.trim() !== "",
+                            "border-green-500": field.error === "" && !!field.value,
                         }}
                         type="text"
                         placeholder="Full Name"
                         value={field.value}
-                        pattern="^[A-Za-zА-Яа-я]{2,}(?:\s+[A-Za-zА-Яа-я]{2,})+$"
                         required
                     />
                 )}
@@ -48,11 +46,10 @@ const BasicDetailsForm: Component<BasicDetailsFormProps> = (props) => {
             <Field of={props.form} name="tel">
                 {(field, fieldProps) => (
                     <div
-                        class="flex items-center border border-[#ffffff40] transition-colors duration-300"
+                        class="flex items-center border border-gray-secondary transition-colors duration-300"
                         classList={{
                             "border-red-500": field.error !== "",
-                            "border-green-500":
-                                field.error !== "" && field.value !== undefined && field.value.trim() !== "",
+                            "border-green-500": field.error === "" && !!field.value,
                         }}>
                         <SimpleLineIconsPhone class="ml-3 text-gray-primary" />
                         <input

@@ -18,100 +18,6 @@
         src: url("../Gilroy-Black.woff") format("woff");
     }
 
-    .stepper-item--label {
-        background-color: rgb(25, 25, 25);
-    }
-
-    .stepper-item--label__filled {
-        background: var(--animation-gradient);
-        background-size: 400% 400%;
-        animation: gradient 3s ease infinite;
-    }
-
-    .stepper-item {
-        position: relative;
-
-        &::before,
-        &::after {
-            content: "";
-            height: 6px;
-            width: 40%;
-            top: 25%;
-            position: absolute;
-            background-color: rgb(25, 25, 25);
-        }
-
-        &:before {
-            left: 0;
-        }
-
-        &::after {
-            right: 0;
-        }
-    }
-
-    .stepper-item__active {
-        position: relative;
-
-        &::before,
-        &::after {
-            content: "";
-            height: 6px;
-            width: 40%;
-            top: 25%;
-            position: absolute;
-        }
-
-        &:before {
-            left: 0;
-            background: var(--animation-gradient);
-            background-size: 400% 400%;
-            animation: gradient 3s ease infinite;
-        }
-
-        &::after {
-            right: 0;
-            background-color: rgb(25, 25, 25);
-        }
-    }
-
-    .stepper-item__completed {
-        position: relative;
-
-        &::before,
-        &::after {
-            content: "";
-            height: 6px;
-            width: 40%;
-            top: 25%;
-            position: absolute;
-            background-color: rgb(25, 25, 25);
-            background: var(--animation-gradient);
-            background-size: 400% 400%;
-            animation: gradient 3s ease infinite;
-        }
-
-        &:before {
-            left: 0;
-        }
-
-        &::after {
-            right: 0;
-        }
-    }
-
-    @keyframes gradient {
-        0% {
-            background-position: 0% 50%;
-        }
-        50% {
-            background-position: 100% 50%;
-        }
-        100% {
-            background-position: 0% 50%;
-        }
-    }
-
     input[type="number"] {
         -moz-appearance: textfield;
     }
@@ -122,8 +28,14 @@
         margin: 0;
     }
 
+    @media screen and (prefers-reduced-motion: reduce) {
+        html {
+            @apply scroll-auto;
+        }
+    }
+
     html {
-        @apply bg-black-primary;
+        @apply scroll-smooth bg-black-primary;
     }
 
     textarea {

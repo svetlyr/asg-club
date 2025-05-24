@@ -1,0 +1,96 @@
+$main-gradient: linear-gradient(45deg, rgb(224, 4, 11) 15%, rgb(252, 81, 48) 65%);
+$animation-gradient: linear-gradient(to right, rgb(252, 81, 48), rgb(224, 4, 11));
+
+@mixin animation-gradient {
+    background: $animation-gradient;
+    background-size: 400% 400%;
+    animation: gradient 3s ease infinite;
+}
+
+.stepper-item--label {
+    background-color: rgb(25, 25, 25);
+
+    &__filled {
+        @include animation-gradient;
+    }
+}
+
+.stepper-item {
+    position: relative;
+
+    &::before,
+    &::after {
+        content: "";
+        height: 6px;
+        width: 40%;
+        top: 25%;
+        position: absolute;
+        background-color: rgb(25, 25, 25);
+    }
+
+    &:before {
+        left: 0;
+    }
+
+    &::after {
+        right: 0;
+    }
+
+    &__active {
+        position: relative;
+
+        &::before,
+        &::after {
+            content: "";
+            height: 6px;
+            width: 40%;
+            top: 25%;
+            position: absolute;
+        }
+
+        &:before {
+            left: 0;
+
+            @include animation-gradient;
+        }
+
+        &::after {
+            background-color: rgb(25, 25, 25);
+            right: 0;
+        }
+    }
+
+    &__completed {
+        position: relative;
+
+        &::before,
+        &::after {
+            content: "";
+            height: 6px;
+            width: 40%;
+            top: 25%;
+            position: absolute;
+            @include animation-gradient;
+        }
+
+        &:before {
+            left: 0;
+        }
+
+        &::after {
+            right: 0;
+        }
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

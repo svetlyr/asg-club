@@ -1,15 +1,18 @@
+import "@styles/form.scss";
+
 import { Show, type Component } from "solid-js";
-import { useMultiStepForm } from "@utils/useMultiStepForm";
+import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
+import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@schemas/formSchema";
 
 import Stepper from "./stepper";
+import CommentsForm from "./forms/commentsForm";
 import BasicDetailsForm from "./forms/basicDetailsForm";
 import ServiceDetailsForm from "./forms/serviceDetailsForm";
-import CommentsForm from "./forms/commentsForm";
 
-import ArrowLeft from "@icons/simple-line-icons/arrow-left";
-import ArrowRight from "@icons/simple-line-icons/arrow-right";
-import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
-import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@utils/schema";
+import ArrowLeft from "@icons/sli/arrow-left";
+import ArrowRight from "@icons/sli/arrow-right";
+
+import useMultiStepForm from "@hooks/useMultiStepForm";
 
 const STEPS_DATA = [
     {
@@ -33,14 +36,15 @@ const STEPS_DATA = [
 
 const MainForm: Component = () => {
     const formData = createFormStore<OrderSchema>({
-        validate: (values) => {
+        validateOn: "input",
+        validate: () => {
             switch (currentStepIndex()) {
                 case 0:
-                    return valiForm(basicDetailsSchema)(values);
+                    return valiForm(basicDetailsSchema);
                 case 1:
-                    return valiForm(serviceDetailsSchema)(values);
+                    return valiForm(serviceDetailsSchema);
                 case 2:
-                    return valiForm(orderSchema)(values);
+                    return valiForm(orderSchema);
                 default:
                     return {};
             }
@@ -53,9 +57,7 @@ const MainForm: Component = () => {
         <CommentsForm form={formData} />,
     ]);
 
-    const handleSubmit: SubmitHandler<OrderSchema> = (values): void => {
-        console.log("\nResults: ", values);
-
+    const handleSubmit: SubmitHandler<OrderSchema> = (): void => {
         if (!isLastStep()) next();
         return;
     };
@@ -66,7 +68,7 @@ const MainForm: Component = () => {
                 <h2 class="mb-6 text-center text-5xl lg:text-left">{STEPS_DATA[currentStepIndex()]?.title}</h2>
                 <p class="mb-20 text-center lg:text-left">{STEPS_DATA[currentStepIndex()]?.paragraph}</p>
                 <Stepper currentStep={currentStepIndex} />
-                <div class="grid gap-y-4">{step()}</div>
+                <div class="space-y-4">{step()}</div>
                 <div class="mt-4 flex gap-x-5">
                     <Show when={!isFirstStep()}>
                         <button

@@ -8,11 +8,14 @@ import tailwindChildren from "tailwind-children";
 const { sans, serif } = fontFamily;
 
 export default {
-    content: ["./src/**/*.{astro,tsx}"],
+    content: ["./src/**/*.{astro,tsx,scss}"],
     theme: {
         extend: {
             colors: {
-                gray: { primary: "#8E8E8E" },
+                gray: {
+                    primary: "#8E8E8E",
+                    secondary: "#FFFFFF40",
+                },
                 red: { primary: "#FC5130" },
                 orange: { primary: "#FC5030" },
                 black: {

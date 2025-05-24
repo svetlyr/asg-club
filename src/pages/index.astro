@@ -95,13 +95,19 @@ const cards = [
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
                 {
                     cards.map(({ Icon, title, description }) => (
-                        <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} text={description} />
+                        <Card
+                            class="size-full p-6 lg:px-6 lg:py-10"
+                            Icon={Icon}
+                            title={title}
+                            text={description}
+                            href="#form"
+                        />
                     ))
                 }
             </div>
         </section>
     </div>
-    <div class="bg-black-secondary py-6 px-global">
+    <div id="form" class="bg-black-secondary py-6 px-global">
         <section class="container m-auto">
             <MainForm client:only="solid" />
         </section>

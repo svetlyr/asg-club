@@ -1,6 +1,6 @@
 ---
 import Link from "./link";
-import { tw } from "@utils/tw";
+import tw from "@utils/tw";
 import type { IconType } from "@icons";
 
 type Props = {
@@ -11,12 +11,20 @@ type Props = {
     Icon: IconType;
 };
 
-const { class: className = "", title, text, href, Icon } = Astro.props;
+const { class: className = "", title, text, href = "", Icon } = Astro.props;
 ---
 
+<script>
+    import { addOnClick } from "@utils/dom";
+    import { changeFormValue } from "@utils/formStore";
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach((card) => addOnClick(card, changeFormValue));
+</script>
+
 <Link
-    newTab
-    href={href ?? ""}
+    href={href}
     class={tw(
         `card group cursor-pointer space-y-4 bg-black-tertiary text-center drop-shadow-md transition-transform duration-500 ease-in-out hover:-translate-y-1.5 hover:bg-gradient ${className}`,
     )}>

@@ -1,9 +1,16 @@
-import Button from "@components/button";
-import type { Component } from "solid-js";
-import type { OrderSchema } from "@utils/schema";
+/* eslint-disable solid/reactivity */
+import { useStore } from "@nanostores/solid";
+import { For, type Component } from "solid-js";
+import { serviceType, type OrderSchema } from "@schemas/formSchema";
 import { Field, setValue, type FormStore, type Maybe } from "@modular-forms/solid";
 
-type ServiceDetailsFormProps = {
+import Plus from "@icons/custom/plus";
+import Menus from "@icons/custom/menus";
+
+import Button from "@components/button";
+import { formValue } from "@utils/formStore";
+
+type Props = {
     form: FormStore<OrderSchema>;
 };
 
@@ -17,18 +24,28 @@ function makeDeltaUpdater(form: FormStore<OrderSchema>, fieldName: "quantity" | 
 
 // TODO: add photo upload
 
-const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
+const ServiceDetailsForm: Component<Props> = (props) => {
     const updateQuantity = makeDeltaUpdater(props.form, "quantity");
     const updateDimensions = makeDeltaUpdater(props.form, "dimensions");
+
+    const test = useStore(formValue);
+
+    if (test() !== "") {
+        setValue(props.form, "serviceType", test());
+    }
 
     return (
         <>
             <Field of={props.form} name="serviceType">
                 {(field, fieldProps) => (
-                    <select {...fieldProps} value={field.value}>
-                        <option value="Decals">Decals</option>
-                        <option value="Jacket Pins">Jacket Pins</option>
-                        <option value="Merch">Merch</option>
+                    <select {...fieldProps}>
+                        <For each={serviceType}>
+                            {(value) => (
+                                <option value={value} selected={field.value === value}>
+                                    {value}
+                                </option>
+                            )}
+                        </For>
                     </select>
                 )}
             </Field>
@@ -39,8 +56,7 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                         {...fieldProps}
                         classList={{
                             "border-red-500": field.error !== "",
-                            "border-green-500":
-                                field.error !== "" && field.value !== undefined && field.value.trim() !== "",
+                            "border-green-500": field.error === "" && !!field.value,
                         }}
                         value={field.value}
                         rows={7}
@@ -54,41 +70,15 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                 {(field, fieldProps) => (
                     <div class="flex">
                         <Button
-                            class={"h-12 border border-r-0 border-[#ffffff40] focus:outline-none"}
+                            class={"h-12 border border-r-0 border-gray-secondary focus:outline-none"}
                             onClick={() => updateQuantity(field.value, -1)}>
-                            <svg
-                                class="size-3 text-gray-900 dark:text-white"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 18 2">
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M1 1h16"
-                                />
-                            </svg>
+                            <Menus />
                         </Button>
                         <input {...fieldProps} type="number" value={field.value} placeholder="Quantity" required />
                         <Button
-                            class={"h-12 border border-l-0 border-[#ffffff40] focus:outline-none"}
+                            class={"h-12 border border-l-0 border-gray-secondary focus:outline-none"}
                             onClick={() => updateQuantity(field.value, 1)}>
-                            <svg
-                                class="size-3 text-gray-900 dark:text-white"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 18 18">
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 1v16M1 9h16"
-                                />
-                            </svg>
+                            <Plus />
                         </Button>
                     </div>
                 )}
@@ -99,22 +89,9 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                     {(field, fieldProps) => (
                         <div class="flex w-full">
                             <Button
-                                class={"h-12 border border-r-0 border-[#ffffff40] focus:outline-none"}
+                                class={"h-12 border border-r-0 border-gray-secondary focus:outline-none"}
                                 onClick={() => updateDimensions(field.value, -1)}>
-                                <svg
-                                    class="size-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 2">
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M1 1h16"
-                                    />
-                                </svg>
+                                <Menus />
                             </Button>
                             <input
                                 {...fieldProps}
@@ -124,22 +101,9 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                                 required
                             />
                             <Button
-                                class={"h-12 border border-l-0 border-[#ffffff40] focus:outline-none"}
+                                class={"h-12 border border-l-0 border-gray-secondary focus:outline-none"}
                                 onClick={() => updateDimensions(field.value, 1)}>
-                                <svg
-                                    class="size-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 18">
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 1v16M1 9h16"
-                                    />
-                                </svg>
+                                <Plus />
                             </Button>
                         </div>
                     )}

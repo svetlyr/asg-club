@@ -10,8 +10,10 @@
         "noUnusedLocals": false,
         "noUnusedParameters": false,
 
+        "noUncheckedIndexedAccess": false,
+
         "baseUrl": ".",
-        "incremental": true,
+        "incremental": false,
         "skipLibCheck": false,
         "removeComments": true,
         "strictNullChecks": true,
@@ -32,6 +34,7 @@
             "@assets/*": ["src/assets/*"],
             "@styles/*": ["src/styles/*"],
             "@layouts/*": ["src/layouts/*"],
+            "@schemas/*": ["src/schemas/*"],
             "@constants/*": ["src/constants/*"],
             "@components/*": ["src/components/*"]
         },
