@@ -1,9 +1,14 @@
-import Button from "@components/button";
+/* eslint-disable solid/reactivity */
 import type { Component } from "solid-js";
-import type { OrderSchema } from "@utils/schema";
+import type { OrderSchema } from "@schemas/formSchema";
 import { Field, setValue, type FormStore, type Maybe } from "@modular-forms/solid";
 
-type ServiceDetailsFormProps = {
+import Plus from "@icons/custom/plus";
+import Menus from "@icons/custom/menus";
+
+import Button from "@components/button";
+
+type Props = {
     form: FormStore<OrderSchema>;
 };
 
@@ -17,7 +22,7 @@ function makeDeltaUpdater(form: FormStore<OrderSchema>, fieldName: "quantity" | 
 
 // TODO: add photo upload
 
-const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
+const ServiceDetailsForm: Component<Props> = (props) => {
     const updateQuantity = makeDeltaUpdater(props.form, "quantity");
     const updateDimensions = makeDeltaUpdater(props.form, "dimensions");
 
@@ -56,39 +61,13 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                         <Button
                             class={"h-12 border border-r-0 border-[#ffffff40] focus:outline-none"}
                             onClick={() => updateQuantity(field.value, -1)}>
-                            <svg
-                                class="size-3 text-gray-900 dark:text-white"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 18 2">
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M1 1h16"
-                                />
-                            </svg>
+                            <Menus />
                         </Button>
                         <input {...fieldProps} type="number" value={field.value} placeholder="Quantity" required />
                         <Button
                             class={"h-12 border border-l-0 border-[#ffffff40] focus:outline-none"}
                             onClick={() => updateQuantity(field.value, 1)}>
-                            <svg
-                                class="size-3 text-gray-900 dark:text-white"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 18 18">
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 1v16M1 9h16"
-                                />
-                            </svg>
+                            <Plus />
                         </Button>
                     </div>
                 )}
@@ -101,20 +80,7 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                             <Button
                                 class={"h-12 border border-r-0 border-[#ffffff40] focus:outline-none"}
                                 onClick={() => updateDimensions(field.value, -1)}>
-                                <svg
-                                    class="size-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 2">
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M1 1h16"
-                                    />
-                                </svg>
+                                <Menus />
                             </Button>
                             <input
                                 {...fieldProps}
@@ -126,20 +92,7 @@ const ServiceDetailsForm: Component<ServiceDetailsFormProps> = (props) => {
                             <Button
                                 class={"h-12 border border-l-0 border-[#ffffff40] focus:outline-none"}
                                 onClick={() => updateDimensions(field.value, 1)}>
-                                <svg
-                                    class="size-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 18">
-                                    <path
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 1v16M1 9h16"
-                                    />
-                                </svg>
+                                <Plus />
                             </Button>
                         </div>
                     )}

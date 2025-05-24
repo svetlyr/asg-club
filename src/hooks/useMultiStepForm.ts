@@ -9,7 +9,7 @@ type useMultiStepFormReturn = {
     back: () => void;
 };
 
-export function useMultiStepForm(steps: JSXElement[]): useMultiStepFormReturn {
+export default function useMultiStepForm(steps: JSXElement[]): useMultiStepFormReturn {
     const [currentStepIndex, setCurrentStepIndex] = createSignal(0);
 
     const step = createMemo(() => steps[currentStepIndex()]);

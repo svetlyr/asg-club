@@ -16,7 +16,12 @@ import {
     type InferInput,
 } from "valibot";
 
+// At least two words separated by spaces.
+// Each word is 2+ letters (supports English and Russian alphabets).
+// No numbers/symbols, and no leading/trailing spaces.
 const fullnameRegex = new RegExp(/^[A-Za-zА-Яа-я]{2,}(?:\s+[A-Za-zА-Яа-я]{2,})+$/);
+
+// https://ihateregex.io/expr/phone
 const phoneRegex = new RegExp(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/);
 
 const serviceType = ["Decals", "Jacket Pins", "Merch"] as const;

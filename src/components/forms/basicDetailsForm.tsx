@@ -1,13 +1,14 @@
 import type { Component } from "solid-js";
-import SimpleLineIconsPhone from "@icons/sli/phone";
-import type { OrderSchema } from "@utils/schema";
+import type { OrderSchema } from "@schemas/formSchema";
 import { Field, type FormStore } from "@modular-forms/solid";
 
-type BasicDetailsFormProps = {
+import SimpleLineIconsPhone from "@icons/sli/phone";
+
+type Props = {
     form: FormStore<OrderSchema>;
 };
 
-const BasicDetailsForm: Component<BasicDetailsFormProps> = (props) => {
+const BasicDetailsForm: Component<Props> = (props) => {
     return (
         <>
             <Field of={props.form} name="email">
