@@ -122,6 +122,10 @@
         margin: 0;
     }
 
+    html {
+        @apply bg-black-primary;
+    }
+
     textarea {
         resize: none;
     }
@@ -137,6 +141,7 @@
         padding: 10px 15px;
         border: 1px solid #ffffff40;
         background-color: transparent;
+        transition: border-color 0.15s ease-in-out;
 
         &:focus {
             outline: none;

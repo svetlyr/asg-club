@@ -3,10 +3,10 @@
     "type": "module",
     "version": "0.0.1",
     "scripts": {
-        "dev": "bunx --bun astro dev",
-        "build": "astro check && bunx --bun astro build",
-        "serve": "bun run dist/server/entry.mjs",
-        "astro": "bunx --bun astro"
+        "dev": "astro dev",
+        "build": "astro check && astro build",
+        "preview": "astro preview",
+        "astro": "astro"
     },
     "dependencies": {
         "@astrojs/check": "^0.9.4",
@@ -26,10 +26,11 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.27.0",
+        "@eslint/js": "^9.27.0",
         "@iconify-json/fa6-solid": "^1.2.3",
         "@iconify-json/simple-line-icons": "^1.2.1",
         "@total-typescript/ts-reset": "^0.6.1",
-        "@types/bun": "^1.2.14",
+        "@types/node": "^22.15.18",
         "@typescript-eslint/parser": "^8.32.1",
         "eslint": "^9.27.0",
         "eslint-config-prettier": "^10.1.5",
@@ -42,9 +43,23 @@
         "prettier-plugin-astro": "^0.14.1",
         "prettier-plugin-tailwindcss": "^0.6.11",
         "sass": "^1.89.0",
+        "sass": "^1.89.0",
         "tailwind-children": "^0.5.0",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.32.1",
+        "typescript-eslint": "^8.32.1",
         "unplugin-icons": "^22.1.0"
+    },
+    "engines": {
+        "node": "^22.0.0"
+    },
+    "packageManager": "pnpm@10.11.0",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@parcel/watcher",
+            "deasync",
+            "esbuild",
+            "sharp"
+        ]
     }
 }

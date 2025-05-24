@@ -1,12 +1,96 @@
 ---
-import { navCollapseId } from "@constants";
+import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
+import { navCollapseId } from "@constants";
+
+import Tiktok from "@icons/custom/tiktok";
+import Envolope from "@icons/sli/envolope";
+import Discord from "@icons/custom/discord";
+import Twitter from "@icons/sli/social-twitter";
+import Youtube from "@icons/sli/social-youtube";
+import Facebook from "@icons/sli/social-facebook";
+import Instagram from "@icons/sli/social-instagram";
+
+import { DISCORD, EMAIL, TWITTER, YOUTUBE, TIKTOK, FACEBOOK, INSTAGRAM } from "astro:env/server";
+
+// TODO: user tag for title
+const contacts = [
+    {
+        href: TWITTER,
+        title: "Twitter",
+        description: "@ChristianArapu",
+        Icon: Twitter,
+    },
+    {
+        href: DISCORD,
+        title: "Discord",
+        description: "@axel_sniper94",
+        Icon: Discord,
+    },
+    {
+        href: YOUTUBE,
+        title: "YouTube",
+        description: "@axelsnipergarage3139",
+        Icon: Youtube,
+    },
+    {
+        href: TIKTOK,
+        title: "TikTok",
+        description: "@christian_arapu",
+        Icon: Tiktok,
+    },
+    {
+        href: FACEBOOK,
+        title: "Facebook",
+        description: "@christian.arapu",
+        Icon: Facebook,
+    },
+    {
+        href: INSTAGRAM,
+        title: "Instagram",
+        description: "@christian_arapu",
+        Icon: Instagram,
+    },
+];
 ---
 
 <Layout navCollapseId={navCollapseId}>
-    <div class="bg-black-primary px-global">
-        <section class="container mx-auto text-center">
-            <h1 class="text-gradient font-gilroy text-5xl">Contact Us</h1>
+    <div class="bg-image px-global">
+        <section class="container mx-auto py-40 text-center align-top">
+            <h1 class="text-gradient mb-28 font-gilroy text-8xl">Contact Us</h1>
         </section>
     </div>
+    <div class="bg-black-secondary px-global">
+        <section class="container mx-auto py-20 text-center">
+            <div class="mx-auto flex w-fit items-center pb-8 align-middle">
+                <Envolope class="mr-4 size-12 icon-gradient" />
+                <h3 class="text-3xl">Email: TODO: add email</h3>
+            </div>
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+                {
+                    contacts.map(({ Icon, title, href, description }) => (
+                        <Card
+                            class="size-full p-6 lg:px-6 lg:py-10"
+                            Icon={Icon}
+                            title={title}
+                            href={href}
+                            text={description}
+                        />
+                    ))
+                }
+            </div>
+        </section>
+        <!-- TODO: add form -->
+    </div>
 </Layout>
+
+<style lang="scss">
+    .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("@assets/contact-us.jpg") center/cover no-repeat;
+    }
+</style>
