@@ -2,7 +2,7 @@
 export const prerender = true;
 
 import Button from "@components/button";
-import Form from "@components/form";
+import MainForm from "@components/form";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
 import { navCollapseId } from "@constants";
@@ -65,7 +65,7 @@ const cards = [
     </div>
     <div class="bg-black-secondary py-6 px-global">
         <section class="container m-auto">
-            <Form client:only="solid" />
+            <MainForm client:only="solid" />
         </section>
     </div>
 </Layout>

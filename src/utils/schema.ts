@@ -1,27 +1,50 @@
-import { z } from "@zod/mini";
+import {
+    object,
+    string,
+    number,
+    union,
+    literal,
+    regex,
+    email,
+    maxLength,
+    minValue,
+    maxValue,
+    pipe,
+    pick,
+    picklist,
+    nonEmpty,
+    type InferInput,
+} from "valibot";
 
-export const orderSchema = z.object({
-    email: z.email(),
-    fullname: z.string().check(z.minLength(6), z.maxLength(20)),
-    tel: z.e164(),
-    serviceType: z.enum(["Decals", "Jacket Pins", "Merch"]),
-    description: z.string().check(z.maxLength(20)),
-    quantity: z.number().check(z.positive(), z.maximum(20)),
-    dimensions: z.number().check(z.positive()),
-    unitType: z.enum(["cm", "inch"]),
-    comments: z.string(),
+const fullnameRegex = new RegExp(/^[A-Za-zА-Яа-я]{2,}(?:\s+[A-Za-zА-Яа-я]{2,})+$/);
+const phoneRegex = new RegExp(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/);
+
+const serviceType = ["Decals", "Jacket Pins", "Merch"] as const;
+
+const unitType = ["cm", "inch"] as const;
+
+export const orderSchema = object({
+    email: pipe(string(), email()),
+    fullname: pipe(string(), regex(fullnameRegex)),
+    tel: union([pipe(string(), regex(phoneRegex)), literal("")]),
+    serviceType: picklist(serviceType),
+    description: pipe(string(), nonEmpty(), maxLength(60)),
+    quantity: pipe(number(), minValue(1), maxValue(20)),
+    dimensions: pipe(number(), minValue(1), maxValue(50)),
+    unitType: picklist(unitType),
+    comments: string(),
 });
 
-export type OrderSchema = z.infer<typeof orderSchema>;
+export type OrderSchema = InferInput<typeof orderSchema>;
 
-export const basicDetailsSchema = z.pick(orderSchema, { email: true, fullname: true, tel: true });
-export type BasicDetailsSchema = z.infer<typeof basicDetailsSchema>;
+export const basicDetailsSchema = pick(orderSchema, ["email", "fullname", "tel"]);
+export type BasicDetailsSchema = InferInput<typeof basicDetailsSchema>;
 
-export const serviceDetailsSchema = z.pick(orderSchema, {
-    serviceType: true,
-    description: true,
-    quantity: true,
-    dimensions: true,
-    unitType: true,
-});
-export type ServiceDetailsSchema = z.infer<typeof serviceDetailsSchema>;
+export const serviceDetailsSchema = pick(orderSchema, [
+    "serviceType",
+    "description",
+    "quantity",
+    "dimensions",
+    "unitType",
+]);
+export type ServiceDetailsSchema = InferInput<typeof serviceDetailsSchema>;

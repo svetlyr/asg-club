@@ -1,23 +1,17 @@
-import { createStore } from "solid-js/store";
-import { Show, type Component, type JSX } from "solid-js";
+import { Show, type Component } from "solid-js";
 import { useMultiStepForm } from "@utils/useMultiStepForm";
-import type { OrderSchema } from "@utils/schema";
 
 import Stepper from "./stepper";
-import FirstForm from "./forms/firstForm";
-import SecondForm from "./forms/secondForm";
-import ThirdForm from "./forms/thirdForm";
+import BasicDetailsForm from "./forms/basicDetailsForm";
+import ServiceDetailsForm from "./forms/serviceDetailsForm";
+import CommentsForm from "./forms/commentsForm";
 
 import ArrowLeft from "@icons/simple-line-icons/arrow-left";
 import ArrowRight from "@icons/simple-line-icons/arrow-right";
+import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
+import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@utils/schema";
 
-type FormProps = {
-    title: string;
-    paragraph: string;
-    imageName: "coffee2" | "bike2" | "bike3";
-};
-
-const STEPS_DATA: FormProps[] = [
+const STEPS_DATA = [
     {
         title: "Order",
         paragraph:
@@ -37,46 +31,40 @@ const STEPS_DATA: FormProps[] = [
     },
 ];
 
-const defaultOrder: OrderSchema = {
-    email: "",
-    fullname: "",
-    tel: "",
-    serviceType: "Merch",
-    description: "",
-    quantity: 1,
-    dimensions: 1,
-    unitType: "cm",
-    comments: "",
-};
-
-const Form: Component = () => {
-    const [order, setOrder] = createStore<OrderSchema>(defaultOrder);
-
-    const updateField: JSX.EventHandler<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement, Event> = (
-        event,
-    ) => {
-        const { name, value } = event.currentTarget;
-        // TODO: refactor without typecast
-        setOrder(name as keyof typeof order, value);
-    };
+const MainForm: Component = () => {
+    const formData = createFormStore<OrderSchema>({
+        validate: (values) => {
+            switch (currentStepIndex()) {
+                case 0:
+                    return valiForm(basicDetailsSchema)(values);
+                case 1:
+                    return valiForm(serviceDetailsSchema)(values);
+                case 2:
+                    return valiForm(orderSchema)(values);
+                default:
+                    return {};
+            }
+        },
+    });
 
     const { isFirstStep, isLastStep, next, back, step, currentStepIndex } = useMultiStepForm([
-        <FirstForm {...order} updateFields={updateField} />,
-        <SecondForm {...order} updateFields={updateField} />,
-        <ThirdForm {...order} updateFields={updateField} />,
+        <BasicDetailsForm form={formData} />,
+        <ServiceDetailsForm form={formData} />,
+        <CommentsForm form={formData} />,
     ]);
 
-    const handleSubmit: JSX.EventHandler<HTMLFormElement, SubmitEvent> = (event) => {
-        event.preventDefault();
-        console.log("Form submitted:", order);
-        if (!isLastStep()) return next();
+    const handleSubmit: SubmitHandler<OrderSchema> = (values): void => {
+        console.log("\nResults: ", values);
+
+        if (!isLastStep()) next();
+        return;
     };
 
     return (
-        <div class="mx-auto flex justify-around">
-            <form class="w-[555px]" onSubmit={handleSubmit}>
-                <h2 class="mb-6 text-5xl">{STEPS_DATA[currentStepIndex()]?.title}</h2>
-                <p class="mb-20">{STEPS_DATA[currentStepIndex()]?.paragraph}</p>
+        <div class="my-32 flex items-start justify-center gap-x-16">
+            <Form of={formData} class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
+                <h2 class="mb-6 text-center text-5xl lg:text-left">{STEPS_DATA[currentStepIndex()]?.title}</h2>
+                <p class="mb-20 text-center lg:text-left">{STEPS_DATA[currentStepIndex()]?.paragraph}</p>
                 <Stepper currentStep={currentStepIndex} />
                 <div class="grid gap-y-4">{step()}</div>
                 <div class="mt-4 flex gap-x-5">
@@ -84,20 +72,20 @@ const Form: Component = () => {
                         <button
                             onClick={back}
                             type="button"
-                            class="flex max-w-fit items-center gap-x-1 bg-red-primary px-6 py-3 font-bold">
+                            class="flex w-full items-center justify-center gap-x-1 bg-red-primary px-6 py-3 font-bold lg:w-fit">
                             <ArrowLeft /> PREV
                         </button>
                     </Show>
                     <button
                         type="submit"
-                        class="flex max-w-fit items-center gap-x-1 bg-red-primary px-6 py-3 font-bold">
+                        class="flex w-full items-center justify-center gap-x-1 bg-red-primary px-6 py-3 font-bold lg:w-fit">
                         {isLastStep() ? "SEND ORDER" : "NEXT"} <ArrowRight />
                     </button>
                 </div>
-            </form>
+            </Form>
             <img
                 width={522}
-                height={575}
+                class="hidden pr-4 lg:block"
                 src={`src/assets/images/${STEPS_DATA[currentStepIndex()]?.imageName}.webp`}
                 loading="lazy"
                 decoding="async"
@@ -106,4 +94,4 @@ const Form: Component = () => {
     );
 };
 
-export default Form;
+export default MainForm;

@@ -133,23 +133,14 @@
             Poppins, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
             "Noto Color Emoji";
         color: white;
+        width: 100%;
         padding: 10px 15px;
         border: 1px solid #ffffff40;
         background-color: transparent;
-        transition: border-color 0.15s ease-in-out;
-        /* transition: all 500ms linear; */
 
         &:focus {
             outline: none;
         }
-
-        /* &:not(:placeholder-shown) {
-            border-color: crimson;
-        }
-
-        &:valid {
-            border-color: green;
-        } */
     }
 
     h1,

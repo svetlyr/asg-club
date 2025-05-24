@@ -30,7 +30,7 @@ const Stepper: Component<StepperProps> = (props) => {
                                     }}>
                                     <span class="z-10 text-lg font-semibold text-white">{index() + 1}</span>
                                 </div>
-                                <span class="mt-2 font-medium text-white">{item}</span>
+                                <span class="mt-2 text-sm font-medium text-white sm:text-base">{item}</span>
                             </div>
                         );
                     }}
