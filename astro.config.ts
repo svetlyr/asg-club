@@ -9,7 +9,6 @@ import { FileSystemIconLoader } from "unplugin-icons/loaders";
 export default defineConfig({
     output: "static",
 
-    base: "/",
     trailingSlash: "ignore",
     site: "https://asg-club.com",
 
