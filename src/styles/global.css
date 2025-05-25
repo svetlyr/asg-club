@@ -13,8 +13,7 @@
         font-style: normal;
         font-display: swap;
 
-        /* TODO: change when domain name is ready */
-        src: url("../Gilroy-Black.woff") format("woff");
+        src: url("/Gilroy-Black.woff") format("woff");
     }
 
     html {

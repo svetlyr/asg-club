@@ -14,13 +14,10 @@ import Motorcycle from "@icons/fa/motorcycle";
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
 
-// ? setup domain name
-// TODO: fix links in prod
-const baseUrl = import.meta.env.BASE_URL;
 const NAV_LINKS = [
-    { name: "Services", href: `${baseUrl}/services` },
-    { name: "About Us", href: `${baseUrl}/about` },
-    { name: "Contact Us", href: `${baseUrl}/contact` },
+    { name: "Services", href: "/services" },
+    { name: "About Us", href: "/about" },
+    { name: "Contact Us", href: "/contact" },
 ];
 
 type Props = {
