@@ -10,18 +10,22 @@
     },
     "dependencies": {
         "@astrojs/check": "^0.9.4",
-        "@astrojs/solid-js": "^5.0.10",
+        "@astrojs/solid-js": "^5.1.0",
         "@astrojs/tailwind": "^6.0.2",
         "@fontsource-variable/roboto-slab": "^5.2.5",
         "@fontsource/poppins": "^5.2.6",
         "@fontsource/roboto": "^5.2.5",
+        "@modular-forms/solid": "^0.25.1",
+        "@nanostores/solid": "^1.0.0",
+        "@nurodev/astro-bun": "^2.0.5",
         "@solid-primitives/intersection-observer": "^2.2.1",
         "@solid-primitives/scroll": "^2.1.1",
-        "@zod/mini": "^4.0.0-beta.20250505T195954",
-        "astro": "^5.7.13",
+        "astro": "^5.8.0",
+        "nanostores": "^1.0.1",
         "solid-js": "^1.9.7",
         "tailwind-merge": "^3.3.0",
-        "tailwindcss": "^3.4.17"
+        "tailwindcss": "^3.4.17",
+        "valibot": "^1.1.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.27.0",

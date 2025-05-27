@@ -5,6 +5,7 @@
 @layer base {
     :root {
         --main-gradient: linear-gradient(45deg, rgb(224, 4, 11) 15%, rgb(252, 81, 48) 65%);
+        --animation-gradient: linear-gradient(to right, rgb(252, 81, 48), rgb(224, 4, 11));
     }
 
     @font-face {
@@ -16,8 +17,24 @@
         src: url("/Gilroy-Black.woff") format("woff");
     }
 
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    @media screen and (prefers-reduced-motion: reduce) {
+        html {
+            @apply scroll-auto;
+        }
+    }
+
     html {
-        @apply bg-black-primary;
+        @apply scroll-smooth bg-black-primary;
     }
 
     textarea {
@@ -27,7 +44,11 @@
     input,
     select,
     textarea {
+        font-family:
+            Poppins, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+            "Noto Color Emoji";
         color: white;
+        width: 100%;
         padding: 10px 15px;
         border: 1px solid #ffffff40;
         background-color: transparent;
