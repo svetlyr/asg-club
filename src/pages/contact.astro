@@ -13,7 +13,6 @@ import Instagram from "@icons/sli/social-instagram";
 
 import { DISCORD, EMAIL, TWITTER, YOUTUBE, TIKTOK, FACEBOOK, INSTAGRAM } from "astro:env/server";
 
-// TODO: user tag for title
 const contacts = [
     {
         href: TWITTER,
@@ -70,6 +69,7 @@ const contacts = [
                 {
                     contacts.map(({ Icon, title, href, description }) => (
                         <Card
+                            newTab
                             class="size-full p-6 lg:px-6 lg:py-10"
                             Icon={Icon}
                             title={title}

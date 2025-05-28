@@ -9,9 +9,10 @@ type Props = {
     title: string;
     class?: string;
     Icon: IconType;
+    newTab?: boolean;
 };
 
-const { class: className = "", title, text, href = "", Icon } = Astro.props;
+const { class: className = "", title, text, href = "", Icon, newTab } = Astro.props;
 ---
 
 <script>
@@ -24,6 +25,7 @@ const { class: className = "", title, text, href = "", Icon } = Astro.props;
 </script>
 
 <Link
+    newTab={!!newTab}
     href={href}
     class={tw(
         `card group cursor-pointer space-y-4 bg-black-tertiary text-center drop-shadow-md transition-transform duration-500 ease-in-out hover:-translate-y-1.5 hover:bg-gradient ${className}`,
@@ -38,7 +40,7 @@ const { class: className = "", title, text, href = "", Icon } = Astro.props;
         z-index: 1;
         position: relative;
 
-        &:is(:first-child, :last-child) {
+        &:is(:first-of-type, :last-of-type) {
             &::before,
             &::after {
                 z-index: -1;
@@ -69,12 +71,12 @@ const { class: className = "", title, text, href = "", Icon } = Astro.props;
             }
         }
 
-        &:first-child::before {
+        &:first-of-type::before {
             top: -10px;
             left: -10px;
         }
 
-        &:last-child::before {
+        &:last-of-type::before {
             bottom: -10px;
             right: -10px;
         }
