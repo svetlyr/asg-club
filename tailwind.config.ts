@@ -21,7 +21,7 @@ export default {
                 black: {
                     primary: "#030301",
                     secondary: "#101010",
-                    tertiary: "#181818",
+                    tertiary: "#161616",
                     quaternary: "#191919",
                 },
             },

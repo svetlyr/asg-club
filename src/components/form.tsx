@@ -1,5 +1,3 @@
-import "@styles/form.scss";
-
 import { Show, type Component } from "solid-js";
 import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
 import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@schemas/formSchema";
@@ -17,6 +15,8 @@ import useMultiStepForm from "@hooks/useMultiStepForm";
 import bike2 from "@assets/images/bike2.webp";
 import bike3 from "@assets/images/bike3.webp";
 import coffe2 from "@assets/images/coffee2.webp";
+
+import "@styles/form.scss";
 
 const STEPS_DATA = [
     {
@@ -38,7 +38,12 @@ const STEPS_DATA = [
     },
 ];
 
-const MainForm: Component = () => {
+type Props = {
+    wrapperClass?: string;
+};
+
+// eslint-disable-next-line solid/no-destructure
+const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
     const formData = createFormStore<OrderSchema>({
         validateOn: "input",
         validate: (value) => {
@@ -67,7 +72,7 @@ const MainForm: Component = () => {
     };
 
     return (
-        <div class="my-32 flex items-start justify-center gap-x-16">
+        <div id="form" class={`flex items-start justify-center gap-x-16 py-32 ${wrapperClass}`}>
             <Form of={formData} class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
                 <h2 class="mb-6 text-center text-5xl lg:text-left">{STEPS_DATA[currentStepIndex()].title}</h2>
                 <p class="mb-20 text-center lg:text-left">{STEPS_DATA[currentStepIndex()].paragraph}</p>

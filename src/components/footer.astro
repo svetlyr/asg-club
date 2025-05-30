@@ -16,10 +16,10 @@ import SocialInstagram from "@icons/sli/social-instagram";
 import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK } from "astro:env/server";
 
 const socials = [
-    { href: TIKTOK, Icon: Tiktok },
     { href: INSTAGRAM, Icon: SocialInstagram },
-    { href: YOUTUBE, Icon: SocialYoutube },
+    { href: TIKTOK, Icon: Tiktok },
     { href: FACEBOOK, Icon: SocialFacebook },
+    { href: YOUTUBE, Icon: SocialYoutube },
 ];
 ---
 
@@ -35,8 +35,7 @@ const socials = [
         <div
             class="grid justify-items-center text-center heir-h4:text-2xl heir-h4:font-bold md:flex md:gap-20 md:text-left lg:gap-32">
             <div>
-                <Link href="/" class="flex items-center">
-                    {/* TODO: center on mobile */}
+                <Link href="/" class="flex items-center justify-center md:justify-normal">
                     <img
                         alt="Logo"
                         loading="lazy"

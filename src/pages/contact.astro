@@ -12,6 +12,7 @@ import Facebook from "@icons/sli/social-facebook";
 import Instagram from "@icons/sli/social-instagram";
 
 import { DISCORD, EMAIL, TWITTER, YOUTUBE, TIKTOK, FACEBOOK, INSTAGRAM } from "astro:env/server";
+import MainForm from "@components/form";
 
 const contacts = [
     {
@@ -63,7 +64,8 @@ const contacts = [
         <section class="container mx-auto py-20 text-center">
             <div class="mx-auto flex w-fit items-center pb-8 align-middle">
                 <Envolope class="mr-4 size-12 icon-gradient" />
-                <h3 class="text-3xl">Email: TODO: add email</h3>
+                {/* TODO: change email */}
+                <h3 class="text-3xl">orders@asg-club.com</h3>
             </div>
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
                 {
@@ -80,7 +82,11 @@ const contacts = [
                 }
             </div>
         </section>
-        <!-- TODO: add form -->
+    </div>
+    <div class="bg-black-tertiary px-global">
+        <section class="container mx-auto">
+            <MainForm client:only="solid" />
+        </section>
     </div>
 </Layout>
 

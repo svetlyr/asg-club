@@ -122,10 +122,12 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                     )}
                                 </For>
                             </Show>
-                            <Button class="group btn-bg-animate flex items-center border-2 bg-transparent border-gradient md:px-6">
-                                <Motorcycle class="mr-2 size-4 md:size-5" />
-                                <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
-                            </Button>
+                            <Link href="#form">
+                                <Button class="group btn-bg-animate flex items-center border-2 bg-transparent border-gradient md:px-6">
+                                    <Motorcycle class="mr-2 size-4 md:size-5" />
+                                    <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
+                                </Button>
+                            </Link>
                         </ul>
                     </div>
                 </div>
