@@ -30,7 +30,7 @@ const Button: ParentComponent<Props> = ({ href, onClick, class: className = "", 
     }
 
     return (
-        <button type="button" onClick={onClick} class={classes} {...(attrs as BaseButtonProps)}>
+        <button onClick={onClick} class={classes} {...(attrs as BaseButtonProps)}>
             {children}
         </button>
     );

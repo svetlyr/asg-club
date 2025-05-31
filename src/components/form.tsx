@@ -2,6 +2,7 @@ import { Show, type Component } from "solid-js";
 import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
 import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@schemas/formSchema";
 
+import Button from "./button";
 import Stepper from "./stepper";
 import CommentsForm from "./forms/commentsForm";
 import BasicDetailsForm from "./forms/basicDetailsForm";
@@ -80,18 +81,17 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
                 <div class="space-y-4">{step()}</div>
                 <div class="mt-4 flex gap-x-5">
                     <Show when={!isFirstStep()}>
-                        <button
+                        <Button
                             onClick={back}
-                            type="button"
                             class="flex w-full items-center justify-center gap-x-1 bg-red-primary px-6 py-3 font-bold lg:w-fit">
                             <ArrowLeft /> PREV
-                        </button>
+                        </Button>
                     </Show>
-                    <button
+                    <Button
                         type="submit"
                         class="flex w-full items-center justify-center gap-x-1 bg-red-primary px-6 py-3 font-bold lg:w-fit">
                         {isLastStep() ? "SEND ORDER" : "NEXT"} <ArrowRight />
-                    </button>
+                    </Button>
                 </div>
             </Form>
             <img
