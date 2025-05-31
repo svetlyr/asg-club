@@ -1,6 +1,6 @@
 import type { Component } from "solid-js";
-import { createComputed, createSignal, For, Show } from "solid-js";
 import { useWindowScrollPosition } from "@solid-primitives/scroll";
+import { createComputed, createEffect, createSignal, For, Show } from "solid-js";
 import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
 
 import Link from "./link";
@@ -76,6 +76,14 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
         }
     });
 
+    createEffect(() => {
+        if (isMenuOpen()) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style = "";
+        }
+    });
+
     return (
         <>
             <header
@@ -84,7 +92,6 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                 class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 px-global ${className}`}>
                 <div class="container mx-auto flex h-full items-center justify-between">
                     <Link href="/" class="flex items-center">
-                        {/* TODO: logo size*/}
                         <img
                             alt="Logo"
                             loading="eager"
@@ -122,12 +129,12 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                                     )}
                                 </For>
                             </Show>
-                            <Link href="#form">
-                                <Button class="group btn-bg-animate flex items-center border-2 bg-transparent border-gradient md:px-6">
-                                    <Motorcycle class="mr-2 size-4 md:size-5" />
-                                    <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
-                                </Button>
-                            </Link>
+                            <Button
+                                href="#form"
+                                class="group btn-bg-animate flex items-center border-2 bg-transparent border-gradient md:px-6">
+                                <Motorcycle class="mr-2 size-4 md:size-5" />
+                                <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
+                            </Button>
                         </ul>
                     </div>
                 </div>

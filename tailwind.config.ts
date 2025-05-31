@@ -75,6 +75,7 @@ export default {
                     backgroundImage: theme("backgroundImage.gradient"),
                 },
                 ".btn-bg-animate": {
+                    display: "inline-block",
                     overflow: "hidden",
                     position: "relative",
 
