@@ -16,19 +16,12 @@ import SocialInstagram from "@icons/sli/social-instagram";
 import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK } from "astro:env/server";
 
 const socials = [
-    { href: INSTAGRAM, Icon: SocialInstagram },
-    { href: TIKTOK, Icon: Tiktok },
-    { href: FACEBOOK, Icon: SocialFacebook },
-    { href: YOUTUBE, Icon: SocialYoutube },
+    { href: INSTAGRAM, label: "Instagram", Icon: SocialInstagram },
+    { href: TIKTOK, label: "TikTok", Icon: Tiktok },
+    { href: FACEBOOK, label: "Facebook", Icon: SocialFacebook },
+    { href: YOUTUBE, label: "YouTube", Icon: SocialYoutube },
 ];
 ---
-
-<script>
-    import { addOnClick } from "@utils/dom";
-
-    const button = document.getElementById("footer-contact-btn");
-    addOnClick(button, () => (window.location.href = "/contact"));
-</script>
 
 <div class="bg-black-quaternary px-global">
     <section class="container mx-auto text-nowrap py-16 text-white">
@@ -53,8 +46,8 @@ const socials = [
                 </Link>
                 <div class="flex justify-center gap-7 child:size-6 child-svg:cursor-pointer md:justify-normal">
                     {
-                        socials.map(({ href, Icon }) => (
-                            <Link newTab href={href}>
+                        socials.map(({ href, label, Icon }) => (
+                            <Link newTab href={href} aria-label={label}>
                                 <Icon class="size-6 icon-gradient" />
                             </Link>
                         ))
@@ -69,8 +62,9 @@ const socials = [
                 <p class="items-center"><LocationPin class="mr-3" />Chisinau, Moldova</p>
 
                 <Button
-                    id="footer-contact-btn"
-                    class="group btn-bg-animate mx-auto my-5 flex items-center border-2 bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
+                    href="/contact"
+                    aria-label="Contact Us"
+                    class="group btn-bg-animate mx-auto my-5 flex w-fit items-center border-2 bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
                     <Speech class="mr-2 size-4 md:size-5 group-hover:[&_path]:fill-white" />
                     <span class="text-sm md:text-base">CONTACT US</span>
                 </Button>

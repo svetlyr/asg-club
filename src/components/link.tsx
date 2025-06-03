@@ -2,14 +2,14 @@
 import type { JSX, ParentComponent } from "solid-js";
 
 type BaseLinkProps = JSX.IntrinsicElements["a"];
-interface Props extends BaseLinkProps {
+export interface LinkProps extends BaseLinkProps {
     href: string;
-    newTab?: boolean;
+    newTab?: boolean | undefined;
     class?: string;
 }
 
 // eslint-disable-next-line solid/no-destructure
-const Link: ParentComponent<Props> = ({ href, newTab, class: className = "", children, ...attrs }) => {
+const Link: ParentComponent<LinkProps> = ({ href, newTab, class: className = "", children, ...attrs }) => {
     return (
         <a
             href={href}

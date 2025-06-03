@@ -1,5 +1,4 @@
 ---
-import Link from "@components/link";
 import Button from "@components/button";
 import MainForm from "@components/form";
 import Card from "@components/card.astro";
@@ -16,10 +15,6 @@ import Basket from "@icons/sli/basket";
 import Handag from "@icons/sli/handbag";
 import Picture from "@icons/sli/picture";
 
-// TODO: every type of service should be automatically sent to the Designer and Printer
-// TODO: Custom Merch service should be sent only to Cristi for review first
-
-// TODO: add onClick form prefill
 const cards = [
     {
         Icon: Fire,
@@ -84,11 +79,9 @@ const cards = [
                 Something?
             </h1>
             <p class="mt-3 text-xl sm:text-2xl">Decals? Jacket Pins? T-Shirts? Posters?</p>
-            <Link href="#form">
-                <Button class="btn-bg-animate mt-5 border-2 bg-transparent border-gradient">
-                    <span class="relative">GET STARTED</span>
-                </Button>
-            </Link>
+            <Button href="#form" class="btn-bg-animate mt-5 border-2 bg-transparent text-white border-gradient">
+                <span class="relative">GET STARTED</span>
+            </Button>
         </section>
     </div>
     <div id={navCollapseId} class="bg-black-secondary py-20 px-global">
