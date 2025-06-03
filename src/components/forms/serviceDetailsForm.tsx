@@ -1,5 +1,4 @@
 /* eslint-disable solid/reactivity */
-import { useStore } from "@nanostores/solid";
 import { For, type Component } from "solid-js";
 import { serviceType, type OrderSchema } from "@schemas/formSchema";
 import { Field, setValue, type FormStore, type Maybe } from "@modular-forms/solid";
@@ -8,7 +7,6 @@ import Plus from "@icons/custom/plus";
 import Menus from "@icons/custom/menus";
 
 import Button from "@components/button";
-import { formValue } from "@utils/formStore";
 
 type Props = {
     form: FormStore<OrderSchema>;
@@ -27,12 +25,6 @@ function makeDeltaUpdater(form: FormStore<OrderSchema>, fieldName: "quantity" | 
 const ServiceDetailsForm: Component<Props> = (props) => {
     const updateQuantity = makeDeltaUpdater(props.form, "quantity");
     const updateDimensions = makeDeltaUpdater(props.form, "dimensions");
-
-    const test = useStore(formValue);
-
-    if (test() !== "") {
-        setValue(props.form, "serviceType", test());
-    }
 
     return (
         <>

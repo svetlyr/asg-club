@@ -29,18 +29,7 @@ const BasicDetailsForm: Component<Props> = (props) => {
             </Field>
             <Field of={props.form} name="fullname">
                 {(field, fieldProps) => (
-                    <input
-                        {...fieldProps}
-                        class="transition-colors duration-300"
-                        classList={{
-                            "border-red-500": field.error !== "",
-                            "border-green-500": field.error === "" && !!field.value,
-                        }}
-                        type="text"
-                        placeholder="Full Name"
-                        value={field.value}
-                        required
-                    />
+                    <input {...fieldProps} type="text" placeholder="Full Name" value={field.value} />
                 )}
             </Field>
             <Field of={props.form} name="tel">

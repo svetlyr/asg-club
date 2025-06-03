@@ -1,3 +1,4 @@
+import { $formValue } from "@utils/formStore";
 import { Show, type Component } from "solid-js";
 import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
 import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@schemas/formSchema";
@@ -60,6 +61,8 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
             }
         },
     });
+
+    $formValue.set(formData);
 
     const { isFirstStep, isLastStep, next, back, step, currentStepIndex } = useMultiStepForm([
         <BasicDetailsForm form={formData} />,
