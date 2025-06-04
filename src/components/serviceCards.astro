@@ -1,0 +1,70 @@
+---
+import Card from "@components/card.astro";
+
+import Pin from "@icons/sli/pin";
+import Cup from "@icons/sli/cup";
+import Tag from "@icons/sli/tag";
+import Key from "@icons/sli/key";
+import Fire from "@icons/sli/fire";
+import Note from "@icons/sli/note";
+import Basket from "@icons/sli/basket";
+import Handag from "@icons/sli/handbag";
+import Picture from "@icons/sli/picture";
+
+const cards = [
+    {
+        Icon: Fire,
+        title: "Graphic Design",
+        description: "Craft visually compelling graphics that communicate your brand’s message clearly and memorably",
+    },
+    {
+        Icon: Tag,
+        title: "Stickers/Decals",
+        description:
+            "Produce durable, high-quality stickers and decals that elevate packaging and promotional materials",
+    },
+    {
+        Icon: Pin,
+        title: "Jacket Pins",
+        description: "Design custom enamel pins that add a touch of personality and professionalism to any garment",
+    },
+    {
+        Icon: Picture,
+        title: "Wall Posters/Banners",
+        description: "Create impactful posters and banners that capture attention and reinforce your brand identity",
+    },
+    {
+        Icon: Handag,
+        title: "T-Shirts",
+        description: "Deliver premium custom t-shirts that combine comfort and style to showcase your brand",
+    },
+    {
+        Icon: Cup,
+        title: "Mugs",
+        description: "Produce bespoke mugs featuring your logo for memorable promotional giveaways or corporate gifts",
+    },
+    {
+        Icon: Key,
+        title: "Keychains",
+        description: "Design durable keychains that keep your brand top of mind with every use",
+    },
+    {
+        Icon: Basket,
+        title: "Custom Merch",
+        description: "Offer a full range of branded merchandise tailored to engage your audience and drive loyalty",
+    },
+    {
+        Icon: Note,
+        title: "Balls",
+        description: "TODO balls description",
+    },
+];
+---
+
+<div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+    {
+        cards.map(({ Icon, title, description }) => (
+            <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} text={description} href="#form" />
+        ))
+    }
+</div>

@@ -12,6 +12,7 @@ type Props = {
     form: FormStore<OrderSchema>;
 };
 
+// test
 function makeDeltaUpdater(form: FormStore<OrderSchema>, fieldName: "quantity" | "dimensions") {
     return (value: Maybe<number>, delta: number): void => {
         const current = value ?? 1;
