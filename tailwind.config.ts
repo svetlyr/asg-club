@@ -90,18 +90,17 @@ export default {
                     "&::before": {
                         content: '""',
                         position: "absolute",
-                        top: "-100%",
-                        left: "-100%",
-                        width: "290%",
-                        height: "410%",
+                        inset: "0",
                         background: "var(--main-gradient)",
 
-                        transitionProperty: "transform",
+                        clipPath: "polygon(79.95% 254.54%, 65.78% 209.09%, 132.21% 27.29%, 147.15% 61.35%)",
+
+                        transitionProperty: "clip-path",
                         transitionDuration: theme("transitionDuration.700"),
-                        transform: "translateX(100%) translateY(100%) rotate(-45deg)",
                     },
+
                     "&:hover::before": {
-                        transform: "translateX(0) translateY(0) rotate(-45deg)",
+                        clipPath: "polygon(79.95% 254.54%, -39.29% 43.18%, 15% -129.53%, 147.15% 61.35%)",
                     },
                 },
             });

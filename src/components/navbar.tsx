@@ -77,11 +77,8 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
     });
 
     createEffect(() => {
-        if (isMenuOpen()) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style = "";
-        }
+        // * prevent scroll page scroll when menu is open
+        document.body.style.overflow = isMenuOpen() ? "hidden" : "";
     });
 
     return (
