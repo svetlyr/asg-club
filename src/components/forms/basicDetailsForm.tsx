@@ -2,7 +2,7 @@ import type { Component } from "solid-js";
 import type { OrderSchema } from "@schemas/formSchema";
 import { Field, type FormStore } from "@modular-forms/solid";
 
-import SimpleLineIconsPhone from "@icons/sli/phone";
+import PhoneIcon from "@icons/sli/phone";
 
 type Props = {
     form: FormStore<OrderSchema>;
@@ -12,39 +12,37 @@ const BasicDetailsForm: Component<Props> = (props) => {
     return (
         <>
             <Field of={props.form} name="email">
-                {(field, fieldProps) => (
+                {({ value, error }, fieldProps) => (
                     <input
                         {...fieldProps}
                         type="email"
                         placeholder="Email"
-                        value={field.value}
+                        value={value}
                         required
                         class="transition-colors duration-300"
                         classList={{
-                            "border-red-500": field.error !== "",
-                            "border-green-500": field.error === "" && !!field.value,
+                            "border-red-500": error !== "",
+                            "border-green-500": error === "" && !!value,
                         }}
                     />
                 )}
             </Field>
             <Field of={props.form} name="fullname">
-                {(field, fieldProps) => (
-                    <input {...fieldProps} type="text" placeholder="Full Name" value={field.value} />
-                )}
+                {({ value }, fieldProps) => <input {...fieldProps} type="text" placeholder="Full Name" value={value} />}
             </Field>
             <Field of={props.form} name="tel">
-                {(field, fieldProps) => (
+                {({ value, error }, fieldProps) => (
                     <div
                         class="flex items-center border border-gray-secondary transition-colors duration-300"
                         classList={{
-                            "border-red-500": field.error !== "",
-                            "border-green-500": field.error === "" && !!field.value,
+                            "border-red-500": error !== "",
+                            "border-green-500": error === "" && !!value,
                         }}>
-                        <SimpleLineIconsPhone class="ml-3 text-gray-primary" />
+                        <PhoneIcon class="ml-3 text-gray-primary" />
                         <input
                             {...fieldProps}
                             type="tel"
-                            value={field.value}
+                            value={value}
                             class="flex-1 border-none"
                             placeholder="123-456-7890 (Optional)"
                         />
