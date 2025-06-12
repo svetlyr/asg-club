@@ -2,7 +2,7 @@
 import MainForm from "@components/form";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
-import { navCollapseId } from "@constants";
+import { navCollapseId } from "@components/navbar";
 
 import Tiktok from "@icons/custom/tiktok";
 import Envolope from "@icons/sli/envolope";
@@ -54,7 +54,7 @@ const contacts = [
 ];
 ---
 
-<Layout navCollapseId={navCollapseId}>
+<Layout>
     <div class="bg-image px-global">
         <section class="container mx-auto py-40 text-center align-top">
             <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">
@@ -62,6 +62,7 @@ const contacts = [
             </h1>
         </section>
     </div>
+    <div id={navCollapseId} class="invisible"></div>
     <div class="bg-black-secondary px-global">
         <section class="container mx-auto py-20 text-center">
             <div class="mx-auto flex w-fit items-center pb-8 align-middle">
