@@ -1,5 +1,7 @@
 ---
 import Card from "@components/card.astro";
+import type { IconType } from "@icons";
+import type { ServiceType } from "@schemas/formSchema";
 
 import Pin from "@icons/sli/pin";
 import Cup from "@icons/sli/cup";
@@ -58,13 +60,36 @@ const cards = [
         title: "Balls",
         description: "TODO balls description",
     },
-];
+] satisfies { Icon: IconType; title: ServiceType; description: string }[];
 ---
+
+<script>
+    import { addOnClick } from "@utils/dom";
+    import { changeFormValue } from "@utils/formStore";
+    import { serviceType, type ServiceType } from "@schemas/formSchema";
+
+    const cards = document.querySelectorAll(".service-card a[href='#form']");
+
+    cards.forEach((card) => {
+        const title = card.querySelector("h4")?.innerHTML;
+
+        if (title && title in serviceType) {
+            // * safe typecast since we do a runtime check
+            addOnClick(card, () => changeFormValue(title as ServiceType));
+        }
+    });
+</script>
 
 <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
     {
         cards.map(({ Icon, title, description }) => (
-            <Card class="size-full p-6 lg:px-6 lg:py-10" Icon={Icon} title={title} text={description} href="#form" />
+            <Card
+                class="service-card size-full p-6 lg:px-6 lg:py-10"
+                href="#form"
+                Icon={Icon}
+                title={title}
+                text={description}
+            />
         ))
     }
 </div>
