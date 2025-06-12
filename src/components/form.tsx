@@ -72,6 +72,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
 
     const handleSubmit: SubmitHandler<OrderSchema> = (): void => {
         if (!isLastStep()) next();
+
         return;
     };
 

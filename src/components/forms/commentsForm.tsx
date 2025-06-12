@@ -9,8 +9,8 @@ type Props = {
 const CommentsForm: Component<Props> = (props) => {
     return (
         <Field of={props.form} name="comments">
-            {({ value }, fieldProps) => (
-                <textarea {...fieldProps} value={value} placeholder="Any special instructions?" rows={6} />
+            {(field, fieldProps) => (
+                <textarea {...fieldProps} value={field.value} placeholder="Any special instructions?" rows={6} />
             )}
         </Field>
     );

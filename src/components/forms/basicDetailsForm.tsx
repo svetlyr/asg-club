@@ -12,37 +12,39 @@ const BasicDetailsForm: Component<Props> = (props) => {
     return (
         <>
             <Field of={props.form} name="email">
-                {({ value, error }, fieldProps) => (
+                {(field, fieldProps) => (
                     <input
                         {...fieldProps}
                         type="email"
                         placeholder="Email"
-                        value={value}
+                        value={field.value}
                         required
                         class="transition-colors duration-300"
                         classList={{
-                            "border-red-500": error !== "",
-                            "border-green-500": error === "" && !!value,
+                            "border-red-500": Boolean(field.error),
+                            "border-green-500": !field.error && Boolean(field.value),
                         }}
                     />
                 )}
             </Field>
             <Field of={props.form} name="fullname">
-                {({ value }, fieldProps) => <input {...fieldProps} type="text" placeholder="Full Name" value={value} />}
+                {(field, fieldProps) => (
+                    <input {...fieldProps} type="text" placeholder="Full Name" value={field.value} />
+                )}
             </Field>
             <Field of={props.form} name="tel">
-                {({ value, error }, fieldProps) => (
+                {(field, fieldProps) => (
                     <div
                         class="flex items-center border border-gray-secondary transition-colors duration-300"
                         classList={{
-                            "border-red-500": error !== "",
-                            "border-green-500": error === "" && !!value,
+                            "border-red-500": Boolean(field.error),
+                            "border-green-500": !field.error && Boolean(field.value),
                         }}>
                         <PhoneIcon class="ml-3 text-gray-primary" />
                         <input
                             {...fieldProps}
                             type="tel"
-                            value={value}
+                            value={field.value}
                             class="flex-1 border-none"
                             placeholder="123-456-7890 (Optional)"
                         />

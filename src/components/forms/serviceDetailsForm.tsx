@@ -43,14 +43,14 @@ const ServiceDetailsForm: Component<Props> = (props) => {
             </Field>
 
             <Field of={props.form} name="description">
-                {({ value, error }, fieldProps) => (
+                {(field, fieldProps) => (
                     <textarea
                         {...fieldProps}
                         classList={{
-                            "border-red-500": error !== "",
-                            "border-green-500": error === "" && !!value,
+                            "border-red-500": Boolean(field.error),
+                            "border-green-500": !field.error && Boolean(field.value),
                         }}
-                        value={value}
+                        value={field.value}
                         rows={7}
                         placeholder="URL of the design or a description of what you want. Please be as detailed as possible, since it will help us understand you better."
                         required
@@ -59,17 +59,17 @@ const ServiceDetailsForm: Component<Props> = (props) => {
             </Field>
 
             <Field of={props.form} name="quantity" type="number">
-                {({ value }, fieldProps) => (
+                {(field, fieldProps) => (
                     <div class="flex">
                         <Button
                             class={"h-12 border border-r-0 border-gray-secondary focus:outline-none"}
-                            onClick={() => updateQuantity(value, -1)}>
+                            onClick={() => updateQuantity(field.value, -1)}>
                             <Menus />
                         </Button>
-                        <input {...fieldProps} type="number" value={value} placeholder="Quantity" required />
+                        <input {...fieldProps} type="number" value={field.value} placeholder="Quantity" required />
                         <Button
                             class={"h-12 border border-l-0 border-gray-secondary focus:outline-none"}
-                            onClick={() => updateQuantity(value, 1)}>
+                            onClick={() => updateQuantity(field.value, 1)}>
                             <Plus />
                         </Button>
                     </div>
@@ -78,17 +78,23 @@ const ServiceDetailsForm: Component<Props> = (props) => {
 
             <div class="flex gap-x-4">
                 <Field of={props.form} name="dimensions" type="number">
-                    {({ value }, fieldProps) => (
+                    {(field, fieldProps) => (
                         <div class="flex w-full">
                             <Button
                                 class={"h-12 border border-r-0 border-gray-secondary focus:outline-none"}
-                                onClick={() => updateDimensions(value, -1)}>
+                                onClick={() => updateDimensions(field.value, -1)}>
                                 <Menus />
                             </Button>
-                            <input {...fieldProps} type="number" value={value} placeholder="Dimensions" required />
+                            <input
+                                {...fieldProps}
+                                required
+                                type="number"
+                                value={field.value}
+                                placeholder="Dimensions"
+                            />
                             <Button
                                 class={"h-12 border border-l-0 border-gray-secondary focus:outline-none"}
-                                onClick={() => updateDimensions(value, 1)}>
+                                onClick={() => updateDimensions(field.value, 1)}>
                                 <Plus />
                             </Button>
                         </div>
@@ -96,8 +102,8 @@ const ServiceDetailsForm: Component<Props> = (props) => {
                 </Field>
 
                 <Field of={props.form} name="unitType">
-                    {({ value }, fieldProps) => (
-                        <select class="max-w-fit" {...fieldProps} value={value}>
+                    {(field, fieldProps) => (
+                        <select class="max-w-fit" {...fieldProps} value={field.value}>
                             <option value="cm">cm</option>
                             <option value="inch">inch</option>
                         </select>
