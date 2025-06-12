@@ -15,18 +15,6 @@ type Props = {
 const { class: className = "", title, text, href = "", Icon, newTab } = Astro.props;
 ---
 
-<script>
-    import { addOnClick } from "@utils/dom";
-    import { changeFormValue } from "@utils/formStore";
-
-    const cards = document.querySelectorAll(".card");
-
-    cards.forEach((card) => {
-        const title = card.querySelector("h4")?.innerHTML;
-        if (title) addOnClick(card, () => changeFormValue(title));
-    });
-</script>
-
 <Link
     newTab={!!newTab}
     href={href}

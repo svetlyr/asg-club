@@ -28,7 +28,9 @@ export const serviceType = [
     "Keychains",
     "Custom Merch",
     "Balls",
-];
+] as const;
+
+export type ServiceType = (typeof serviceType)[number];
 
 const unitType = ["cm", "inch"] as const;
 

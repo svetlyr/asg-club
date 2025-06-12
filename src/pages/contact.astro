@@ -1,4 +1,5 @@
 ---
+import MainForm from "@components/form";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
 import { navCollapseId } from "@constants";
@@ -12,7 +13,6 @@ import Facebook from "@icons/sli/social-facebook";
 import Instagram from "@icons/sli/social-instagram";
 
 import { DISCORD, EMAIL, TWITTER, YOUTUBE, TIKTOK, FACEBOOK, INSTAGRAM } from "astro:env/server";
-import MainForm from "@components/form";
 
 const contacts = [
     {
@@ -57,7 +57,9 @@ const contacts = [
 <Layout navCollapseId={navCollapseId}>
     <div class="bg-image px-global">
         <section class="container mx-auto py-40 text-center align-top">
-            <h1 class="text-gradient mb-28 font-gilroy text-8xl">Contact Us</h1>
+            <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">
+                Contact Us
+            </h1>
         </section>
     </div>
     <div class="bg-black-secondary px-global">

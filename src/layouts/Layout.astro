@@ -8,6 +8,8 @@ import "@styles/global.css";
 import Navbar from "@components/navbar";
 import Footer from "@components/footer.astro";
 
+import IconGradient from "@assets/icon-gradient.svg";
+
 type Props = {
     navCollapseId: string;
 };
@@ -21,27 +23,18 @@ const { navCollapseId } = Astro.props;
         <meta charset="UTF-8" />
         <meta name="darkreader-lock" />
         <meta name="generator" content={Astro.generator} />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
         <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
         <link rel="preload" href="/Gilroy-Black.woff" as="font" type="font/woff" crossorigin />
+
         <title>ASG Club</title>
     </head>
-
-    {/* * SVG gradient definition */}
-    <svg width={0} height={0} style={{ position: "absolute", visibility: "hidden" }}>
-        <defs>
-            <linearGradient id="main-gradient" gradientTransform="rotate(45)">
-                <stop offset="15%" stop-color="rgb(224, 4, 11)"></stop>
-                <stop offset="65%" stop-color="rgb(252, 81, 48)"></stop>
-            </linearGradient>
-        </defs>
-    </svg>
+    <IconGradient />
 
     <body>
         <Navbar client:load path={Astro.url.pathname} navCollapseId={navCollapseId} />
         <slot />
         <Footer />
     </body>
-
-
 </html>

@@ -19,7 +19,7 @@ type Props = ButtonOnlyProps | AnchorOnlyProps;
 
 // eslint-disable-next-line solid/no-destructure
 const Button: ParentComponent<Props> = ({ href, onClick, class: className = "", children, ...attrs }) => {
-    const classes = tw(`px-4 py-2 font-semibold text-white ${className}`);
+    const classes = `px-4 py-2 font-semibold text-white ${className}`;
 
     if (href) {
         return (
@@ -30,7 +30,7 @@ const Button: ParentComponent<Props> = ({ href, onClick, class: className = "", 
     }
 
     return (
-        <button onClick={onClick} class={classes} {...(attrs as BaseButtonProps)}>
+        <button onClick={onClick} class={tw(classes)} {...(attrs as BaseButtonProps)}>
             {children}
         </button>
     );
