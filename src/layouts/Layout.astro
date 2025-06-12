@@ -9,12 +9,6 @@ import Navbar from "@components/navbar";
 import Footer from "@components/footer.astro";
 
 import IconGradient from "@assets/icon-gradient.svg";
-
-type Props = {
-    navCollapseId: string;
-};
-
-const { navCollapseId } = Astro.props;
 ---
 
 <!doctype html>
@@ -33,7 +27,7 @@ const { navCollapseId } = Astro.props;
     <IconGradient />
 
     <body>
-        <Navbar client:load path={Astro.url.pathname} navCollapseId={navCollapseId} />
+        <Navbar client:load path={Astro.url.pathname} />
         <slot />
         <Footer />
     </body>

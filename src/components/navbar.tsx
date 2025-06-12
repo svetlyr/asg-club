@@ -14,7 +14,9 @@ import Motorcycle from "@icons/fa/motorcycle";
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
 
-const NAV_LINKS = [
+export const navCollapseId = "navCollapseTarget";
+
+const navigationLinks = [
     { name: "Services", href: "/services" },
     { name: "About Us", href: "/about" },
     { name: "Contact Us", href: "/contact" },
@@ -23,38 +25,30 @@ const NAV_LINKS = [
 type Props = {
     path: string;
     class?: string;
-    navCollapseId: string;
 };
 
 // eslint-disable-next-line solid/no-destructure
-const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }) => {
+const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     const navbarHeight = 74;
     const scrollThreshold = 200;
     const isMobile = createIsMobile("md");
     const scroll = useWindowScrollPosition();
     const [isMenuOpen, setIsMenuOpen] = createSignal<boolean>(false);
-    const [isCollapsed, setIsCollapsed] = createSignal<boolean>(false);
+    const [isNavbarVisible, setIsNavbarVisible] = createSignal<boolean>(true);
 
     let accumulatedScroll = 0;
     let lastScrollY = scroll.y;
 
     const isTargetVisible = createVisibilityObserver(
         {
-            threshold: [0, 1],
+            threshold: [0],
             rootMargin: `-${navbarHeight}px 0px 0px 0px`,
         },
-        (entry) => {
-            if (!entry.rootBounds) return false;
-
-            const { top: rootTop } = entry.rootBounds;
-            const { top: elemTop } = entry.boundingClientRect;
-
-            return elemTop >= rootTop;
-        },
+        (entry) => entry.isIntersecting,
     )(() => document.getElementById(navCollapseId));
 
     createComputed(() => {
-        if (isTargetVisible() && !isCollapsed()) return;
+        if (isTargetVisible() && isNavbarVisible()) return;
 
         const currentScrollY = scroll.y;
         const delta = currentScrollY - lastScrollY;
@@ -63,7 +57,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
 
         // * scroll down
         if (delta > 0) {
-            setIsCollapsed(true);
+            setIsNavbarVisible(false);
             accumulatedScroll = 0;
             return;
         }
@@ -71,13 +65,13 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
         // * scroll up
         accumulatedScroll += -delta;
         if (accumulatedScroll >= scrollThreshold) {
-            setIsCollapsed(false);
+            setIsNavbarVisible(true);
             accumulatedScroll = 0;
         }
     });
 
     createEffect(() => {
-        // * prevent scroll page scroll when menu is open
+        // * prevent page scroll when menu is open
         document.body.style.overflow = isMenuOpen() ? "hidden" : "";
     });
 
@@ -85,7 +79,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
         <>
             <header
                 style={{ height: `${navbarHeight}px` }}
-                classList={{ "-translate-y-full": isCollapsed(), "translate-y-0": !isCollapsed() }}
+                classList={{ "translate-y-0": isNavbarVisible(), "-translate-y-full": !isNavbarVisible() }}
                 class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 px-global ${className}`}>
                 <div class="container mx-auto flex h-full items-center justify-between">
                     <Link href="/" class="flex items-center">
@@ -113,7 +107,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                         </Show>
                         <ul class="items-center space-x-4 text-white md:flex md:space-x-6 lg:space-x-8">
                             <Show when={!isMobile()}>
-                                <For each={NAV_LINKS}>
+                                <For each={navigationLinks}>
                                     {({ name, href }) => (
                                         <li class="hidden md:block">
                                             <Link
@@ -144,7 +138,7 @@ const Navbar: Component<Props> = ({ navCollapseId, path, class: className = "" }
                         onClick={() => setIsMenuOpen(false)}
                     />
                     <ul class="pointer-events-auto relative h-[33vh] w-full bg-black-primary p-8 px-14 shadow-md">
-                        <For each={NAV_LINKS}>
+                        <For each={navigationLinks}>
                             {({ name, href }) => (
                                 <li class="py-2">
                                     <Link
