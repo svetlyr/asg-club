@@ -42,7 +42,9 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     const isTargetVisible = createVisibilityObserver(
         {
             threshold: [0],
+            // TODO: fix navbar collapse point
             rootMargin: `-${navbarHeight}px 0px 0px 0px`,
+            // rootMargin: `-${navbarHeight + scrollThreshold}px 0px 0px 0px`,
         },
         (entry) => entry.isIntersecting,
     )(() => document.getElementById(navCollapseId));
@@ -54,16 +56,16 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
         const delta = currentScrollY - lastScrollY;
 
         lastScrollY = currentScrollY;
+        accumulatedScroll += -delta;
 
         // * scroll down
-        if (delta > 0) {
+        if (accumulatedScroll <= -scrollThreshold) {
             setIsNavbarVisible(false);
             accumulatedScroll = 0;
             return;
         }
 
         // * scroll up
-        accumulatedScroll += -delta;
         if (accumulatedScroll >= scrollThreshold) {
             setIsNavbarVisible(true);
             accumulatedScroll = 0;
