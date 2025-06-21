@@ -21,7 +21,7 @@ type MeasurementKey = (typeof measurementKeys)[number];
 type OptionalServiceFields = (typeof optionalServiceFields)[number];
 
 // prettier-ignore
-const additionalFields  = {
+const additionalFields = {
     "Graphic Design":           [],
     "Stickers/Decals":          ["quantity", "dimensions"],
     "Jacket Pins":              ["quantity", "dimensions"],
