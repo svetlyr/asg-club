@@ -1,38 +1,46 @@
 import type { Component } from "solid-js";
-import type { OrderSchema } from "@schemas/formSchema";
-import { Field, type FormStore } from "@modular-forms/solid";
+import { getForm } from "@stores/formStore";
 
 import PhoneIcon from "@icons/sli/phone";
 
-type Props = {
-    form: FormStore<OrderSchema>;
-};
+const BasicDetailsForm: Component = () => {
+    const { form, Field } = getForm();
 
-const BasicDetailsForm: Component<Props> = (props) => {
     return (
         <>
-            <Field of={props.form} name="email">
+            <Field name="email">
                 {(field, fieldProps) => (
                     <input
                         {...fieldProps}
+                        required
+                        value={field.value}
                         type="email"
                         placeholder="Email"
-                        value={field.value}
-                        required
                         class="transition-colors duration-300"
                         classList={{
-                            "border-red-500": Boolean(field.error),
-                            "border-green-500": !field.error && Boolean(field.value),
+                            "border-red-500": !!form.submitCount && !!field.error,
+                            "border-green-500": !!form.submitCount && field.dirty && !field.error,
                         }}
                     />
                 )}
             </Field>
-            <Field of={props.form} name="fullname">
+            <Field name="fullname">
                 {(field, fieldProps) => (
-                    <input {...fieldProps} type="text" placeholder="Full Name" value={field.value} />
+                    <input
+                        {...fieldProps}
+                        required
+                        value={field.value}
+                        type="text"
+                        placeholder="Full Name"
+                        class="transition-colors duration-300"
+                        classList={{
+                            "border-red-500": !!form.submitCount && !!field.error,
+                            "border-green-500": !!form.submitCount && field.dirty && !field.error,
+                        }}
+                    />
                 )}
             </Field>
-            <Field of={props.form} name="tel">
+            <Field name="tel">
                 {(field, fieldProps) => (
                     <div
                         class="flex items-center border border-gray-secondary transition-colors duration-300"
@@ -43,8 +51,8 @@ const BasicDetailsForm: Component<Props> = (props) => {
                         <PhoneIcon class="ml-3 text-gray-primary" />
                         <input
                             {...fieldProps}
-                            type="tel"
                             value={field.value}
+                            type="tel"
                             class="flex-1 border-none"
                             placeholder="123-456-7890 (Optional)"
                         />

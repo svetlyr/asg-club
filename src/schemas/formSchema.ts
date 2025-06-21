@@ -13,49 +13,62 @@ import {
     picklist,
     nonEmpty,
     type InferInput,
+    optional,
+    type SchemaWithPick,
+    minLength,
 } from "valibot";
+import {
+    additionalServiceFields,
+    allServiceFields,
+    baseServiceFields,
+    serviceTypes,
+    unitTypes,
+    type ServiceFieldKeys,
+    type ServiceType,
+} from "@lib/serviceTypes";
+import { concatTuples } from "@utils";
 
 // https://ihateregex.io/expr/phone
 const phoneRegex = new RegExp(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/);
 
-export const serviceType = [
-    "Graphic Design",
-    "Stickers/Decals",
-    "Jacket Pins",
-    "Wall Posters/Banners",
-    "T-Shirts",
-    "Mugs",
-    "Keychains",
-    "Custom Merch",
-    "Balls",
-] as const;
-
-export type ServiceType = (typeof serviceType)[number];
-
-const unitType = ["cm", "inch"] as const;
-
 export const orderSchema = object({
     email: pipe(string(), email()),
-    fullname: string(),
+    fullname: pipe(string(), nonEmpty()),
     tel: union([pipe(string(), regex(phoneRegex)), literal("")]),
-    serviceType: picklist(serviceType),
+    serviceType: picklist(serviceTypes),
     description: pipe(string(), nonEmpty()),
-    quantity: pipe(number(), minValue(1), maxValue(20)),
-    dimensions: pipe(number(), minValue(1), maxValue(50)),
-    unitType: picklist(unitType),
-    comments: string(),
+    quantity: optional(pipe(number(), minValue(1), maxValue(999))),
+    dimensions: optional(pipe(number(), minValue(1), maxValue(50))),
+    unitType: optional(picklist(unitTypes)),
+    size: optional(picklist(unitTypes)), // TODO: size opts
+    comments: pipe(string(), minLength(10)),
 });
 
 export type OrderSchema = InferInput<typeof orderSchema>;
+export type OrderKeys = keyof OrderSchema;
+
+export const orderDefaults: OrderSchema = {
+    email: "",
+    fullname: "",
+    tel: "",
+    serviceType: "Graphic Design",
+    description: "",
+    quantity: 0,
+    dimensions: 0,
+    unitType: "cm",
+    size: "cm",
+    comments: "",
+};
 
 export const basicDetailsSchema = pick(orderSchema, ["email", "fullname", "tel"]);
 export type BasicDetailsSchema = InferInput<typeof basicDetailsSchema>;
 
-export const serviceDetailsSchema = pick(orderSchema, [
-    "serviceType",
-    "description",
-    "quantity",
-    "dimensions",
-    "unitType",
-]);
-export type ServiceDetailsSchema = InferInput<typeof serviceDetailsSchema>;
+const rawServiceDetailsSchema = pick(orderSchema, allServiceFields);
+export type AllServiceDetailsSchema = InferInput<typeof rawServiceDetailsSchema>;
+
+export type ServiceDetailsSchema = SchemaWithPick<typeof rawServiceDetailsSchema, ServiceFieldKeys>;
+export function getServiceDetailsSchema(serviceType: ServiceType): ServiceDetailsSchema {
+    const keys = concatTuples(baseServiceFields, additionalServiceFields[serviceType]);
+
+    return pick(rawServiceDetailsSchema, keys);
+}

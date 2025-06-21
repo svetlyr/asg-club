@@ -1,40 +1,47 @@
-/* eslint-disable solid/reactivity */
-import { For, type Component } from "solid-js";
-import { serviceType, type OrderSchema } from "@schemas/formSchema";
-import { Field, setValue, type FormStore, type Maybe } from "@modular-forms/solid";
+import { Dynamic } from "solid-js/web";
+import { createMemo, For } from "solid-js";
+import type { Component, VoidComponent } from "solid-js";
 
-import Plus from "@icons/custom/plus";
-import Menus from "@icons/custom/menus";
+import { getForm, getFormValue } from "@stores/formStore";
+import { additionalServiceFields, serviceTypes, type AdditionalFieldKey, type MeasurementKey } from "@lib/serviceTypes";
 
-import Button from "@components/button";
+import SizeField from "./fields/SizeField";
+import QuantityField from "./fields/QuantityField";
+import DimensionsField from "./fields/DimensionsField";
+import type { WithUnitComponent } from "./fields/withUnit";
 
-type Props = {
-    form: FormStore<OrderSchema>;
+type FieldMapType = {
+    [K in AdditionalFieldKey]: K extends MeasurementKey ? WithUnitComponent : Component;
 };
 
-function makeDeltaUpdater(form: FormStore<OrderSchema>, fieldName: "quantity" | "dimensions") {
-    return (value: Maybe<number>, delta: number): void => {
-        const current = value ?? 1;
-        const next = Math.max(current + delta, 1);
-        setValue(form, fieldName, next);
-    };
-}
+const fieldMap = {
+    size: SizeField,
+    quantity: QuantityField,
+    dimensions: DimensionsField,
+} satisfies FieldMapType;
 
-// TODO: add photo upload
+const AdditionalFields: Component = () => {
+    const serviceType = createMemo(() => getFormValue("serviceType"));
 
-const ServiceDetailsForm: Component<Props> = (props) => {
-    const updateQuantity = makeDeltaUpdater(props.form, "quantity");
-    const updateDimensions = makeDeltaUpdater(props.form, "dimensions");
+    return (
+        <For each={additionalServiceFields[serviceType()]}>
+            {(fieldKey) => <Dynamic component={fieldMap[fieldKey]} />}
+        </For>
+    );
+};
+
+const ServiceDetailsForm: VoidComponent = () => {
+    const { form, Field } = getForm();
 
     return (
         <>
-            <Field of={props.form} name="serviceType">
+            <Field name="serviceType">
                 {(field, fieldProps) => (
                     <select {...fieldProps}>
-                        <For each={serviceType}>
-                            {(value) => (
-                                <option value={value} selected={field.value === value}>
-                                    {value}
+                        <For each={serviceTypes}>
+                            {(service) => (
+                                <option value={service} selected={field.value === service}>
+                                    {service}
                                 </option>
                             )}
                         </For>
@@ -42,74 +49,23 @@ const ServiceDetailsForm: Component<Props> = (props) => {
                 )}
             </Field>
 
-            <Field of={props.form} name="description">
+            <Field name="description">
                 {(field, fieldProps) => (
                     <textarea
                         {...fieldProps}
-                        classList={{
-                            "border-red-500": Boolean(field.error),
-                            "border-green-500": !field.error && Boolean(field.value),
-                        }}
-                        value={field.value}
-                        rows={7}
-                        placeholder="URL of the design or a description of what you want. Please be as detailed as possible, since it will help us understand you better."
                         required
+                        value={field.value}
+                        classList={{
+                            "border-red-500": !!form.submitCount && !!field.error,
+                            "border-green-500": !!form.submitCount && field.dirty && !field.error,
+                        }}
+                        rows={7}
+                        placeholder="Description of what you want. Please be as detailed as possible, since it will help us understand you better. Minimum 10 characters required."
                     />
                 )}
             </Field>
 
-            <Field of={props.form} name="quantity" type="number">
-                {(field, fieldProps) => (
-                    <div class="flex">
-                        <Button
-                            class={"h-12 border border-r-0 border-gray-secondary focus:outline-none"}
-                            onClick={() => updateQuantity(field.value, -1)}>
-                            <Menus />
-                        </Button>
-                        <input {...fieldProps} type="number" value={field.value} placeholder="Quantity" required />
-                        <Button
-                            class={"h-12 border border-l-0 border-gray-secondary focus:outline-none"}
-                            onClick={() => updateQuantity(field.value, 1)}>
-                            <Plus />
-                        </Button>
-                    </div>
-                )}
-            </Field>
-
-            <div class="flex gap-x-4">
-                <Field of={props.form} name="dimensions" type="number">
-                    {(field, fieldProps) => (
-                        <div class="flex w-full">
-                            <Button
-                                class={"h-12 border border-r-0 border-gray-secondary focus:outline-none"}
-                                onClick={() => updateDimensions(field.value, -1)}>
-                                <Menus />
-                            </Button>
-                            <input
-                                {...fieldProps}
-                                required
-                                type="number"
-                                value={field.value}
-                                placeholder="Dimensions"
-                            />
-                            <Button
-                                class={"h-12 border border-l-0 border-gray-secondary focus:outline-none"}
-                                onClick={() => updateDimensions(field.value, 1)}>
-                                <Plus />
-                            </Button>
-                        </div>
-                    )}
-                </Field>
-
-                <Field of={props.form} name="unitType">
-                    {(field, fieldProps) => (
-                        <select class="max-w-fit" {...fieldProps} value={field.value}>
-                            <option value="cm">cm</option>
-                            <option value="inch">inch</option>
-                        </select>
-                    )}
-                </Field>
-            </div>
+            <AdditionalFields />
         </>
     );
 };

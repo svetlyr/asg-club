@@ -1,7 +1,14 @@
-import { $formValue } from "@utils/formStore";
+import { Dynamic } from "solid-js/web";
 import { Show, type Component } from "solid-js";
-import { createFormStore, Form, valiForm, type SubmitHandler } from "@modular-forms/solid";
-import { basicDetailsSchema, orderSchema, serviceDetailsSchema, type OrderSchema } from "@schemas/formSchema";
+import { initFormStore } from "@stores/formStore";
+import { valiForm, type SubmitHandler } from "@modular-forms/solid";
+import {
+    basicDetailsSchema,
+    getServiceDetailsSchema,
+    orderDefaults,
+    orderSchema,
+    type OrderSchema,
+} from "@schemas/formSchema";
 
 import Button from "./button";
 import Stepper from "./stepper";
@@ -44,33 +51,40 @@ type Props = {
     wrapperClass?: string;
 };
 
+// TODO: fix validation on prev/next steps
+
 // eslint-disable-next-line solid/no-destructure
 const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
-    const formData = createFormStore<OrderSchema>({
-        validateOn: "input",
+    const { Form } = initFormStore({
+        initialValues: orderDefaults,
+        validateOn: "submit",
+        revalidateOn: "input",
         validate: (value) => {
             switch (currentStepIndex()) {
                 case 0:
                     return valiForm(basicDetailsSchema)(value);
-                case 1:
-                    return valiForm(serviceDetailsSchema)(value);
+                case 1: {
+                    // * cant be undefined since we set initialValues
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const serviceSchema = getServiceDetailsSchema(value.serviceType!);
+
+                    return valiForm(serviceSchema)(value);
+                }
                 case 2:
                     return valiForm(orderSchema)(value);
                 default:
-                    return {};
+                    return (): void => {};
             }
         },
     });
 
-    $formValue.set(formData);
-
-    const { isFirstStep, isLastStep, next, back, step, currentStepIndex } = useMultiStepForm([
-        <BasicDetailsForm form={formData} />,
-        <ServiceDetailsForm form={formData} />,
-        <CommentsForm form={formData} />,
+    const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex } = useMultiStepForm([
+        BasicDetailsForm,
+        ServiceDetailsForm,
+        CommentsForm,
     ]);
 
-    const handleSubmit: SubmitHandler<OrderSchema> = (): void => {
+    const handleSubmit: SubmitHandler<OrderSchema> = (_e): void => {
         if (!isLastStep()) next();
 
         return;
@@ -78,11 +92,15 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
 
     return (
         <div id="form" class={`flex items-start justify-center gap-x-16 py-32 ${wrapperClass}`}>
-            <Form of={formData} class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
+            <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
                 <h2 class="mb-6 text-center text-5xl lg:text-left">{STEPS_DATA[currentStepIndex()].title}</h2>
                 <p class="mb-20 text-center lg:text-left">{STEPS_DATA[currentStepIndex()].paragraph}</p>
                 <Stepper currentStep={currentStepIndex} />
-                <div class="space-y-4">{step()}</div>
+
+                <div class="space-y-4">
+                    <Dynamic component={currentStep()} />
+                </div>
+
                 <div class="mt-4 flex gap-x-5">
                     <Show when={!isFirstStep()}>
                         <Button

@@ -1,14 +1,14 @@
 ---
 import Card from "@components/card.astro";
 import type { IconType } from "@icons";
-import type { ServiceType } from "@schemas/formSchema";
+import type { ServiceType } from "@lib/serviceTypes";
 
 import Pin from "@icons/sli/pin";
 import Cup from "@icons/sli/cup";
 import Tag from "@icons/sli/tag";
 import Key from "@icons/sli/key";
 import Fire from "@icons/sli/fire";
-import Note from "@icons/sli/note";
+import Badge from "@icons/sli/badge";
 import Basket from "@icons/sli/basket";
 import Handag from "@icons/sli/handbag";
 import Picture from "@icons/sli/picture";
@@ -51,31 +51,31 @@ const cards = [
         description: "Design durable keychains that keep your brand top of mind with every use",
     },
     {
+        Icon: Badge,
+        title: "Metal Badges and Medals",
+        description: "Create custom metal badges, VIN plates, and medals that showcase your brand with distinction",
+    },
+    {
         Icon: Basket,
         title: "Custom Merch",
         description: "Offer a full range of branded merchandise tailored to engage your audience and drive loyalty",
-    },
-    {
-        Icon: Note,
-        title: "Balls",
-        description: "TODO balls description",
     },
 ] satisfies { Icon: IconType; title: ServiceType; description: string }[];
 ---
 
 <script>
     import { addOnClick } from "@utils/dom";
-    import { changeFormValue } from "@utils/formStore";
-    import { serviceType, type ServiceType } from "@schemas/formSchema";
+    import { setFormValue } from "@stores/formStore";
+    import { serviceTypes, type ServiceType } from "@lib/serviceTypes";
 
     const cards = document.querySelectorAll(".service-card a[href='#form']");
 
     cards.forEach((card) => {
         const title = card.querySelector("h4")?.innerHTML;
 
-        if (title && title in serviceType) {
+        if (title && title in serviceTypes) {
             // * safe typecast since we do a runtime check
-            addOnClick(card, () => changeFormValue(title as ServiceType));
+            addOnClick(card, () => setFormValue("serviceType", title as ServiceType));
         }
     });
 </script>
