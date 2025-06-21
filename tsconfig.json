@@ -1,43 +1,29 @@
 {
-    "extends": "astro/tsconfigs/strictest",
-    "exclude": ["dist", "node_modules", "src/assets", ".git", ".vscode"],
-    "include": [".astro/types.d.ts", "**/*.mjs", "**/*.ts", "src/**/*"],
-    "compilerOptions": {
-        "jsx": "preserve",
-        "jsxImportSource": "solid-js",
+  "compilerOptions": {
+    // Environment setup & latest features
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
 
-        // * Handled by eslint rule
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
 
-        "noUncheckedIndexedAccess": false,
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
 
-        "baseUrl": ".",
-        "incremental": false,
-        "skipLibCheck": false,
-        "removeComments": true,
-        "strictNullChecks": true,
-        "strictBindCallApply": true,
-        "strictFunctionTypes": true,
-        "verbatimModuleSyntax": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "useUnknownInCatchVariables": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
-        "paths": {
-            "@utils": ["src/utils/index.ts"],
-
-            "@lib/*": ["src/lib/*"],
-            "@hooks/*": ["src/hooks/*"],
-            "@utils/*": ["src/utils/*"],
-            "@assets/*": ["src/assets/*"],
-            "@stores/*": ["src/stores/*"],
-            "@styles/*": ["src/styles/*"],
-            "@layouts/*": ["src/layouts/*"],
-            "@schemas/*": ["src/schemas/*"],
-            "@components/*": ["src/components/*"]
-        },
-        "types": ["unplugin-icons/types/solid"]
-    }
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  }
 }
