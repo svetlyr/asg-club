@@ -8,6 +8,11 @@
 
         "noEmit": false,
         "composite": true,
-        "types": ["bun-types"]
+        "types": ["bun-types"],
+
+        "baseUrl": ".",
+        "paths": {
+            "@env": ["src/env.ts"]
+        }
     }
 }

@@ -1,9 +1,3 @@
-declare module "bun" {
-    interface Env {
-        BOT_TOKEN: string;
-        DATABASE_URL: string;
-        OWNER_CHAT_ID: number;
-        DESIGNER_CHAT_ID: number;
-        PRINTER_CHAT_ID: number;
-    }
-}
+// TODO: runtime and buildtime validation
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOSTNAME, POSTGRES_PORT, POSTGRES_DATABASE } = process.env;
+export const DATABASE_URL = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOSTNAME}:${POSTGRES_PORT}/${POSTGRES_DATABASE}`;
