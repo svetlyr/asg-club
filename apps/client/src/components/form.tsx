@@ -1,6 +1,6 @@
 import { Dynamic } from "solid-js/web";
-import { Show, type Component } from "solid-js";
 import { initFormStore } from "@stores/formStore";
+import { createMemo, Show, type Component } from "solid-js";
 import { valiForm, type SubmitHandler } from "@modular-forms/solid";
 import {
     basicDetailsSchema,
@@ -30,19 +30,21 @@ import "@styles/form.scss";
 const STEPS_DATA = [
     {
         title: "Order",
+        stepperTitle: "Order Details",
         paragraph:
             "Don't wait. Just fill the form below with your desires related to our services and we'll do our best to make your wishes come true. Please fill in all requested fields for best results.",
         image: coffe2.src,
     },
     {
         title: "Details",
+        stepperTitle: "Service Details",
         paragraph:
             "We need some important information to understand the basics of your order and have a better idea of what you want.",
         image: bike2.src,
     },
     {
         title: "Almost Done",
-        paragraph: "Comments",
+        stepperTitle: "Comments",
         image: bike3.src,
     },
 ];
@@ -81,6 +83,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
         ServiceDetailsForm,
         CommentsForm,
     ]);
+    const step = createMemo(() => STEPS_DATA[currentStepIndex()]);
 
     const handleSubmit: SubmitHandler<OrderSchema> = (_e): void => {
         if (!isLastStep()) next();
@@ -91,9 +94,11 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
     return (
         <div id="form" class={`flex items-start justify-center gap-x-16 py-32 ${wrapperClass}`}>
             <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
-                <h2 class="mb-6 text-center text-5xl lg:text-left">{STEPS_DATA[currentStepIndex()].title}</h2>
-                <p class="mb-20 text-center lg:text-left">{STEPS_DATA[currentStepIndex()].paragraph}</p>
-                <Stepper currentStep={currentStepIndex} />
+                <h2 class="mb-6 text-center text-5xl lg:text-left">{step().title}</h2>
+                <p class="mb-20 text-center lg:text-left">{step().paragraph}</p>
+                <Stepper currentStep={currentStepIndex} steps={STEPS_DATA}>
+                    {step().stepperTitle}
+                </Stepper>
 
                 <div class="space-y-4">
                     <Dynamic component={currentStep()} />

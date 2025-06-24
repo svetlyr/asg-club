@@ -1,16 +1,15 @@
-import { For, type Component } from "solid-js";
-
-const steps = ["Basic Details", "Service Details", "Comments"];
+import { For, type ParentComponent } from "solid-js";
 
 type StepperProps = {
+    steps: unknown[];
     currentStep: () => number;
 };
 
-const Stepper: Component<StepperProps> = (props) => {
+const Stepper: ParentComponent<StepperProps> = (props) => {
     return (
-        <div class="mb-6 overflow-hidden bg-black">
+        <div class="mb-6 overflow-hidden">
             <div class="flex items-center justify-around">
-                <For each={steps}>
+                <For each={props.steps}>
                     {(item, index) => {
                         return (
                             <div
@@ -30,7 +29,7 @@ const Stepper: Component<StepperProps> = (props) => {
                                     }}>
                                     <span class="z-10 text-lg font-semibold text-white">{index() + 1}</span>
                                 </div>
-                                <span class="mt-2 text-sm font-medium text-white sm:text-base">{item}</span>
+                                <span class="mt-2 text-sm font-medium text-white sm:text-base">{props.children}</span>
                             </div>
                         );
                     }}
