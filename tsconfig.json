@@ -1,7 +1,6 @@
 {
-    // TODO: prettify this
-    "exclude": ["**/*/dist", "**/*/node_modules", ".git", ".vscode", "**/*/assets"],
-    "include": ["**/*/.astro/types.d.ts", "**/*/*.mjs", "**/*.ts", "**/*/src/**/*"],
+    "exclude": ["**/dist", "**/node_modules", "**/assets", ".git", ".vscode"],
+    "include": ["**/.astro/types.d.ts", "**/*.mjs", "**/*.ts", "**/src"],
     "compilerOptions": {
         "target": "ESNext",
         "lib": ["ESNext"],
