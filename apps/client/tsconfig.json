@@ -1,30 +1,16 @@
 {
-    "extends": "astro/tsconfigs/strictest",
-    "exclude": ["dist", "node_modules", "src/assets", ".git", ".vscode"],
-    "include": [".astro/types.d.ts", "**/*.mjs", "**/*.ts", "src/**/*"],
+    "extends": ["astro/tsconfigs/strictest", "../../tsconfig.json"],
     "compilerOptions": {
         "jsx": "preserve",
         "jsxImportSource": "solid-js",
 
-        // * Handled by eslint rule
+        // * Handled by eslint
         "noUnusedLocals": false,
         "noUnusedParameters": false,
 
         "noUncheckedIndexedAccess": false,
 
         "baseUrl": ".",
-        "incremental": false,
-        "skipLibCheck": false,
-        "removeComments": true,
-        "strictNullChecks": true,
-        "strictBindCallApply": true,
-        "strictFunctionTypes": true,
-        "verbatimModuleSyntax": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "useUnknownInCatchVariables": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true,
         "paths": {
             "@utils": ["src/utils/index.ts"],
 
@@ -38,6 +24,21 @@
             "@schemas/*": ["src/schemas/*"],
             "@components/*": ["src/components/*"]
         },
-        "types": ["unplugin-icons/types/solid"]
-    }
+
+        // TODO: add same values to server tsconfig
+        "noEmit": false,
+        "composite": true,
+        "incremental": true,
+        "skipLibCheck": false,
+        "removeComments": true,
+        "strictNullChecks": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "useUnknownInCatchVariables": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "types": ["unplugin-icons/types/solid"]
 }

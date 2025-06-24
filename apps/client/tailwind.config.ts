@@ -19,6 +19,7 @@ export default {
                 red: { primary: "#FC5130" },
                 orange: { primary: "#FC5030" },
                 black: {
+                    DEFAULT: "#000000",
                     primary: "#030301",
                     secondary: "#101010",
                     tertiary: "#161616",

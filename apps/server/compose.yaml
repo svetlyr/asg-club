@@ -1,9 +1,10 @@
+# TODO: fix build for linux
 services:
   postgres:
     image: postgres:alpine
     container_name: postgres_container
     environment:
-      POSTGRES_USER: pg_user
+      POSTGRES_USER: user
       POSTGRES_PASSWORD: pg_password
       POSTGRES_DB: asg_club
       PGDATA: /var/lib/postgresql/data/pgdata

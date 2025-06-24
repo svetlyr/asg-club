@@ -8,7 +8,7 @@ type StepperProps = {
 
 const Stepper: Component<StepperProps> = (props) => {
     return (
-        <div class="bg-black mb-6 overflow-hidden">
+        <div class="mb-6 overflow-hidden bg-black">
             <div class="flex items-center justify-around">
                 <For each={steps}>
                     {(item, index) => {

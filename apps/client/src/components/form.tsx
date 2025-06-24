@@ -51,8 +51,6 @@ type Props = {
     wrapperClass?: string;
 };
 
-// TODO: fix validation on prev/next steps
-
 // eslint-disable-next-line solid/no-destructure
 const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
     const { Form } = initFormStore({

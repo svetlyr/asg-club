@@ -1,33 +1,35 @@
-# dependencies (bun install)
-node_modules
+**/node_modules/
+*.bun.lockb
+.pnp/
+.pnp.js
 
-# output
-out
-dist
-*.tgz
+**/dist/
+**/build/
+**/out/
+**/.next/
+**/.astro/
+**/.vercel/
+coverage/
 
-# code coverage
-coverage
-*.lcov
-
-# logs
-logs
-_.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
-
-# dotenv environment variable files
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# caches
-.eslintcache
-.cache
 *.tsbuildinfo
 
-# IntelliJ based IDEs
-.idea
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.log
 
-# Finder (MacOS) folder config
+.env
+.env.*.local
+.env.local
+
+.cache/
+.eslintcache
+
 .DS_Store
+.idea/
+.vscode/
+
+*.tgz
+*.zip
+*.tar.gz
+*.pem

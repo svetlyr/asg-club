@@ -1,46 +1,31 @@
 import globals from "globals";
-import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginAstro from "eslint-plugin-astro";
 import pluginSolid from "eslint-plugin-solid";
 import pluginTailwind from "eslint-plugin-tailwindcss";
 import pluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
-export default tseslint.config(
-    { ignores: ["**/dist", "**/node_modules", "**/.astro", "**/.github", "**/.changeset", "**/*.mjs"] },
+import baseConfig from "../../eslint.config.mjs";
 
-    eslint.configs.recommended,
-    tseslint.configs.strictTypeChecked,
+export default tseslint.config(
+    baseConfig,
     pluginTailwind.configs["flat/recommended"],
 
     {
-        files: ["**/*"],
-        rules: {
-            "no-unused-vars": "off",
-            "no-duplicate-imports": "off",
-            "tailwindcss/no-custom-classname": "off",
-
-            "@typescript-eslint/no-unused-vars": [
-                "warn",
-                {
-                    varsIgnorePattern: "^_",
-                    argsIgnorePattern: "^_",
-                    destructuredArrayIgnorePattern: "^_",
-                },
-            ],
-            "@typescript-eslint/consistent-type-imports": "warn",
-            "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
-            "@typescript-eslint/restrict-template-expressions": ["warn", { allowNumber: true }],
-            "@typescript-eslint/no-confusing-void-expression": ["warn", { ignoreArrowShorthand: true }],
-
-            "@typescript-eslint/explicit-function-return-type": "error",
-            "@typescript-eslint/explicit-module-boundary-types": "error",
+        settings: {
+            tailwindcss: {
+                callees: ["tw"],
+                config: "./tailwind.config.ts",
+            },
         },
+    },
+
+    {
+        files: ["**/*"],
         languageOptions: {
             parserOptions: {
                 project: false,
                 projectService: true,
-                tsconfigRootDir: import.meta.dirname,
             },
             globals: globals.browser,
         },
@@ -76,15 +61,9 @@ export default tseslint.config(
             parserOptions: {
                 project: "tsconfig.json",
             },
+            globals: globals.browser,
         },
         ...pluginSolid.configs["flat/typescript"],
-    },
-
-    {
-        files: ["scripts/**"],
-        languageOptions: {
-            globals: globals.node,
-        },
     },
 
     pluginPrettierRecommended,
