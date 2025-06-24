@@ -1,24 +1,19 @@
-import globals from "globals";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginAstro from "eslint-plugin-astro";
-import pluginSolid from "eslint-plugin-solid";
-import pluginTailwind from "eslint-plugin-tailwindcss";
-import pluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
-    { ignores: ["**/dist", "**/node_modules", "**/.astro", "**/.github", "**/.changeset", "**/*.mjs"] },
+    {
+        ignores: ["**/dist", "**/node_modules", "**/.astro", "**/.github", "**/.changeset", "**/*.mjs"],
+    },
 
     eslint.configs.recommended,
     tseslint.configs.strictTypeChecked,
-    pluginTailwind.configs["flat/recommended"],
 
     {
-        files: ["**/*"],
+        files: ["**/*.ts", "**/*.tsx"],
         rules: {
             "no-unused-vars": "off",
             "no-duplicate-imports": "off",
-            "tailwindcss/no-custom-classname": "off",
 
             "@typescript-eslint/no-unused-vars": [
                 "warn",
@@ -38,54 +33,8 @@ export default tseslint.config(
         },
         languageOptions: {
             parserOptions: {
-                project: false,
-                projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
-            globals: globals.browser,
         },
     },
-
-    // * Astro overrides
-    pluginAstro.configs.recommended,
-    {
-        files: ["**/*.astro"],
-        rules: {
-            "astro/no-unused-css-selector": "off",
-            "astro/no-set-html-directive": "error",
-            "astro/no-set-text-directive": "error",
-        },
-        languageOptions: {
-            parserOptions: {
-                project: true,
-                projectService: false,
-                extraFileExtensions: [".astro"],
-            },
-            globals: globals.browser,
-        },
-    },
-
-    // * Solid overrides
-    {
-        files: ["**/*.tsx"],
-        rules: {
-            "solid/no-array-handlers": "warn",
-        },
-        languageOptions: {
-            parser: tseslint.parser,
-            parserOptions: {
-                project: "tsconfig.json",
-            },
-        },
-        ...pluginSolid.configs["flat/typescript"],
-    },
-
-    {
-        files: ["scripts/**"],
-        languageOptions: {
-            globals: globals.node,
-        },
-    },
-
-    pluginPrettierRecommended,
 );

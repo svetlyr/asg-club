@@ -4,5 +4,6 @@
         "typescript", // Enable .ts
         "typescriptreact" // Enable .tsx
     ],
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "tailwindCSS.experimental.configFile": "apps/client/tailwind.config.ts"
 }

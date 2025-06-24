@@ -1,0 +1,18 @@
+{
+    "extends": ["../../tsconfig.json"],
+    "compilerOptions": {
+        "target": "ES2021",
+        "module": "ES2022",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+
+        "noEmit": false,
+        "composite": true,
+        "types": ["bun-types"],
+
+        "baseUrl": ".",
+        "paths": {
+            "@env": ["src/env.ts"]
+        }
+    }
+}
