@@ -28,11 +28,19 @@ export default tseslint.config(
             "@typescript-eslint/restrict-template-expressions": ["warn", { allowNumber: true }],
             "@typescript-eslint/no-confusing-void-expression": ["warn", { ignoreArrowShorthand: true }],
 
-            "@typescript-eslint/explicit-function-return-type": "error",
+            "@typescript-eslint/explicit-function-return-type": [
+                "error",
+                {
+                    allowExpressions: true,
+                    allowTypedFunctionExpressions: true,
+                },
+            ],
             "@typescript-eslint/explicit-module-boundary-types": "error",
         },
         languageOptions: {
             parserOptions: {
+                project: false,
+                projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
         },

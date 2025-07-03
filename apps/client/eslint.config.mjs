@@ -20,17 +20,6 @@ export default tseslint.config(
         },
     },
 
-    {
-        files: ["**/*"],
-        languageOptions: {
-            parserOptions: {
-                project: false,
-                projectService: true,
-            },
-            globals: globals.browser,
-        },
-    },
-
     // * Astro overrides
     pluginAstro.configs.recommended,
     {
@@ -52,15 +41,12 @@ export default tseslint.config(
 
     // * Solid overrides
     {
-        files: ["**/*.tsx"],
+        files: ["**/*.ts", "**/*.tsx"],
         rules: {
             "solid/no-array-handlers": "warn",
         },
         languageOptions: {
             parser: tseslint.parser,
-            parserOptions: {
-                project: "tsconfig.json",
-            },
             globals: globals.browser,
         },
         ...pluginSolid.configs["flat/typescript"],
