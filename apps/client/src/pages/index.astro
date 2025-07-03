@@ -11,7 +11,7 @@ import Cards from "@components/serviceCards.astro";
     <div class="bg-black-primary py-28 pb-32 px-global md:pb-36 lg:pb-40">
         <section class="container relative m-auto text-center sm:text-left">
             <div
-                class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
+                class="absolute -top-4 left-12 z-0 hidden h-[17rem] w-96 rotate-[-16deg] border-4 border-gradient sm:block sm:w-[26rem] md:-top-6 md:h-80 md:w-[28rem] lg:-top-7 lg:h-[23rem] lg:w-[32rem]"
                 style={{
                     clipPath: "polygon(41.74% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 75.62%, 42.75% 72.18%);",
                 }}>
@@ -21,7 +21,7 @@ import Cards from "@components/serviceCards.astro";
                 Something?
             </h1>
             <p class="mt-3 text-xl sm:text-2xl">Decals? Jacket Pins? T-Shirts? Posters?</p>
-            <Button href="#form" class="btn-bg-animate mt-5 border-2 bg-transparent text-white border-gradient">
+            <Button href="#form" class="btn-bg-animate mt-5 bg-transparent text-white border-gradient">
                 <span class="relative">GET STARTED</span>
             </Button>
         </section>
@@ -34,7 +34,7 @@ import Cards from "@components/serviceCards.astro";
             <Cards />
         </section>
     </div>
-    <div class="bg-black-secondary py-6 px-global">
+    <div class="bg-black-tertiary py-6 px-global">
         <section class="container m-auto">
             <MainForm client:only="solid" />
         </section>

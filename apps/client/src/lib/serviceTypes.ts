@@ -5,13 +5,12 @@ const serviceTypes = [
     "Wall Posters/Banners",
     "T-Shirts",
     "Mugs",
-    "Keychains",
     "Metal Badges and Medals",
+    "Keychains",
     "Custom Merch",
 ] as const;
 type ServiceType = (typeof serviceTypes)[number];
 
-const unitTypes = ["cm", "inch"] as const;
 const measurementKeys = ["dimensions"] as const;
 const baseServiceFields = ["serviceType", "description"] as const;
 const optionalServiceFields = ["quantity", "dimensions", "size"] as const;
@@ -37,7 +36,6 @@ type AdditionalFieldKey = (typeof additionalFields)[ServiceType][number];
 type ServiceFieldKeys = [...typeof baseServiceFields, ...(typeof additionalFields)[ServiceType]];
 
 export {
-    unitTypes,
     serviceTypes,
     type ServiceType,
     measurementKeys,

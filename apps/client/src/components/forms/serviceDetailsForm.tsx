@@ -35,13 +35,13 @@ const ServiceDetailsForm: VoidComponent = () => {
 
     return (
         <>
-            <Field name="serviceType">
+            <Field name="serviceType" keepActive>
                 {(field, fieldProps) => (
                     <select {...fieldProps}>
                         <For each={serviceTypes}>
                             {(service) => (
                                 <option value={service} selected={field.value === service}>
-                                    {service}
+                                    {service === "Mugs" ? "Mugs (250-300 ml)" : service}
                                 </option>
                             )}
                         </For>
@@ -49,7 +49,7 @@ const ServiceDetailsForm: VoidComponent = () => {
                 )}
             </Field>
 
-            <Field name="description">
+            <Field name="description" keepActive>
                 {(field, fieldProps) => (
                     <textarea
                         {...fieldProps}
@@ -61,6 +61,21 @@ const ServiceDetailsForm: VoidComponent = () => {
                         }}
                         rows={7}
                         placeholder="Description of what you want. Please be as detailed as possible, since it will help us understand you better. Minimum 10 characters required."
+                    />
+                )}
+            </Field>
+
+            <Field name="url" keepActive>
+                {(field, fieldProps) => (
+                    <input
+                        {...fieldProps}
+                        value={field.value}
+                        classList={{
+                            "border-red-500": !!form.submitCount && !!field.error,
+                            "border-green-500": !!form.submitCount && field.dirty && !field.error,
+                        }}
+                        type="url"
+                        placeholder="URL (optional). Provide a link if you have a specific design or style in mind."
                     />
                 )}
             </Field>

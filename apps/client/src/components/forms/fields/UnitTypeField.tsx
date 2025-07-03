@@ -1,15 +1,16 @@
 import { For, type Component } from "solid-js";
 
 import { getForm } from "@stores/formStore";
-import { unitTypes } from "@lib/serviceTypes";
+import { unitTypes } from "@schemas/formSchema";
 
 const UnitTypeField: Component = () => {
     const { form, Field } = getForm();
 
     return (
-        <Field name="unitType">
+        <Field name="unitType" keepActive>
             {(field, fieldProps) => (
                 <select
+                    class="w-min"
                     {...fieldProps}
                     required
                     value={field.value}

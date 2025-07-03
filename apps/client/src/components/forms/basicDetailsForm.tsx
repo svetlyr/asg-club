@@ -8,7 +8,7 @@ const BasicDetailsForm: Component = () => {
 
     return (
         <>
-            <Field name="email">
+            <Field name="email" keepActive>
                 {(field, fieldProps) => (
                     <input
                         {...fieldProps}
@@ -24,11 +24,10 @@ const BasicDetailsForm: Component = () => {
                     />
                 )}
             </Field>
-            <Field name="fullname">
+            <Field name="fullname" keepActive>
                 {(field, fieldProps) => (
                     <input
                         {...fieldProps}
-                        required
                         value={field.value}
                         type="text"
                         placeholder="Full Name"
@@ -40,7 +39,7 @@ const BasicDetailsForm: Component = () => {
                     />
                 )}
             </Field>
-            <Field name="tel">
+            <Field name="tel" keepActive>
                 {(field, fieldProps) => (
                     <div
                         class="flex items-center border border-gray-secondary transition-colors duration-300"

@@ -1,11 +1,12 @@
 ---
+import Link from "@components/link";
 import MainForm from "@components/form";
 import Card from "@components/card.astro";
 import Layout from "@layouts/Layout.astro";
 import { navCollapseId } from "@components/navbar";
 
 import Tiktok from "@icons/custom/tiktok";
-import Envolope from "@icons/sli/envolope";
+import Envelope from "@icons/sli/envolope";
 import Discord from "@icons/custom/discord";
 import Twitter from "@icons/sli/social-twitter";
 import Youtube from "@icons/sli/social-youtube";
@@ -55,6 +56,7 @@ const contacts = [
 ---
 
 <Layout>
+    {/* eslint-disable-next-line tailwindcss/no-custom-classname */}
     <div class="bg-image px-global">
         <section class="container mx-auto py-40 text-center align-top">
             <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">
@@ -65,20 +67,20 @@ const contacts = [
     <div id={navCollapseId} class="invisible"></div>
     <div class="bg-black-secondary px-global">
         <section class="container mx-auto py-20 text-center">
-            <div class="mx-auto flex w-fit items-center pb-8 align-middle">
-                <Envolope class="mr-4 size-12 icon-gradient" />
-                {/* TODO: change email */}
-                <h3 class="text-3xl">orders@asg-club.com</h3>
+            <div class="mx-auto flex w-full max-w-screen-md flex-wrap items-center justify-center gap-4 pb-10">
+                <Envelope class="size-12 icon-gradient" />
+                <Link href={`mailto:${EMAIL}`} class="text-[1.35rem] font-bold text-white sm:text-3xl">{EMAIL}</Link>
             </div>
+
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
                 {
                     contacts.map(({ Icon, title, href, description }) => (
                         <Card
-                            newTab
                             class="size-full p-6 lg:px-6 lg:py-10"
+                            newTab
+                            href={href}
                             Icon={Icon}
                             title={title}
-                            href={href}
                             text={description}
                         />
                     ))

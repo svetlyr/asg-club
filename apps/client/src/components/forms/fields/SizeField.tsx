@@ -1,22 +1,22 @@
-import type { VoidComponent } from "solid-js";
+import { For, type VoidComponent } from "solid-js";
 import { getForm } from "@stores/formStore";
+import { sizes } from "@schemas/formSchema";
 
 const SizeField: VoidComponent = () => {
-    const { form, Field } = getForm();
+    const { Field } = getForm();
 
     return (
-        <Field name="size">
-            {(field, fp) => (
-                <input
-                    {...fp}
-                    value={field.value}
-                    required
-                    placeholder="Size"
-                    classList={{
-                        "border-red-500": !!form.submitCount && !!field.error,
-                        "border-green-500": !!form.submitCount && field.dirty && !field.error,
-                    }}
-                />
+        <Field name="size" keepActive>
+            {(field, fieldProps) => (
+                <select {...fieldProps}>
+                    <For each={sizes}>
+                        {(size) => (
+                            <option value={size} selected={field.value === size}>
+                                {size}
+                            </option>
+                        )}
+                    </For>
+                </select>
             )}
         </Field>
     );

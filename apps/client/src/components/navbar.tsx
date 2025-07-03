@@ -14,8 +14,7 @@ import Motorcycle from "@icons/fa/motorcycle";
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
 
-export const navCollapseId = "navCollapseTarget";
-
+const navCollapseId = "navCollapseTarget";
 const navigationLinks = [
     { name: "Services", href: "/services" },
     { name: "About Us", href: "/about" },
@@ -42,9 +41,7 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     const isTargetVisible = createVisibilityObserver(
         {
             threshold: [0],
-            // TODO: fix navbar collapse point
             rootMargin: `-${navbarHeight}px 0px 0px 0px`,
-            // rootMargin: `-${navbarHeight + scrollThreshold}px 0px 0px 0px`,
         },
         (entry) => entry.isIntersecting,
     )(() => document.getElementById(navCollapseId));
@@ -124,7 +121,7 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
                             </Show>
                             <Button
                                 href="#form"
-                                class="group btn-bg-animate flex items-center border-2 bg-transparent border-gradient md:px-6">
+                                class="group btn-bg-animate flex items-center bg-transparent border-gradient md:px-6">
                                 <Motorcycle class="mr-2 size-4 md:size-5" />
                                 <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
                             </Button>
@@ -163,4 +160,4 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     );
 };
 
-export default Navbar;
+export { Navbar as default, navCollapseId };

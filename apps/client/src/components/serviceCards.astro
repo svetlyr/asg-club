@@ -68,12 +68,12 @@ const cards = [
     import { setFormValue } from "@stores/formStore";
     import { serviceTypes, type ServiceType } from "@lib/serviceTypes";
 
-    const cards = document.querySelectorAll(".service-card a[href='#form']");
+    const cards = document.querySelectorAll<HTMLAnchorElement>(".service-card[href='#form']");
 
     cards.forEach((card) => {
-        const title = card.querySelector("h4")?.innerHTML;
+        const title = card.dataset["serviceType"];
 
-        if (title && title in serviceTypes) {
+        if (title && serviceTypes.includes(title)) {
             // * safe typecast since we do a runtime check
             addOnClick(card, () => setFormValue("serviceType", title as ServiceType));
         }
@@ -81,6 +81,7 @@ const cards = [
 </script>
 
 <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+    {/* eslint-disable tailwindcss/no-custom-classname */}
     {
         cards.map(({ Icon, title, description }) => (
             <Card
@@ -89,6 +90,7 @@ const cards = [
                 Icon={Icon}
                 title={title}
                 text={description}
+                data-service-type={title}
             />
         ))
     }

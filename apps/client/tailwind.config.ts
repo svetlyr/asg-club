@@ -48,6 +48,7 @@ export default {
                     },
                 },
                 ".border-gradient": {
+                    borderWidth: "2px",
                     borderImage: "var(--main-gradient) 1",
                 },
                 ".px-global": {

@@ -1,6 +1,7 @@
 ---
 import Link from "./link";
 import Button from "./button";
+import { serviceTypes } from "@lib/serviceTypes";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
@@ -13,7 +14,7 @@ import SocialYoutube from "@icons/sli/social-youtube";
 import SocialFacebook from "@icons/sli/social-facebook";
 import SocialInstagram from "@icons/sli/social-instagram";
 
-import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK } from "astro:env/server";
+import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK, EMAIL } from "astro:env/server";
 
 const socials = [
     { href: INSTAGRAM, label: "Instagram", Icon: SocialInstagram },
@@ -23,6 +24,24 @@ const socials = [
 ];
 ---
 
+<script>
+    import { addOnClick } from "@utils/dom";
+    import { setFormValue } from "@stores/formStore";
+    import { serviceTypes, type ServiceType } from "@lib/serviceTypes";
+
+    const services = document.querySelectorAll<HTMLAnchorElement>(".service[href='#form']");
+
+    services.forEach((element) => {
+        const service = element.dataset["serviceType"];
+
+        if (service && serviceTypes.includes(service)) {
+            // * safe typecast since we do a runtime check
+            addOnClick(element, () => setFormValue("serviceType", service as ServiceType));
+        }
+    });
+</script>
+
+{/* eslint-disable tailwindcss/no-custom-classname */}
 <div class="bg-black-quaternary px-global">
     <section class="container mx-auto text-nowrap py-16 text-white">
         <div
@@ -57,26 +76,34 @@ const socials = [
             <div
                 class="py-16 child-p:flex child-p:cursor-pointer child-p:justify-center child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary md:py-8 md:child-p:justify-normal">
                 <h4 class="pb-6">Get in Touch</h4>
-                {/* TODO: change email */}
-                <p class="items-center"><Envelope class="mr-3" />orders@asg-club.com</p>
+                <p class="items-center">
+                    <Envelope class="mr-3" /><Link href={`mailto:${EMAIL}`} class="items-center">{EMAIL}</Link>
+                </p>
                 <p class="items-center"><LocationPin class="mr-3" />Chisinau, Moldova</p>
 
                 <Button
                     href="/contact"
                     aria-label="Contact Us"
-                    class="group btn-bg-animate mx-auto my-5 flex w-fit items-center border-2 bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
+                    class="group btn-bg-animate mx-auto my-5 flex w-fit items-center bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
                     <Speech class="mr-2 size-4 md:size-5 group-hover:[&_path]:fill-white" />
                     <span class="text-sm md:text-base">CONTACT US</span>
                 </Button>
             </div>
-            <div
-                class="pb-8 child-p:cursor-pointer child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary md:py-8">
-                <!-- TODO: find a nice way to display all the services  -->
+            <div class="pb-8 md:py-8">
                 <h4 class="pb-6">Our Services</h4>
-                <p>Custom Decals</p>
-                <p>Jacket Pins</p>
-                <p>Merch</p>
-                <p>Design</p>
+                <div
+                    class="child-a:cursor-pointer child-a:py-1.5 child-a:transition-colors child-a:duration-500 child-a:ease-in-out hover:child-a:text-red-primary xl:grid xl:auto-rows-auto xl:grid-cols-[min-content_min-content_min-content] xl:gap-x-6">
+                    {
+                        serviceTypes.map((service) => (
+                            <Link
+                                href="#form"
+                                class="service block whitespace-nowrap text-gray-primary"
+                                data-service-type={service}>
+                                {service}
+                            </Link>
+                        ))
+                    }
+                </div>
             </div>
         </div>
     </section>

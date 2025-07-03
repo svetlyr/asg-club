@@ -10,38 +10,64 @@ import {
     maxValue,
     pipe,
     pick,
+    message,
     picklist,
-    nonEmpty,
-    type InferInput,
     optional,
-    type SchemaWithPick,
     minLength,
+    type InferInput,
+    type SchemaWithPick,
+    url,
+    custom,
 } from "valibot";
 import {
     additionalServiceFields,
     allServiceFields,
     baseServiceFields,
     serviceTypes,
-    unitTypes,
     type ServiceFieldKeys,
     type ServiceType,
 } from "@lib/serviceTypes";
 import { concatTuples } from "@utils";
 
+export const unitTypes = ["cm", "inch"] as const;
+export const sizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
+
 // https://ihateregex.io/expr/phone
-const phoneRegex = new RegExp(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/);
+const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
+// https://ihateregex.io/expr/url
+const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_+.~#?&//=]*)/;
 
 export const orderSchema = object({
-    email: pipe(string(), email()),
-    fullname: pipe(string(), nonEmpty()),
-    tel: union([pipe(string(), regex(phoneRegex)), literal("")]),
+    email: message(pipe(string(), email()), "Invalid email address"),
+    fullname: optional(pipe(string())),
+    tel: optional(message(union([pipe(string(), regex(phoneRegex)), literal("")]), "Invalid phone number")),
+
     serviceType: picklist(serviceTypes),
-    description: pipe(string(), nonEmpty()),
-    quantity: optional(pipe(number(), minValue(1), maxValue(999))),
-    dimensions: optional(pipe(number(), minValue(1), maxValue(50))),
+    description: message(pipe(string(), minLength(10)), "Description must be at least 10 characters long"),
+    // url: optional(pipe(string(), regex(urlRegex, "Invalid URL"))),
+    // TODO: fix url validation
+    url: optional(
+        pipe(
+            string(),
+            custom((value) => {
+                const a = urlRegex.test(value as string);
+
+                console.log(a, value);
+
+                return a;
+            }),
+        ),
+    ),
+
+    quantity: optional(message(pipe(number(), minValue(1), maxValue(999)), "Quantity must be between 1 and 999")),
+    dimensions: object({
+        width: optional(message(pipe(number(), minValue(1), maxValue(50)), "Width must be between 1 and 50")),
+        height: optional(message(pipe(number(), minValue(1), maxValue(50)), "Height must be between 1 and 50")),
+    }),
     unitType: optional(picklist(unitTypes)),
-    size: optional(picklist(unitTypes)), // TODO: size opts
-    comments: pipe(string(), minLength(10)),
+    size: optional(picklist(sizes)),
+
+    comments: optional(string()),
 });
 
 export type OrderSchema = InferInput<typeof orderSchema>;
@@ -51,12 +77,15 @@ export const orderDefaults: OrderSchema = {
     email: "",
     fullname: "",
     tel: "",
+
     serviceType: "Graphic Design",
+    url: "",
     description: "",
-    quantity: 0,
-    dimensions: 0,
+    quantity: undefined,
+    dimensions: { width: undefined, height: undefined },
     unitType: "cm",
-    size: "cm",
+    size: "M",
+
     comments: "",
 };
 
