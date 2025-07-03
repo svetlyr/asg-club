@@ -126,7 +126,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
             <div id="form" class={`flex items-start justify-center gap-x-16 py-32 ${wrapperClass}`}>
                 <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
                     <h2 class="mb-6 text-center text-5xl lg:text-left">{step().title}</h2>
-                    <p class="mb-20 text-center lg:text-left">{step().paragraph}</p>
+                    <p class="mb-20 text-center lg:mb-10 lg:text-left">{step().paragraph}</p>
                     <Stepper currentStep={currentStepIndex} steps={STEPS_DATA} />
 
                     <div class="space-y-4">
