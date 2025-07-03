@@ -17,7 +17,7 @@ import clubLogo from "@assets/club-logo.svg";
 const navCollapseId = "navCollapseTarget";
 const navigationLinks = [
     { name: "Services", href: "/services" },
-    { name: "About Us", href: "/about" },
+    { name: "Gallery", href: "/gallery" },
     { name: "Contact Us", href: "/contact" },
 ];
 
