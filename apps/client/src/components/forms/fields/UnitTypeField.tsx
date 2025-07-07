@@ -3,7 +3,10 @@ import { For, type Component } from "solid-js";
 import { getForm } from "@stores/formStore";
 import { unitTypes } from "@schemas/formSchema";
 
-const UnitTypeField: Component = () => {
+type Props = {
+    fieldKey: keyof typeof unitTypes;
+};
+const UnitTypeField: Component<Props> = (props) => {
     const { form, Field } = getForm();
 
     return (
@@ -18,7 +21,7 @@ const UnitTypeField: Component = () => {
                         "border-red-500": !!form.submitCount && !!field.error,
                         "border-green-500": !!form.submitCount && field.dirty && !field.error,
                     }}>
-                    <For each={unitTypes}>
+                    <For each={unitTypes[props.fieldKey]}>
                         {(unit) => (
                             <option value={unit} selected={field.value === unit}>
                                 {unit}

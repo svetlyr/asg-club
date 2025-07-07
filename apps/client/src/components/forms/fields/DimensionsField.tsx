@@ -14,7 +14,7 @@ const DimensionsField: Component = () => {
     function updateDimension(key: "width" | "height", value: Maybe<number>, delta: number): void {
         const current = value || 0;
 
-        setFormValue(`dimensions.${key}`, Math.max(current + delta, 1));
+        setFormValue(key, Math.max(current + delta, 1));
     }
 
     function handleKeyDown(e: KeyboardEvent): void {
@@ -40,7 +40,7 @@ const DimensionsField: Component = () => {
 
     return (
         <>
-            <Field name="dimensions.width" type="number" keepActive>
+            <Field name="width" type="number" keepActive>
                 {(field, fieldProps) => (
                     <div class="flex w-full">
                         <Button
@@ -70,7 +70,7 @@ const DimensionsField: Component = () => {
                 )}
             </Field>
 
-            <Field name="dimensions.height" type="number" keepActive>
+            <Field name="height" type="number" keepActive>
                 {(field, fieldProps) => (
                     <div class="flex w-full">
                         <Button
@@ -103,4 +103,4 @@ const DimensionsField: Component = () => {
     );
 };
 
-export default withUnit(DimensionsField);
+export default withUnit(DimensionsField, "dimensions");

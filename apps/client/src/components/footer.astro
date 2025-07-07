@@ -1,7 +1,7 @@
 ---
 import Link from "./link";
 import Button from "./button";
-import { serviceTypes } from "@lib/serviceTypes";
+import { serviceTypes } from "@schemas/serviceSchema";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
@@ -27,7 +27,7 @@ const socials = [
 <script>
     import { addOnClick } from "@utils/dom";
     import { setFormValue } from "@stores/formStore";
-    import { serviceTypes, type ServiceType } from "@lib/serviceTypes";
+    import { serviceTypes, type ServiceType } from "@schemas/serviceSchema";
 
     const services = document.querySelectorAll<HTMLAnchorElement>(".service[href='#form']");
 

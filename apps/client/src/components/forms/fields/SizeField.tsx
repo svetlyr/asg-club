@@ -2,6 +2,8 @@ import { For, type VoidComponent } from "solid-js";
 import { getForm } from "@stores/formStore";
 import { sizes } from "@schemas/formSchema";
 
+import withUnit from "./withUnit";
+
 const SizeField: VoidComponent = () => {
     const { Field } = getForm();
 
@@ -22,4 +24,4 @@ const SizeField: VoidComponent = () => {
     );
 };
 
-export default SizeField;
+export default withUnit(SizeField, "size");

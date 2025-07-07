@@ -9,7 +9,7 @@ import {
     type FormOptions as MFormOptions,
 } from "@modular-forms/solid";
 
-import type { OrderSchema } from "@schemas/formSchema";
+import { type OrderSchema } from "@schemas/formSchema";
 
 type CreateFormReturn = ReturnType<typeof createForm<OrderSchema>>;
 type FormApi = CreateFormReturn[0];

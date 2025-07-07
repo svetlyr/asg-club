@@ -2,19 +2,14 @@ import { Dynamic } from "solid-js/web";
 import { createEffect, createMemo, on, Show, type Component } from "solid-js";
 import { getErrors, reset, valiForm, type SubmitHandler } from "@modular-forms/solid";
 
-import {
-    orderSchema,
-    type OrderSchema,
-    orderDefaults,
-    basicDetailsSchema,
-    getServiceDetailsSchema,
-} from "@schemas/formSchema";
 import Button from "./button";
 import Stepper from "./stepper";
 import ToastContainer from "./toastContainer";
 import { showToast } from "@stores/toastStore";
 import { initFormStore } from "@stores/formStore";
 import useMultiStepForm from "@hooks/useMultiStepForm";
+import { getServiceDetailsSchema } from "@schemas/serviceSchema";
+import { orderSchema, type OrderSchema, orderDefaults, basicDetailsSchema } from "@schemas/formSchema";
 
 import CommentsForm from "./forms/commentsForm";
 import BasicDetailsForm from "./forms/basicDetailsForm";
