@@ -1,6 +1,7 @@
 import type { VoidComponent, VoidProps } from "solid-js";
+
 import UnitTypeField from "./UnitTypeField";
-import type { unitTypes } from "@schemas/formSchema";
+import type { unitTypes } from "@schemas/serviceSchema";
 
 export type WithUnitComponent<P extends VoidProps = object> = VoidComponent<P> & {
     readonly __withUnit: true;

@@ -1,8 +1,8 @@
 import { For, type VoidComponent } from "solid-js";
 import { getForm } from "@stores/formStore";
-import { sizes } from "@schemas/formSchema";
 
 import withUnit from "./withUnit";
+import { sizes } from "@schemas/serviceSchema";
 
 const SizeField: VoidComponent = () => {
     const { Field } = getForm();

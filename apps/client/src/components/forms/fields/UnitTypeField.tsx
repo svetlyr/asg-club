@@ -1,7 +1,7 @@
 import { For, type Component } from "solid-js";
 
 import { getForm } from "@stores/formStore";
-import { unitTypes } from "@schemas/formSchema";
+import { unitTypes } from "@schemas/serviceSchema";
 
 type Props = {
     fieldKey: keyof typeof unitTypes;
