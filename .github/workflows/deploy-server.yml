@@ -2,12 +2,13 @@ name: Deploy Server to Fly.io
 
 on:
     push:
-        branches:
-            - master
-        paths:
-            - "apps/server/**"
-            - "Dockerfile"
-            - "fly.toml"
+        # TODO: flyio deploy token
+        # branches:
+        #     - master
+        # paths:
+        #     - "apps/server/**"
+        #     - "Dockerfile"
+        #     - "fly.toml"
     workflow_dispatch:
 
 jobs:
