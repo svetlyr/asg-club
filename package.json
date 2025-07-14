@@ -18,6 +18,9 @@
     "typescript-eslint": "^8.35.0"
   },
   "trustedDependencies": [
-    "@parcel/watcher"
+    "@parcel/watcher",
+    "deasync",
+    "esbuild",
+    "sharp"
   ]
 }
