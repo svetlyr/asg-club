@@ -41,29 +41,21 @@ const socials = [
     });
 </script>
 
-{/* eslint-disable tailwindcss/no-custom-classname */}
 <div class="bg-black-quaternary px-global">
     <section class="container mx-auto text-nowrap py-16 text-white">
-        <div
-            class="grid justify-items-center text-center heir-h4:text-2xl heir-h4:font-bold md:flex md:gap-20 md:text-left lg:gap-32">
+        <div class="footer-layout grid justify-items-center text-center heir-h4:text-2xl heir-h4:font-bold lg:gap-32">
             <div>
-                <Link href="/" class="flex items-center justify-center md:justify-normal">
-                    <img
-                        alt="Logo"
-                        loading="lazy"
-                        decoding="async"
-                        src={asgLogo.src}
-                        class="mr-2 size-14 sm:size-16 md:size-16"
-                    />
+                <Link href="/" class="footer-logo flex max-w-fit items-center justify-center">
+                    <img alt="Logo" loading="lazy" decoding="async" src={asgLogo.src} class="mr-2 size-14 sm:size-16" />
                     <img
                         alt="Club text"
                         loading="lazy"
                         decoding="async"
                         src={clubLogo.src}
-                        class="size-20 sm:size-24 md:size-24"
+                        class="size-20 sm:size-24"
                     />
                 </Link>
-                <div class="flex justify-center gap-7 child:size-6 child-svg:cursor-pointer md:justify-normal">
+                <div class="footer-socials flex justify-center gap-7 child:size-6 child-svg:cursor-pointer">
                     {
                         socials.map(({ href, label, Icon }) => (
                             <Link newTab href={href} aria-label={label}>
@@ -74,7 +66,7 @@ const socials = [
                 </div>
             </div>
             <div
-                class="py-16 child-p:flex child-p:cursor-pointer child-p:justify-center child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary md:py-8 md:child-p:justify-normal">
+                class="footer-contact py-16 child-p:flex child-p:cursor-pointer child-p:justify-center child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary">
                 <h4 class="pb-6">Get in Touch</h4>
                 <p class="items-center">
                     <Envelope class="mr-3" /><Link href={`mailto:${EMAIL}`} class="items-center">{EMAIL}</Link>
@@ -84,12 +76,12 @@ const socials = [
                 <Button
                     href="/contact"
                     aria-label="Contact Us"
-                    class="group btn-bg-animate mx-auto my-5 flex w-fit items-center bg-transparent py-3 border-gradient md:mx-0 md:px-6 md:py-2.5">
-                    <Speech class="mr-2 size-4 md:size-5 group-hover:[&_path]:fill-white" />
-                    <span class="text-sm md:text-base">CONTACT US</span>
+                    class="footer-contact__button group btn-bg-animate mx-auto my-5 flex w-fit items-center bg-transparent py-3 border-gradient">
+                    <Speech class="mr-2 size-4 group-hover:[&_path]:fill-white" />
+                    <span class="text-sm">CONTACT US</span>
                 </Button>
             </div>
-            <div class="pb-8 md:py-8">
+            <div class="footer-services pb-8">
                 <h4 class="pb-6">Our Services</h4>
                 <div
                     class="child-a:cursor-pointer child-a:py-1.5 child-a:transition-colors child-a:duration-500 child-a:ease-in-out hover:child-a:text-red-primary xl:grid xl:auto-rows-auto xl:grid-cols-[min-content_min-content_min-content] xl:gap-x-6">
@@ -113,3 +105,65 @@ const socials = [
         <Link class="text-gradient font-semibold" newTab href="https://github.com/pokens"> pokens </Link>
     </p>
 </div>
+
+<style lang="scss">
+    $footer-breakpoint: 884px;
+
+    .footer-layout {
+        @media (min-width: $footer-breakpoint) {
+            display: flex;
+            gap: 5rem;
+            text-align: left;
+
+            .footer-logo,
+            .footer-socials {
+                justify-content: normal;
+            }
+
+            .footer-logo {
+                & > :first-child {
+                    width: 4rem;
+                    height: 4rem;
+                }
+
+                & > :nth-child(2) {
+                    width: 6rem;
+                    height: 6rem;
+                }
+            }
+
+            .footer-contact,
+            .footer-services {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+
+            .footer-contact {
+                & > p {
+                    justify-content: normal;
+                }
+
+                &__button {
+                    margin-left: 0;
+                    margin-right: 0;
+
+                    padding-left: 1.5rem;
+                    padding-right: 1.5rem;
+
+                    padding-top: 0.625rem;
+                    padding-bottom: 0.625rem;
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+
+                    span {
+                        font-size: 1rem;
+                        line-height: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+</style>
