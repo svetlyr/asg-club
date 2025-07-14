@@ -14,7 +14,6 @@ interface Props extends LinkProps {
 const { class: className = "", title, text, href = "", Icon, newTab, ...attrs } = Astro.props;
 ---
 
-{/* eslint-disable tailwindcss/no-custom-classname */}
 <Link
     href={href}
     newTab={newTab}
@@ -55,7 +54,7 @@ const { class: className = "", title, text, href = "", Icon, newTab, ...attrs } 
             &::before {
                 width: calc(50% + 10px);
                 height: calc(50% + 10px);
-                @apply bg-gradient transition-opacity duration-500;
+                @apply bg-gradient transition-opacity duration-700;
 
                 &:hover {
                     @apply opacity-30;
