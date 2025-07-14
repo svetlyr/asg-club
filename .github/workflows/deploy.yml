@@ -1,7 +1,5 @@
 name: Deploy to GitHub Pages
 
-# TODO: on push to specific path, deploy accordingally
-
 on:
     push:
         branches: [master]
