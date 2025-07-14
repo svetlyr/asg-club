@@ -20,6 +20,13 @@ export default tseslint.config(
         },
     },
 
+    {
+        files: ["**/*.astro", "**/*.ts", "**/*.tsx"],
+        rules: {
+            "tailwindcss/no-custom-classname": "off",
+        },
+    },
+
     // * Astro overrides
     pluginAstro.configs.recommended,
     {
