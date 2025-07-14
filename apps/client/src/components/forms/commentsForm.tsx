@@ -1,8 +1,8 @@
 import type { Component } from "solid-js";
-import { getForm } from "@stores/formStore";
+import { useForm } from "@stores/formStore";
 
 const CommentsForm: Component = () => {
-    const { Field } = getForm();
+    const { Field } = useForm();
 
     return (
         <Field name="comments">

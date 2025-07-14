@@ -1,15 +1,15 @@
 import { Dynamic } from "solid-js/web";
-import { createEffect, createMemo, on, Show, type Component } from "solid-js";
 import { getErrors, reset, valiForm, type SubmitHandler } from "@modular-forms/solid";
+import { createEffect, createMemo, on, onMount, Show, type Component } from "solid-js";
 
 import Button from "./button";
 import Stepper from "./stepper";
 import ToastContainer from "./toastContainer";
 import { showToast } from "@stores/toastStore";
-import { initFormStore } from "@stores/formStore";
 import useMultiStepForm from "@hooks/useMultiStepForm";
+import { setFormValue, useForm } from "@stores/formStore";
 import { getServiceDetailsSchema } from "@schemas/serviceSchema";
-import { orderSchema, type OrderSchema, orderDefaults, basicDetailsSchema } from "@schemas/formSchema";
+import { orderSchema, type OrderSchema, orderDefaults, basicDetailsSchema, type OrderKeys } from "@schemas/formSchema";
 
 import CommentsForm from "./forms/commentsForm";
 import BasicDetailsForm from "./forms/basicDetailsForm";
@@ -52,7 +52,8 @@ type Props = {
 
 // eslint-disable-next-line solid/no-destructure
 const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
-    const { form, Form } = initFormStore({
+    let formRef!: HTMLFormElement;
+    const { form, Form } = useForm({
         initialValues: orderDefaults,
         validateOn: "submit",
         revalidateOn: "input",
@@ -65,7 +66,6 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     const serviceSchema = getServiceDetailsSchema(value.serviceType!);
 
-                    console.log(value.url);
                     return valiForm(serviceSchema)(value);
                 }
                 case 2:
@@ -114,12 +114,22 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
         navigate();
     };
 
+    // * repopulate values on reload
+    onMount(() => {
+        const formData = new FormData(formRef);
+
+        for (const [key, value] of formData.entries()) {
+            if (typeof value === "string") {
+                setFormValue(key as OrderKeys, value);
+            }
+        }
+    });
+
     const step = createMemo(() => STEPS_DATA[currentStepIndex()]);
     return (
         <>
-            <ToastContainer />
             <div id="form" class={`flex items-start justify-center gap-x-16 py-32 ${wrapperClass}`}>
-                <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit}>
+                <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit} ref={formRef}>
                     <h2 class="mb-6 text-center text-5xl lg:text-left">{step().title}</h2>
                     <p class="mb-20 text-center lg:mb-10 lg:text-left">{step().paragraph}</p>
                     <Stepper currentStep={currentStepIndex} steps={STEPS_DATA} />
@@ -145,6 +155,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
                 </Form>
                 <img width={522} class="hidden pr-4 lg:block" src={step().image} loading="lazy" decoding="async" />
             </div>
+            <ToastContainer />
         </>
     );
 };

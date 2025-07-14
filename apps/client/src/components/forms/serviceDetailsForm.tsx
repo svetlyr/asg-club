@@ -2,7 +2,7 @@ import { Dynamic } from "solid-js/web";
 import { createMemo, For } from "solid-js";
 import type { Component, VoidComponent } from "solid-js";
 
-import { getForm, getFormValue } from "@stores/formStore";
+import { useFormValue, useForm } from "@stores/formStore";
 import { serviceTypes, uiSchemaFields, type MeasurementKey, type UiSchemaFieldKey } from "@schemas/serviceSchema";
 
 import SizeField from "./fields/SizeField";
@@ -21,13 +21,13 @@ const fieldMap = {
 } satisfies FieldMapType;
 
 const AdditionalFields: Component = () => {
-    const serviceType = createMemo(() => getFormValue("serviceType"));
+    const serviceType = createMemo(() => useFormValue("serviceType"));
 
     return <For each={uiSchemaFields[serviceType()]}>{(fieldKey) => <Dynamic component={fieldMap[fieldKey]} />}</For>;
 };
 
 const ServiceDetailsForm: VoidComponent = () => {
-    const { form, Field } = getForm();
+    const { form, Field } = useForm();
 
     return (
         <>

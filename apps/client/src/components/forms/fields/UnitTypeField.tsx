@@ -1,13 +1,13 @@
 import { For, type Component } from "solid-js";
 
-import { getForm } from "@stores/formStore";
+import { useForm } from "@stores/formStore";
 import { unitTypes } from "@schemas/serviceSchema";
 
 type Props = {
     fieldKey: keyof typeof unitTypes;
 };
 const UnitTypeField: Component<Props> = (props) => {
-    const { form, Field } = getForm();
+    const { form, Field } = useForm();
 
     return (
         <Field name="unitType" keepActive>

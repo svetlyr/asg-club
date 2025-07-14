@@ -2,43 +2,24 @@ import { type Component } from "solid-js";
 import { type Maybe } from "@modular-forms/solid";
 
 import Button from "@components/button";
-import { getForm, setFormValue } from "@stores/formStore";
+import { handleNumberTransform } from "@utils/form";
+import { handleKeyDown, handlePaste } from "./handlers";
+import { useForm, setFormValue } from "@stores/formStore";
 
 import Plus from "@icons/custom/plus";
 import Menus from "@icons/custom/menus";
 
 const QuantityField: Component = () => {
-    const { form, Field } = getForm();
+    const { form, Field } = useForm();
 
     function updateQuantity(value: Maybe<number>, delta: number): void {
         const current = value || 0;
 
-        setFormValue("quantity", Math.max(current + delta, 1));
-    }
-
-    function handleKeyDown(e: KeyboardEvent): void {
-        // * allow clipboard shortcuts
-        if (e.ctrlKey || e.metaKey) {
-            return;
-        }
-
-        // * discard input on non-digit
-        if (e.key.length === 1 && !/[0-9]/.test(e.key)) {
-            e.preventDefault();
-        }
-    }
-
-    function handlePaste(e: ClipboardEvent): void {
-        const text = e.clipboardData?.getData("text").trim() ?? "";
-
-        // * discard input on non-digit
-        if (!/^[0-9]+$/.test(text)) {
-            e.preventDefault();
-        }
+        setFormValue("quantity", Math.max(current + delta, 0));
     }
 
     return (
-        <Field name="quantity" type="number">
+        <Field name="quantity" type="number" keepActive transform={handleNumberTransform}>
             {(field, fieldProps) => (
                 <div class="flex">
                     <Button
@@ -51,7 +32,7 @@ const QuantityField: Component = () => {
                         required
                         type="number"
                         placeholder="Quantity"
-                        value={field.value}
+                        value={field.value === 0 ? "" : field.value}
                         onPaste={handlePaste}
                         onKeyDown={handleKeyDown}
                         classList={{

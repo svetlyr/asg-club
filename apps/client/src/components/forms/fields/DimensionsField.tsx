@@ -3,44 +3,25 @@ import { type Maybe } from "@modular-forms/solid";
 
 import withUnit from "./withUnit";
 import Button from "@components/button";
-import { getForm, setFormValue } from "@stores/formStore";
+import { handleNumberTransform } from "@utils/form";
+import { handleKeyDown, handlePaste } from "./handlers";
+import { setFormValue, useForm } from "@stores/formStore";
 
 import Plus from "@icons/custom/plus";
 import Menus from "@icons/custom/menus";
 
 const DimensionsField: Component = () => {
-    const { form, Field } = getForm();
+    const { form, Field } = useForm();
 
     function updateDimension(key: "width" | "height", value: Maybe<number>, delta: number): void {
         const current = value || 0;
 
-        setFormValue(key, Math.max(current + delta, 1));
-    }
-
-    function handleKeyDown(e: KeyboardEvent): void {
-        // * allow clipboard shortcuts
-        if (e.ctrlKey || e.metaKey) {
-            return;
-        }
-
-        // * discard input on non-digit
-        if (e.key.length === 1 && !/[0-9]/.test(e.key)) {
-            e.preventDefault();
-        }
-    }
-
-    function handlePaste(e: ClipboardEvent): void {
-        const text = e.clipboardData?.getData("text").trim() ?? "";
-
-        // * discard input on non-digit
-        if (!/^[0-9]+$/.test(text)) {
-            e.preventDefault();
-        }
+        setFormValue(key, Math.max(current + delta, 0));
     }
 
     return (
         <>
-            <Field name="width" type="number" keepActive>
+            <Field name="width" type="number" keepActive transform={handleNumberTransform}>
                 {(field, fieldProps) => (
                     <div class="flex w-full">
                         <Button
@@ -52,7 +33,7 @@ const DimensionsField: Component = () => {
                             {...fieldProps}
                             required
                             type="number"
-                            value={field.value}
+                            value={field.value === 0 ? "" : field.value}
                             onKeyDown={handleKeyDown}
                             onPaste={handlePaste}
                             placeholder="Width"
@@ -82,7 +63,7 @@ const DimensionsField: Component = () => {
                             {...fieldProps}
                             required
                             type="number"
-                            value={field.value}
+                            value={field.value === 0 ? "" : field.value}
                             placeholder="Height"
                             onKeyDown={handleKeyDown}
                             onPaste={handlePaste}

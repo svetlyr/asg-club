@@ -56,7 +56,6 @@ const contacts = [
 ---
 
 <Layout>
-    {/* eslint-disable-next-line tailwindcss/no-custom-classname */}
     <div class="bg-image px-global">
         <section class="container mx-auto py-40 text-center align-top">
             <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">
@@ -64,7 +63,7 @@ const contacts = [
             </h1>
         </section>
     </div>
-    <div id={navCollapseId} class="invisible"></div>
+    <div id={navCollapseId} class="nav-collapse-target"></div>
     <div class="bg-black-secondary px-global">
         <section class="container mx-auto py-20 text-center">
             <div class="mx-auto flex w-full max-w-screen-md flex-wrap items-center justify-center gap-4 pb-10">
@@ -90,7 +89,7 @@ const contacts = [
     </div>
     <div class="bg-black-tertiary px-global">
         <section class="container mx-auto">
-            <MainForm client:only="solid" />
+            <MainForm client:visible={{ rootMargin: "200px" }} />
         </section>
     </div>
 </Layout>

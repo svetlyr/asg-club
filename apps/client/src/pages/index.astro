@@ -36,7 +36,7 @@ import Cards from "@components/serviceCards.astro";
     </div>
     <div class="bg-black-tertiary py-6 px-global">
         <section class="container m-auto">
-            <MainForm client:only="solid" />
+            <MainForm client:visible={{ rootMargin: "200px" }} />
         </section>
     </div>
 </Layout>

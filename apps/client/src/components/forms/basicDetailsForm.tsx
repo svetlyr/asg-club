@@ -1,10 +1,10 @@
 import type { Component } from "solid-js";
-import { getForm } from "@stores/formStore";
+import { useForm } from "@stores/formStore";
 
 import PhoneIcon from "@icons/sli/phone";
 
 const BasicDetailsForm: Component = () => {
-    const { form, Field } = getForm();
+    const { form, Field } = useForm();
 
     return (
         <>
