@@ -1,7 +1,7 @@
 import type { Component } from "solid-js";
 import { useWindowScrollPosition } from "@solid-primitives/scroll";
-import { createComputed, createEffect, createSignal, For, Show } from "solid-js";
 import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
+import { createComputed, createEffect, createSignal, For, onMount, Show } from "solid-js";
 
 import Link from "./link";
 import Button from "./button";
@@ -35,8 +35,12 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     const [isMenuOpen, setIsMenuOpen] = createSignal<boolean>(false);
     const [isNavbarVisible, setIsNavbarVisible] = createSignal<boolean>(true);
 
-    let accumulatedScroll = 0;
-    let lastScrollY = scroll.y;
+    let lastScrollY: number;
+    let accumulatedScroll: number;
+    onMount(() => {
+        accumulatedScroll = 0;
+        lastScrollY = scroll.y;
+    });
 
     const isTargetVisible = createVisibilityObserver(
         {
@@ -53,7 +57,7 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
         const delta = currentScrollY - lastScrollY;
 
         lastScrollY = currentScrollY;
-        accumulatedScroll += -delta;
+        accumulatedScroll -= delta;
 
         // * scroll down
         if (accumulatedScroll <= -scrollThreshold) {
@@ -80,7 +84,9 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
                 style={{ height: `${navbarHeight}px` }}
                 classList={{ "translate-y-0": isNavbarVisible(), "-translate-y-full": !isNavbarVisible() }}
                 class={`sticky top-0 z-20 w-full bg-black-primary shadow-md transition-transform duration-300 px-global ${className}`}>
-                <div class="container mx-auto flex h-full items-center justify-between">
+                <div
+                    class="animate-appear-down container mx-auto flex h-full items-center justify-between"
+                    style={{ "animation-delay": "500ms" }}>
                     <Link href="/" class="flex items-center">
                         <img
                             alt="Logo"
