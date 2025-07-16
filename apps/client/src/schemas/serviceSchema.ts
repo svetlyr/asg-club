@@ -14,6 +14,11 @@ import {
     pick,
     type SchemaWithPick,
     type InferInput,
+    maxSize,
+    mimeType,
+    file,
+    array,
+    maxLength,
 } from "valibot";
 
 import { concatTuples } from "@utils";
@@ -46,10 +51,10 @@ const additionalFields = {
     "Stickers/Decals":          ["quantity", "width", "height"],
     "Jacket Pins":              ["quantity", "width", "height"],
     "Wall Posters/Banners":     ["quantity", "width", "height"],
-    "T-Shirts":                 ["size"],
+    "T-Shirts":                 ["quantity", "size"],
     "Mugs":                     ["quantity"],
-    "Keychains":                ["quantity"],
-    "Metal Badges and Medals":  ["quantity"],
+    "Keychains":                ["quantity", "width", "height"],
+    "Metal Badges and Medals":  ["quantity", "width", "height"],
     "Custom Merch":             ["quantity"],
 } as const;
 export type AdditionalFieldKey = (typeof additionalFields)[ServiceType][number];
@@ -57,6 +62,21 @@ export type AdditionalFieldKey = (typeof additionalFields)[ServiceType][number];
 export const baseServiceSchema = object({
     serviceType: picklist(serviceTypes),
     description: message(pipe(string(), minLength(10)), "Description must be at least 10 characters long"),
+    files: optional(
+        pipe(
+            array(
+                pipe(
+                    file("Please select an image file."),
+                    mimeType(
+                        ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+                        "Please select a JPEG, PNG or WEBP file.",
+                    ),
+                    maxSize(1024 * 1024 * 10, "Please select a file smaller than 10 MB."),
+                ),
+            ),
+            maxLength(5),
+        ),
+    ),
     url: optional(pipe(string(), url())),
 });
 

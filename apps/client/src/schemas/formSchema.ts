@@ -27,6 +27,7 @@ export const orderDefaults: OrderSchema = {
     serviceType: "Graphic Design",
     url: "",
     description: "",
+    files: undefined,
     quantity: 0,
     width: 0,
     height: 0,

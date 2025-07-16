@@ -1,45 +1,188 @@
-import { Elysia, t } from "elysia";
+import { InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
+import { env } from "@yolk-oss/elysia-env";
 import { cors } from "@elysiajs/cors";
-
-import { InlineKeyboard } from "grammy";
+import { Elysia, t } from "elysia";
 
 import { db } from "./db";
-import { bot } from "./bot";
+import { bot, transporter } from "./bot";
 import { orders } from "./db/schema";
-import { createInsertSchema } from "drizzle-typebox";
+// import { OAuth2Client } from "google-auth-library";
+// import { GoogleSpreadsheet } from "google-spreadsheet";
+import { eq, sql } from "drizzle-orm";
 
-const order = createInsertSchema(orders, {
-    email: t.String({ format: "email" }),
+const orderDto = t.Object({
+    images: t.Optional(t.Files({ format: ["image/jpg", "image/jpeg", "image/png", "image/webp"] })),
+    order: t.File({ format: "application/json" }),
 });
 
-const createOrder = t.Omit(order, ["uuid", "designer_price", "printer_price"]);
+type orderSchema = {
+    url?: string;
+    email: string;
+    fullname: string;
+    tel: string;
+    serviceType:
+        | "Graphic Design"
+        | "Stickers/Decals"
+        | "Jacket Pins"
+        | "Wall Posters/Banners"
+        | "T-Shirts"
+        | "Mugs"
+        | "Keychains"
+        | "Metal Badges and Medals"
+        | "Custom Merch";
+    description: string;
+    quantity: number;
+    width: number;
+    height: number;
+    unitType: "cm" | "inch";
+    comments: string;
+};
 
-const DESIGNER_CHAT = process.env.DESIGNER_CHAT_ID;
-const PRINTER_CHAT = process.env.PRINTER_CHAT_ID;
+const envSchema = {
+    BOT_TOKEN: t.String(),
+
+    POSTGRES_DB: t.String(),
+    POSTGRES_PORT: t.Number(),
+    POSTGRES_USER: t.String(),
+    POSTGRES_HOSTNAME: t.String(),
+    POSTGRES_PASSWORD: t.String(),
+
+    OWNER_CHAT_ID: t.Number(),
+    DESIGNER_CHAT_ID: t.Number(),
+    PRINTER_CHAT_ID: t.Number(),
+    FACTORY_CHAT_ID: t.Number(),
+
+    GOOGLE_CLIENT_ID: t.String(),
+    GOOGLE_CLIENT_SECRET: t.String(),
+    GOOGLE_REFRESH_TOKEN: t.String(),
+};
+
+// TODO: uncomment after client will acquire personal server
+// export const flowControl = new Map<number, { counter: number; response: string[] }>();
+
+async function sendImages(chatId: number, images: File[]): Promise<void> {
+    const mediaGroup = await Promise.all(
+        images.map(async (img) => InputMediaBuilder.photo(new InputFile(await img.bytes()))),
+    );
+
+    await bot.api.sendMediaGroup(chatId, mediaGroup);
+
+    // const fileIds = sentMessages.map((msg) => msg.photo[msg.photo.length - 1].file_id as string);
+
+    // const mediaGroupWithFileIds = fileIds.map((fileId) => InputMediaBuilder.photo(fileId));
+
+    // await bot.api.sendMediaGroup(PRINTER_CHAT, mediaGroupWithFileIds);
+}
+
+async function sendMessage(
+    order: orderSchema,
+    orderId: number,
+    chatId: number,
+    flow: "designer" | "printer" | "factory",
+): Promise<void> {
+    let text = `New order with ID: ${orderId}`;
+
+    for (const [key, value] of Object.entries(order)) {
+        if (value) text += `\n${key}: ${value}`;
+    }
+
+    await db
+        .update(orders)
+        .set({ counter: sql`${orders.counter} + 1` })
+        .where(eq(orders.id, orderId));
+
+    await bot.api.sendMessage(chatId, text, {
+        reply_markup: new InlineKeyboard().text("Поставить цену", `${flow}Flow:${orderId}`),
+    });
+}
+
+// const oauthClient = new OAuth2Client({
+//     clientId: process.env.GOOGLE_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//     credentials: {
+//         refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+//     },
+// });
 
 new Elysia()
+    .use(
+        env(envSchema, {
+            onError: (env) => {
+                console.log("Missing environment variables:", env);
+            },
+            onSuccess: (env) => {
+                console.log("Successfully loaded environment variables:", env);
+            },
+        }),
+    )
     .use(cors())
     .post(
         "/orders",
-        async ({ body }) => {
-            const [data] = await db
-                .insert(orders)
-                .values(body)
-                .returning({ orderUuid: orders.uuid, fullname: orders.fullname, description: orders.description });
+        async ({ body: { images, order }, env }) => {
+            // * Custom validation
+            const parsedOrder = (await order.json()) as orderSchema;
 
-            // * Schema and PG ensure there is no case where data can be undefined
+            if (parsedOrder.serviceType === "Custom Merch") {
+                let text = `New order for custom merch.`;
+
+                for (const [key, value] of Object.entries(parsedOrder)) {
+                    if (value) text += `\n${key}: ${value}`;
+                }
+
+                const mail = {
+                    from: '"ASG Designs" <asgdesigns.store@gmail.com>',
+                    to: "asgdesigns.store@gmail.com",
+                    subject: "Custome Merch Order",
+                    text,
+                    attachments: images
+                        ? await Promise.all(
+                              images.map(async (image) => {
+                                  return {
+                                      filename: `${Date.now()}.jpg`,
+                                      content: Buffer.from(await image.arrayBuffer()),
+                                      encoding: "base64",
+                                  };
+                              }),
+                          )
+                        : undefined,
+                };
+
+                await transporter.sendMail(mail);
+                return;
+            }
+
+            // try {
+            //     await db.insert(orders).values(parsedOrder).returning({ orderId: orders.id });
+            // } catch (error) {
+            //     console.log(error);
+            // }
+            const result = await db.insert(orders).values(parsedOrder).returning({ orderId: orders.id });
+
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const { orderUuid, fullname, description } = data!;
-            await bot.api.sendMessage(DESIGNER_CHAT, `Новый заказ #${orderUuid} для ${fullname}:\n` + description, {
-                reply_markup: new InlineKeyboard().text("Поставить цену", `designerFlow:${orderUuid}`),
-            });
+            const orderId = result[0]!.orderId;
 
-            await bot.api.sendMessage(PRINTER_CHAT, `Новый заказ #${orderUuid} для ${fullname}:\n` + description, {
-                reply_markup: new InlineKeyboard().text("Поставить цену", `printerFlow:${orderUuid}`),
-            });
+            const DESIGNER_CHAT = env.DESIGNER_CHAT_ID;
+            const PRINTER_CHAT = env.PRINTER_CHAT_ID;
+            const FACTORY_CHAT = env.FACTORY_CHAT_ID;
+
+            if (images) {
+                await sendImages(DESIGNER_CHAT, images);
+            }
+
+            await sendMessage(parsedOrder, orderId, DESIGNER_CHAT, "designer");
+
+            if (parsedOrder.serviceType === "Graphic Design") {
+                return;
+            }
+
+            if (parsedOrder.serviceType === "Stickers/Decals" || parsedOrder.serviceType === "Wall Posters/Banners") {
+                await sendMessage(parsedOrder, orderId, PRINTER_CHAT, "printer");
+            } else {
+                await sendMessage(parsedOrder, orderId, FACTORY_CHAT, "factory");
+            }
         },
         {
-            body: createOrder,
+            body: orderDto,
         },
     )
     .listen(3000, () => {

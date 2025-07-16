@@ -1,4 +1,4 @@
-import { pgTable, varchar, pgEnum, smallint, uuid, integer } from "drizzle-orm/pg-core";
+import { pgTable, varchar, pgEnum, smallint, serial, real } from "drizzle-orm/pg-core";
 
 export const servicesEnum = pgEnum("services", [
     "Graphic Design",
@@ -8,24 +8,34 @@ export const servicesEnum = pgEnum("services", [
     "T-Shirts",
     "Mugs",
     "Keychains",
+    "Metal Badges and Medals",
     "Custom Merch",
-    "Balls",
 ]);
 
 export const unitEnum = pgEnum("units", ["cm", "inch"]);
 
+export const sizesEnum = pgEnum("sizes", ["XS", "S", "M", "L", "XL", "XXL"]);
+
 export const orders = pgTable("orders", {
-    uuid: uuid().defaultRandom().primaryKey(),
+    id: serial().primaryKey(),
     email: varchar().notNull(),
     fullname: varchar().notNull(),
-    tel: varchar("telephone").notNull(),
+    tel: varchar("telephone"),
     serviceType: servicesEnum().notNull(),
     description: varchar().notNull(),
-    quantity: smallint().notNull(),
-    dimensions: smallint().notNull(),
-    unitType: unitEnum().notNull(),
-    comments: varchar().notNull(),
+    url: varchar(),
+    quantity: smallint(),
+    width: real(),
+    height: real(),
+    size: sizesEnum(),
+    unitType: unitEnum(),
+    comments: varchar(),
 
-    designer_price: integer(),
-    printer_price: integer(),
+    designerPrice: real().default(0),
+    printerPrice: real().default(0),
+    factoryPrice: real().default(0),
+    finalPrice: real(),
+
+    counter: smallint().default(0),
+    text: varchar().default(""),
 });

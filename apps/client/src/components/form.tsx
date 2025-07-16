@@ -99,10 +99,27 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
         ),
     );
 
-    const handleSubmit: SubmitHandler<OrderSchema> = (e): void => {
-        console.log("Form submitted with values:", e);
+    const handleSubmit: SubmitHandler<OrderSchema> = (value): void => {
+        console.log("Form submitted with values:", value);
 
-        if (!isLastStep()) handleNavigation(next);
+        if (!isLastStep()) {
+            handleNavigation(next);
+            return;
+        }
+
+        const { files, ...order } = value;
+        const formData = new FormData();
+
+        if (files) {
+            files.forEach((file) => formData.append("images", file, file.name));
+        }
+
+        formData.append("order", new Blob([JSON.stringify(order)], { type: "application/json" }), "order.json");
+
+        void fetch("http://localhost:3000/orders", {
+            method: "POST",
+            body: formData,
+        });
 
         return;
     };

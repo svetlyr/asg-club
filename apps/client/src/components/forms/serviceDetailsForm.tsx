@@ -61,6 +61,10 @@ const ServiceDetailsForm: VoidComponent = () => {
                 )}
             </Field>
 
+            <Field name="files" type="File[]" keepActive>
+                {(field, fieldProps) => <input {...fieldProps} type="file" multiple required />}
+            </Field>
+
             <Field name="url" keepActive>
                 {(field, fieldProps) => (
                     <input
