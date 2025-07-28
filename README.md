@@ -1,9 +1,15 @@
 # asg-club
 
-To install dependencies:
+# TODO: add readme
+
+## Docker
+Remember to remove named volume after deleting container
 
 ```bash
-bun install
+docker volume rm asg-club_pgdata_cms
+docker volume rm asg-club_pgdata_server
 ```
-
-This project was created using `bun init` in bun v1.2.14. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+or
+```bash
+docker compose down -v
+```
