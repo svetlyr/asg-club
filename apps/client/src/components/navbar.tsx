@@ -17,7 +17,7 @@ import clubLogo from "@assets/club-logo.svg";
 const navCollapseId = "navCollapseTarget";
 const navigationLinks = [
     { name: "Services", href: "/services" },
-    { name: "Gallery", href: "/gallery" },
+    { name: "Gallery", href: "/gallery", prefetch: true },
     { name: "Contact Us", href: "/contact" },
 ];
 
@@ -113,10 +113,11 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
                         <ul class="items-center space-x-4 text-white md:flex md:space-x-6 lg:space-x-8">
                             <Show when={!isMobile()}>
                                 <For each={navigationLinks}>
-                                    {({ name, href }) => (
+                                    {({ name, href, prefetch }) => (
                                         <li class="hidden md:block">
                                             <Link
                                                 href={href}
+                                                data-astro-prefetch={prefetch}
                                                 classList={{ "text-red-primary": path.includes(href) }}
                                                 class="text-sm transition-colors duration-500 ease-in-out hover:text-red-primary md:text-base lg:text-lg">
                                                 {name}

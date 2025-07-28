@@ -1,6 +1,72 @@
 ---
+import MainForm from "@components/form";
 import Layout from "@layouts/Layout.astro";
 import { navCollapseId } from "@components/navbar";
+
+import cmsApi from "@api/server";
+import { CMS_URL } from "astro:env/server";
+import type { GalleryItem, PaginatedApiResponse } from "@api/types";
+import tryCatch from "@utils/tryCatch";
+
+const [gallery, error] = await tryCatch(
+    cmsApi.get<PaginatedApiResponse<GalleryItem>>("gallery", { queryParams: { pagination: "false" } }),
+);
+
+if (error) {
+    console.error("Build error: failed to fetch gallery items:", error);
+    throw new Error("Build error: failed to fetch gallery items", { cause: error });
+}
+
+// TODO: cms prod docker deployment - fly.io volume for images
+// TODO: add onClick expanded view
 ---
 
-<Layout navCollapseId={navCollapseId} />
+<Layout>
+    <div class="bg-image px-global">
+        <section class="container mx-auto py-40 text-center align-top">
+            <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">Gallery</h1>
+        </section>
+    </div>
+    <div id={navCollapseId} class="nav-collapse-target"></div>
+    <div class="bg-black-secondary px-global">
+        <section class="container mx-auto grid grid-cols-4 gap-10 py-20">
+            {
+                gallery.docs.map((gallery) => (
+                    <div class="bg-black-tertiary shadow-lg">
+                        <img
+                            class="aspect-[3/2] w-full object-contain object-top"
+                            src={`${CMS_URL}${gallery.image.url}`}
+                            alt={gallery.image.alt}
+                            loading="lazy"
+                            decoding="async"
+                        />
+
+                        <div class="px-4 py-2">
+                            <h2 class="text-gradient font-gilroy text-xl">{gallery.title}</h2>
+                            <p class="-mt-1 font-gilroy text-xs">
+                                {gallery.width} x {gallery.height} {gallery.unit}
+                            </p>
+                            <p class="pt-1 font-gilroy text-base">{gallery.description}</p>
+                        </div>
+                    </div>
+                ))
+            }
+        </section>
+    </div>
+    <div class="bg-black-tertiary px-global">
+        <section class="container mx-auto">
+            <MainForm client:visible={{ rootMargin: "200px" }} />
+        </section>
+    </div>
+</Layout>
+
+<style lang="scss">
+    .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("@assets/gallery.webp") center/cover no-repeat;
+    }
+</style>

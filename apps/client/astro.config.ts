@@ -7,6 +7,7 @@ import { defineConfig, envField } from "astro/config";
 import { FileSystemIconLoader } from "unplugin-icons/loaders";
 
 export default defineConfig({
+    prefetch: true,
     output: "static",
 
     trailingSlash: "ignore",
@@ -34,6 +35,9 @@ export default defineConfig({
     },
     env: {
         schema: {
+            CMS_URL: envField.string({ context: "server", access: "secret" }),
+            SERVER_URL: envField.string({ context: "client", access: "public" }),
+
             EMAIL: envField.string({ context: "server", access: "public" }),
             TIKTOK: envField.string({ context: "server", access: "public" }),
             TWITTER: envField.string({ context: "server", access: "public" }),

@@ -4,6 +4,8 @@ import { createEffect, createMemo, on, onMount, Show, type Component } from "sol
 
 import Button from "./button";
 import Stepper from "./stepper";
+import serverApi from "@api/client";
+import tryCatch from "@utils/tryCatch";
 import ToastContainer from "./toastContainer";
 import { showToast } from "@stores/toastStore";
 import useMultiStepForm from "@hooks/useMultiStepForm";
@@ -76,7 +78,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
         },
     });
 
-    const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex } = useMultiStepForm([
+    const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex, resetStep } = useMultiStepForm([
         BasicDetailsForm,
         ServiceDetailsForm,
         CommentsForm,
@@ -99,15 +101,14 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
         ),
     );
 
-    const handleSubmit: SubmitHandler<OrderSchema> = (value): void => {
-        console.log("Form submitted with values:", value);
+    // ? find another way to reset form submit count
+    const handleNavigation = (navigate: () => void): void => {
+        // * this is stupid
+        reset(form, { keepValues: true });
+        navigate();
+    };
 
-        if (!isLastStep()) {
-            handleNavigation(next);
-            return;
-        }
-
-        const { files, ...order } = value;
+    const buildFormData = ({ files, ...order }: OrderSchema): FormData => {
         const formData = new FormData();
 
         if (files) {
@@ -116,22 +117,30 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
 
         formData.append("order", new Blob([JSON.stringify(order)], { type: "application/json" }), "order.json");
 
-        void fetch("http://localhost:3000/orders", {
-            method: "POST",
-            body: formData,
-        });
+        return formData;
+    };
+
+    const handleSubmit: SubmitHandler<OrderSchema> = async (value): Promise<void> => {
+        if (!isLastStep()) {
+            handleNavigation(next);
+            return;
+        }
+
+        const formData = buildFormData(value);
+        const [, error] = await tryCatch(serverApi.post("orders", formData));
+
+        if (error) {
+            showToast("Failed to submit order. Please try again.");
+            return;
+        }
+
+        showToast("Order submitted successfully!");
+        reset(form);
+        resetStep();
 
         return;
     };
 
-    // ? find another way to reset form submit count
-    const handleNavigation = (navigate: () => void): void => {
-        // * this is stupid
-        reset(form, { keepValues: true });
-        navigate();
-    };
-
-    // * repopulate values on reload
     onMount(() => {
         const formData = new FormData(formRef);
 

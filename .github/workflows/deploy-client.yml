@@ -7,6 +7,9 @@ on:
             - "apps/client/**"
     workflow_dispatch:
 
+    repository_dispatch:
+        types: [deploy-from-cms]
+
 permissions:
     contents: read
     pages: write

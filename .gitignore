@@ -19,8 +19,6 @@ pnpm-debug.log*
 *.log
 
 **/.env
-**/.env.local
-**/.env.*.local
 
 # keep client env
 !apps/client/.env

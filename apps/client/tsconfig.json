@@ -13,9 +13,10 @@
 
         "baseUrl": ".",
         "paths": {
+            "@api": ["src/api/index.ts"],
             "@utils": ["src/utils/index.ts"],
 
-            "@lib/*": ["src/lib/*"],
+            "@api/*": ["src/api/*"],
             "@hooks/*": ["src/hooks/*"],
             "@utils/*": ["src/utils/*"],
             "@assets/*": ["src/assets/*"],

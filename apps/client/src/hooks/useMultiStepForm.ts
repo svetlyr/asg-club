@@ -7,6 +7,7 @@ type useMultiStepFormReturn = {
     isLastStep: Accessor<boolean>;
     next: () => void;
     back: () => void;
+    resetStep: () => void;
 };
 
 export default function useMultiStepForm(steps: VoidComponent[]): useMultiStepFormReturn {
@@ -24,6 +25,10 @@ export default function useMultiStepForm(steps: VoidComponent[]): useMultiStepFo
         setCurrentStepIndex((i) => Math.max(i - 1, 0));
     }
 
+    function reset(): void {
+        setCurrentStepIndex(0);
+    }
+
     return {
         currentStepIndex,
         currentStep: step,
@@ -31,5 +36,6 @@ export default function useMultiStepForm(steps: VoidComponent[]): useMultiStepFo
         isLastStep: isLast,
         next,
         back,
+        resetStep: reset,
     };
 }
