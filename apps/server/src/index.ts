@@ -40,12 +40,7 @@ type orderSchema = {
 
 const envSchema = {
     BOT_TOKEN: t.String(),
-
-    POSTGRES_DB: t.String(),
-    POSTGRES_PORT: t.Number(),
-    POSTGRES_USER: t.String(),
-    POSTGRES_HOSTNAME: t.String(),
-    POSTGRES_PASSWORD: t.String(),
+    DATABASE_URL: t.String(),
 
     OWNER_CHAT_ID: t.Number(),
     DESIGNER_CHAT_ID: t.Number(),
@@ -119,6 +114,8 @@ new Elysia()
     .post(
         "/orders",
         async ({ body: { images, order }, env }) => {
+            console.log("Received order:", order);
+
             // * Custom validation
             const parsedOrder = (await order.json()) as orderSchema;
 

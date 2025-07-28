@@ -1,0 +1,53 @@
+# syntax=docker/dockerfile:1
+
+FROM oven/bun:slim AS base
+WORKDIR /app
+
+# Manifests
+FROM base AS manifests
+COPY package.json bun.lock ./
+COPY apps/cms/package.json ./apps/cms/
+COPY apps/server/package.json ./apps/server/
+COPY apps/client/package.json ./apps/client/
+
+# All dependencies
+FROM base AS deps
+COPY --from=manifests /app .
+
+RUN --mount=type=cache,target=/root/.bun/install/cache <<EOF
+    set -e
+    bun install --filter=cms --frozen-lockfile
+EOF
+
+# Build standalone app
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
+
+COPY --from=manifests /app ./
+COPY /apps/cms/scripts/entrypoint.sh ./
+COPY tsconfig.json reset.d.ts ./
+
+COPY /apps/cms ./apps/cms
+
+RUN bun run --filter=cms build
+
+# TODO: distroless
+# Prod image
+FROM oven/bun:slim AS prod
+WORKDIR /app
+
+ENV HOSTNAME=0.0.0.0
+ENV NODE_ENV=production
+
+COPY --from=build --chown=1001:1001 /app/apps/cms/.next/standalone/ ./
+
+COPY --from=build --chown=1001:1001 /app/apps/cms/scripts/entrypoint.sh ./
+COPY --from=build --chown=1001:1001 /app/apps/cms/public ./apps/cms/public
+COPY --from=build --chown=1001:1001 /app/apps/cms/.next/static ./apps/cms/.next/static
+
+RUN chmod +x ./entrypoint.sh
+
+USER 1001
+EXPOSE 3001
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["/app/apps/cms/server.js"]

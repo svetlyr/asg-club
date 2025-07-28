@@ -1,0 +1,53 @@
+# syntax=docker/dockerfile:1
+
+FROM oven/bun:debian AS base
+WORKDIR /usr/src/app
+
+# Manifests
+FROM base AS manifests
+COPY package.json bun.lock ./
+COPY apps/cms/package.json ./apps/cms/
+COPY apps/server/package.json ./apps/server/
+COPY apps/client/package.json ./apps/client/
+
+# All dependencies
+FROM manifests AS all_deps
+RUN --mount=type=cache,target=/root/.bun/install/cache <<EOF
+    set -e
+    bun install --filter=server --frozen-lockfile
+EOF
+
+# Build server
+FROM base AS build
+COPY --from=all_deps /usr/src/app/node_modules ./node_modules
+
+COPY --from=manifests /usr/src/app .
+COPY tsconfig.json reset.d.ts ./
+
+COPY apps/server ./apps/server
+
+RUN bun run --filter=server build
+
+# Prod dependencies
+FROM manifests AS prod_deps
+RUN --mount=type=cache,target=/root/.bun/install/cache <<EOF
+    set -e
+    bun install --filter=server --production --frozen-lockfile
+EOF
+
+# Prod image
+# * We use a generic distroless image and copy the bun binary manually
+# * oven-sh/bun:distroless throws a runtime error trying to use Browser APIs
+FROM gcr.io/distroless/base
+WORKDIR /usr/src/app
+
+ENV NODE_ENV=production
+
+COPY --from=build /usr/local/bin/bun /usr/bin/bun
+
+COPY --from=prod_deps --chown=1001:1001 /usr/src/app/node_modules ./node_modules
+COPY --from=build --chown=1001:1001 /usr/src/app/apps/server/dist ./dist
+
+USER 1001
+EXPOSE 3000
+CMD ["/usr/bin/bun", "./dist/index.js"]

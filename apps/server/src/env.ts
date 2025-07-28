@@ -1,3 +1,4 @@
-// TODO: runtime and buildtime validation
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOSTNAME, POSTGRES_PORT, POSTGRES_DB } = process.env;
-export const DATABASE_URL = `postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOSTNAME}:${POSTGRES_PORT}/${POSTGRES_DB}`;
+const { env } = process;
+const { DATABASE_URL } = env;
+
+export { env as default, DATABASE_URL };
