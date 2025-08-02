@@ -2,6 +2,8 @@
 app = 'asg-club'
 primary_region = 'otp'
 
+# * No opts means use
+# * Dockerfile in current directory
 [build]
 
 [http_service]
