@@ -5,6 +5,8 @@ import pluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import baseConfig from "../../eslint.config.mjs";
 
 export default tseslint.config(
+    baseConfig,
+
     {
         files: ["**/*.ts"],
         languageOptions: {
@@ -16,6 +18,5 @@ export default tseslint.config(
         },
     },
 
-    baseConfig,
     pluginPrettierRecommended,
 );

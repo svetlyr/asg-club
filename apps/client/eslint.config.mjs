@@ -1,3 +1,4 @@
+// @ts-check
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import pluginAstro from "eslint-plugin-astro";
@@ -49,14 +50,17 @@ export default tseslint.config(
     // * Solid overrides
     {
         files: ["**/*.ts", "**/*.tsx"],
-        rules: {
-            "solid/no-array-handlers": "warn",
-        },
+        ...pluginSolid.configs["flat/typescript"],
+
         languageOptions: {
             parser: tseslint.parser,
             globals: globals.browser,
         },
-        ...pluginSolid.configs["flat/typescript"],
+        rules: {
+            ...pluginSolid.configs["flat/typescript"].rules,
+
+            "solid/no-array-handlers": "warn",
+        },
     },
 
     pluginPrettierRecommended,
