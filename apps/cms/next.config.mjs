@@ -1,3 +1,4 @@
+// @ts-check
 import { createJiti } from 'jiti/native'
 import { fileURLToPath } from 'node:url'
 import { withPayload } from '@payloadcms/next/withPayload'

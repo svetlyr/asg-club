@@ -1,8 +1,4 @@
 {
-    // * This is a bad practice, whole monorepo is considered as a single project
-    // TODO: specify include/exclude for each app
-    "exclude": ["**/dist", "**/node_modules", "**/assets", ".git", ".vscode"],
-    "include": ["**/.astro/types.d.ts", "**/*.mjs", "**/*.ts", "**/src"],
     "compilerOptions": {
         "target": "ESNext",
         "lib": ["ESNext"],
