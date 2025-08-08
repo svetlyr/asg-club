@@ -12,6 +12,8 @@ helm-charts
 .env
 .editorconfig
 .idea
+.next
+**/.next
 coverage*
 
 apps/server/node_modules

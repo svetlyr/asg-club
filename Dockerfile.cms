@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM oven/bun:slim AS base
+FROM oven/bun:alpine AS base
 WORKDIR /app
 
 # Manifests
@@ -14,6 +14,8 @@ COPY apps/client/package.json ./apps/client/
 FROM base AS deps
 COPY --from=manifests /app .
 
+RUN apk update && apk add --no-cache python3 nodejs
+
 RUN --mount=type=cache,target=/root/.bun/install/cache <<EOF
     set -e
     bun install --filter=cms --frozen-lockfile
@@ -24,14 +26,12 @@ FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 
 COPY --from=manifests /app ./
-COPY /apps/cms/scripts/entrypoint.sh ./
 COPY tsconfig.json reset.d.ts ./
 
 COPY /apps/cms ./apps/cms
 
 RUN bun run --filter=cms build
 
-# TODO: distroless
 # Prod image
 FROM oven/bun:slim AS prod
 WORKDIR /app

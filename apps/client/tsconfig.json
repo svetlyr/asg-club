@@ -2,7 +2,7 @@
     "extends": ["astro/tsconfigs/strictest", "../../tsconfig.json"],
 
     "files": ["../../reset.d.ts"],
-    "include": ["src", "**/*.d.ts", "./*.config.ts"],
+    "include": ["src", "**/*.d.ts", ".astro/types.d.ts", "./*.config.ts"],
     "exclude": ["**/dist", "**/node_modules", ".git", ".github", ".vscode"],
 
     "compilerOptions": {
@@ -32,7 +32,6 @@
             "@components/*": ["src/components/*"]
         },
 
-        // TODO: add same values to server tsconfig
         "noEmit": false,
         "composite": true,
         "incremental": true,
@@ -47,5 +46,5 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true
     },
-    "types": ["unplugin-icons/types/solid"]
+    "types": ["astro/client", "unplugin-icons/types/solid"]
 }
