@@ -1,4 +1,4 @@
-import { atom, map } from "nanostores";
+import { map } from "nanostores";
 import {
     createForm,
     getValue,
@@ -10,8 +10,6 @@ import {
 } from "@modular-forms/solid";
 
 import { orderDefaults, type OrderSchema } from "@schemas/formSchema";
-import { useStore } from "@nanostores/solid";
-import type { Accessor } from "solid-js";
 
 type CreateFormReturn = ReturnType<typeof createForm<OrderSchema>>;
 type FormApi = CreateFormReturn[0];
