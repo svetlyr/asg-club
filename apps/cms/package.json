@@ -11,14 +11,15 @@
         "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" bunx --bun next build --turbopack",
         "dev": "cross-env NODE_OPTIONS=--no-deprecation bunx --bun next dev --turbopack",
         "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
-        "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
         "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+        "generate:schema": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+        "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
         "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
         "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
         "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
     },
     "dependencies": {
-        "@payloadcms/db-postgres": "^3.50.0",
+        "@payloadcms/db-sqlite": "^3.50.0",
         "@payloadcms/next": "^3.50.0",
         "@payloadcms/richtext-lexical": "^3.50.0",
         "@payloadcms/ui": "^3.50.0",

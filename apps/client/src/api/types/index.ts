@@ -1,30 +1,4 @@
-export type PayloadImage = {
-    id: number;
-    alt: string;
-    updatedAt: string;
-    createdAt: string;
-    url: string;
-    thumbnailURL: string | null;
-    filename: string;
-    mimeType: string;
-    filesize: number;
-    width: number;
-    height: number;
-    focalX: number;
-    focalY: number;
-};
-
-export type GalleryItem = {
-    id: number;
-    title: string;
-    description: string;
-    width: number;
-    height: number;
-    unit: "cm" | "inch";
-    image: PayloadImage;
-    updatedAt: string;
-    createdAt: string;
-};
+import type { Gallery as PayloadGallery, Media as PayloadMedia } from "@cms/payload-types";
 
 export type PaginatedApiResponse<T> = {
     docs: T[];
@@ -37,4 +11,17 @@ export type PaginatedApiResponse<T> = {
     prevPage: number | null;
     totalDocs: number;
     totalPages: number;
+};
+
+// * We ensure url, width and height are present with AfterChange hook in Media.ts
+export type Media = Omit<PayloadMedia, "url" | "thumbnailURL" | "width" | "height"> & {
+    width: number;
+    height: number;
+    url: string;
+    thumbnailURL: string;
+};
+
+// * Default depth of 2 ensures we get full image
+export type Gallery = Omit<PayloadGallery, "image"> & {
+    image: Media;
 };

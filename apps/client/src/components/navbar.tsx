@@ -1,7 +1,7 @@
 import type { Component } from "solid-js";
 import { useWindowScrollPosition } from "@solid-primitives/scroll";
 import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
-import { createComputed, createEffect, createSignal, For, onMount, Show } from "solid-js";
+import { createComputed, createEffect, createSignal, For, onCleanup, onMount, Show } from "solid-js";
 
 import Link from "./link";
 import Button from "./button";
@@ -76,6 +76,8 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     createEffect(() => {
         // * prevent page scroll when menu is open
         document.body.style.overflow = isMenuOpen() ? "hidden" : "";
+
+        onCleanup(() => (document.body.style.overflow = ""));
     });
 
     return (

@@ -1,5 +1,5 @@
 import { Dynamic } from "solid-js/web";
-import { createMemo, For } from "solid-js";
+import { createMemo, For, Show } from "solid-js";
 import type { Component, VoidComponent } from "solid-js";
 
 import { useFormValue, useForm } from "@stores/formStore";
@@ -28,6 +28,7 @@ const AdditionalFields: Component = () => {
 
 const ServiceDetailsForm: VoidComponent = () => {
     const { form, Field } = useForm();
+    const serviceType = createMemo(() => useFormValue("serviceType"));
 
     return (
         <>
@@ -61,26 +62,28 @@ const ServiceDetailsForm: VoidComponent = () => {
                 )}
             </Field>
 
-            <Field name="files" type="File[]" keepActive>
-                {(field, fieldProps) => <input {...fieldProps} type="file" multiple required />}
-            </Field>
+            <Show when={serviceType() !== "Premade Merch"}>
+                <Field name="files" type="File[]" keepActive>
+                    {(field, fieldProps) => <input {...fieldProps} type="file" multiple required />}
+                </Field>
 
-            <Field name="url" keepActive>
-                {(field, fieldProps) => (
-                    <input
-                        {...fieldProps}
-                        value={field.value}
-                        classList={{
-                            "border-red-500": !!form.submitCount && !!field.error,
-                            "border-green-500": !!form.submitCount && field.dirty && !field.error,
-                        }}
-                        type="url"
-                        placeholder="URL (optional). Provide a link if you have a specific design or style in mind."
-                    />
-                )}
-            </Field>
+                <Field name="url" keepActive>
+                    {(field, fieldProps) => (
+                        <input
+                            {...fieldProps}
+                            value={field.value}
+                            classList={{
+                                "border-red-500": !!form.submitCount && !!field.error,
+                                "border-green-500": !!form.submitCount && field.dirty && !field.error,
+                            }}
+                            type="url"
+                            placeholder="URL (optional). Provide a link if you have a specific design or style in mind."
+                        />
+                    )}
+                </Field>
 
-            <AdditionalFields />
+                <AdditionalFields />
+            </Show>
         </>
     );
 };

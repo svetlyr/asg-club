@@ -34,6 +34,7 @@ export const serviceTypes = [
     "Metal Badges and Medals",
     "Keychains",
     "Custom Merch",
+    "Premade Merch",
 ] as const;
 export type ServiceType = (typeof serviceTypes)[number];
 
@@ -56,6 +57,7 @@ const additionalFields = {
     "Keychains":                ["quantity", "width", "height"],
     "Metal Badges and Medals":  ["quantity", "width", "height"],
     "Custom Merch":             ["quantity"],
+    "Premade Merch":            [],
 } as const;
 export type AdditionalFieldKey = (typeof additionalFields)[ServiceType][number];
 

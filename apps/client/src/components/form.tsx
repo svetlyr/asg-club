@@ -73,7 +73,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
                 case 2:
                     return valiForm(orderSchema)(value);
                 default:
-                    return (): void => {};
+                    return () => null;
             }
         },
     });
