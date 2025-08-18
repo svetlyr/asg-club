@@ -15,8 +15,6 @@
         "noUnusedLocals": false,
         "noUnusedParameters": false,
 
-        "noEmit": false,
-        "composite": true,
         "types": ["bun-types"],
 
         "baseUrl": ".",

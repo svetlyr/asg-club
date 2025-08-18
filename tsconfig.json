@@ -17,7 +17,7 @@
         "noUncheckedIndexedAccess": true,
         "noFallthroughCasesInSwitch": true,
         "forceConsistentCasingInFileNames": true
-    },
+    }
 
-    "references": [{ "path": "apps/client" }, { "path": "apps/server" }, { "path": "apps/cms" }]
+    // "references": [{ "path": "apps/client" }, { "path": "apps/server" }, { "path": "apps/cms" }]
 }

@@ -33,6 +33,7 @@ export default tseslint.config(
                 {
                     allowExpressions: true,
                     allowTypedFunctionExpressions: true,
+                    allowConciseArrowFunctionExpressionsStartingWithVoid: true,
                 },
             ],
             "@typescript-eslint/explicit-module-boundary-types": "error",

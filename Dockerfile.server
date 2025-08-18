@@ -17,6 +17,8 @@ RUN --mount=type=cache,target=/root/.bun/install/cache <<EOF
     bun install --filter=server --frozen-lockfile
 EOF
 
+# TODO: add migration image
+
 # Build server
 FROM base AS build
 COPY --from=all_deps /usr/src/app/node_modules ./node_modules
