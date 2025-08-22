@@ -1,25 +1,35 @@
-# build output
-dist/
+**/node_modules/
+*.bun.lockb
+.pnp/
+.pnp.js
 
-# generated types
-.astro/
+**/dist/
+**/build/
+**/out/
+**/.next/
+**/.astro/
+**/.vercel/
+coverage/
 
-# dependencies
-node_modules/
+*.tsbuildinfo
 
-# logs
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
+*.log
 
-# environment variables
-.env.dev
-.env.local
-.env.development
+**/.env
 
-# macOS-specific files
+# keep client env
+!apps/client/.env
+
+.cache/
+.eslintcache
+
 .DS_Store
-
-# jetbrains setting folder
 .idea/
+
+*.tgz
+*.zip
+*.tar.gz
+*.pem

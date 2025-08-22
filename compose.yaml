@@ -1,0 +1,58 @@
+services:
+    # *** Server and CMS
+    server:
+        build:
+            context: .
+            dockerfile: Dockerfile.server
+        container_name: elysia_server
+
+        env_file:
+            - apps/server/.env
+        environment:
+            DATABASE_URL: postgres://asg-user:asg-password@server-db:5432/asg-club-server
+        ports:
+            - "3000:3000"
+        restart: unless-stopped
+    cms:
+        build:
+            context: .
+            dockerfile: Dockerfile.cms
+        container_name: payload_cms
+
+        env_file:
+            - apps/cms/.env
+        environment:
+            DATABASE_URL: /app/payload.db
+        volumes:
+            - ./apps/cms/payload.db:/app/payload.db
+        ports:
+            - "3001:3001"
+        restart: unless-stopped
+
+    ## *** Database services
+    server-db:
+        image: postgres:17-alpine
+        container_name: pg_server_container
+
+        environment:
+            - POSTGRES_PORT=5432
+            - POSTGRES_USER=asg-user
+            - POSTGRES_DB=asg-club-server
+            - POSTGRES_PASSWORD=asg-password
+
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata_server:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        restart: unless-stopped
+
+
+# *** Volumes
+volumes:
+    pgdata_server:
+        driver: local

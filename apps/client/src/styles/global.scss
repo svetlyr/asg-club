@@ -1,0 +1,85 @@
+@use "animations.scss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --main-gradient: linear-gradient(45deg, rgb(224, 4, 11) 15%, rgb(252, 81, 48) 65%);
+        --animation-gradient: linear-gradient(to right, rgb(252, 81, 48), rgb(224, 4, 11));
+    }
+
+    @font-face {
+        font-family: "Gilroy";
+        font-weight: 900;
+        font-style: normal;
+        font-display: swap;
+
+        src: url("/Gilroy-Black.woff") format("woff");
+    }
+
+    input[type="number"] {
+        appearance: textfield;
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    @media screen and (prefers-reduced-motion: reduce) {
+        html {
+            @apply scroll-auto;
+        }
+    }
+
+    html {
+        @apply scroll-smooth bg-black-primary;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    input,
+    select,
+    textarea {
+        @apply w-full bg-transparent font-poppins text-white;
+
+        padding: 10px 15px;
+        border: 1px solid #ffffff40;
+        transition: border-color 0.15s ease-in-out;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-poppins font-semibold text-white;
+    }
+
+    a {
+        @apply font-poppins;
+    }
+
+    p {
+        @apply font-poppins text-gray-primary;
+    }
+
+    button {
+        @apply font-poppins text-white;
+    }
+
+    .nav-collapse-target {
+        @apply invisible;
+    }
+}

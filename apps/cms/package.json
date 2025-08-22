@@ -1,0 +1,46 @@
+{
+    "name": "cms",
+    "version": "1.0.0",
+    "description": "A blank template to get started with Payload 3.0",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "dk": "drizzle-kit",
+        "migrate": "payload migrate",
+        "migrate:generate": "payload migrate:create",
+        "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" bunx --bun next build --turbopack",
+        "dev": "cross-env NODE_OPTIONS=--no-deprecation bunx --bun next dev --turbopack",
+        "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+        "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+        "generate:schema": "cross-env NODE_OPTIONS=--no-deprecation payload generate:db-schema",
+        "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+        "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+        "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+        "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
+    },
+    "dependencies": {
+        "@payloadcms/db-sqlite": "^3.50.0",
+        "@payloadcms/next": "^3.50.0",
+        "@payloadcms/richtext-lexical": "^3.50.0",
+        "@payloadcms/ui": "^3.50.0",
+        "@t3-oss/env-nextjs": "^0.13.8",
+        "cross-env": "^7.0.3",
+        "dotenv": "16.4.7",
+        "graphql": "^16.11.0",
+        "jiti": "unjs/jiti",
+        "next": "15.3.2",
+        "payload": "3.50.0",
+        "react": "19.1.1",
+        "sharp": "0.34.2",
+        "zod": "^4.0.15"
+    },
+    "devDependencies": {
+        "@types/node": "^22.17.0",
+        "@types/react": "19.1.1",
+        "@types/react-dom": "19.1.1",
+        "@vitejs/plugin-react": "4.5.2",
+        "eslint-config-next": "15.3.0",
+        "jsdom": "26.1.0",
+        "vite-tsconfig-paths": "5.1.4"
+    }
+}

@@ -1,0 +1,169 @@
+---
+import Link from "./link";
+import Button from "./button";
+import { serviceTypes } from "@schemas/serviceSchema";
+
+import asgLogo from "@assets/asg-logo.svg";
+import clubLogo from "@assets/club-logo.svg";
+
+import Speech from "@icons/sli/speech";
+import Tiktok from "@icons/custom/tiktok";
+import Envelope from "@icons/sli/envelope";
+import LocationPin from "@icons/sli/location-pin";
+import SocialYoutube from "@icons/sli/social-youtube";
+import SocialFacebook from "@icons/sli/social-facebook";
+import SocialInstagram from "@icons/sli/social-instagram";
+
+import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK, EMAIL } from "astro:env/server";
+
+const socials = [
+    { href: INSTAGRAM, label: "Instagram", Icon: SocialInstagram },
+    { href: TIKTOK, label: "TikTok", Icon: Tiktok },
+    { href: FACEBOOK, label: "Facebook", Icon: SocialFacebook },
+    { href: YOUTUBE, label: "YouTube", Icon: SocialYoutube },
+];
+---
+
+<script>
+    import { addOnClick } from "@utils/dom";
+    import { setFormValue } from "@stores/formStore";
+    import { serviceTypes, type ServiceType } from "@schemas/serviceSchema";
+
+    const services = document.querySelectorAll<HTMLAnchorElement>(".service[href='#form']");
+
+    services.forEach((element) => {
+        const service = element.dataset["serviceType"];
+
+        if (service && serviceTypes.includes(service)) {
+            // * safe typecast since we do a runtime check
+            addOnClick(element, () => setFormValue("serviceType", service as ServiceType));
+        }
+    });
+</script>
+
+<div class="bg-black-quaternary px-global">
+    <section class="container mx-auto text-nowrap py-16 text-white">
+        <div class="footer-layout grid justify-items-center text-center heir-h4:text-2xl heir-h4:font-bold lg:gap-32">
+            <div>
+                <Link href="/" class="footer-logo flex max-w-fit items-center justify-center">
+                    <img alt="Logo" loading="lazy" decoding="async" src={asgLogo.src} class="mr-2 size-14 sm:size-16" />
+                    <img
+                        alt="Club text"
+                        loading="lazy"
+                        decoding="async"
+                        src={clubLogo.src}
+                        class="size-20 sm:size-24"
+                    />
+                </Link>
+                <div class="footer-socials flex justify-center gap-7 child:size-6 child-svg:cursor-pointer">
+                    {
+                        socials.map(({ href, label, Icon }) => (
+                            <Link newTab href={href} aria-label={label}>
+                                <Icon class="size-6 icon-gradient" />
+                            </Link>
+                        ))
+                    }
+                </div>
+            </div>
+            <div
+                class="footer-contact py-16 child-p:flex child-p:cursor-pointer child-p:justify-center child-p:py-1.5 child-p:transition-colors child-p:duration-500 child-p:ease-in-out hover:child-p:text-red-primary">
+                <h4 class="pb-6">Get in Touch</h4>
+                <p class="items-center">
+                    <Envelope class="mr-3" /><Link href={`mailto:${EMAIL}`} class="items-center">{EMAIL}</Link>
+                </p>
+                <p class="items-center"><LocationPin class="mr-3" />Chisinau, Moldova</p>
+
+                <Button
+                    href="/contact"
+                    aria-label="Contact Us"
+                    class="footer-contact__button group btn-bg-animate mx-auto my-5 flex w-fit items-center bg-transparent py-3 border-gradient">
+                    <Speech class="mr-2 size-4 group-hover:[&_path]:fill-white" />
+                    <span class="text-sm">CONTACT US</span>
+                </Button>
+            </div>
+            <div class="footer-services pb-8">
+                <h4 class="pb-6">Our Services</h4>
+                <div
+                    class="child-a:cursor-pointer child-a:py-1.5 child-a:transition-colors child-a:duration-500 child-a:ease-in-out hover:child-a:text-red-primary xl:grid xl:auto-rows-auto xl:grid-cols-[min-content_min-content_min-content] xl:gap-x-6">
+                    {
+                        serviceTypes.map((service) => (
+                            <Link
+                                href="#form"
+                                class="service block whitespace-nowrap text-gray-primary"
+                                data-service-type={service}>
+                                {service}
+                            </Link>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <p class="pb-3 text-center">
+        Made with ❤️ by
+        <Link class="text-gradient font-semibold" newTab href="https://github.com/svetlyr"> svetly </Link> and
+        <Link class="text-gradient font-semibold" newTab href="https://github.com/pokens"> pokens </Link>
+    </p>
+</div>
+
+<style lang="scss">
+    $footer-breakpoint: 884px;
+
+    .footer-layout {
+        @media (min-width: $footer-breakpoint) {
+            display: flex;
+            gap: 5rem;
+            text-align: left;
+
+            .footer-logo,
+            .footer-socials {
+                justify-content: normal;
+            }
+
+            .footer-logo {
+                & > :first-child {
+                    width: 4rem;
+                    height: 4rem;
+                }
+
+                & > :nth-child(2) {
+                    width: 6rem;
+                    height: 6rem;
+                }
+            }
+
+            .footer-contact,
+            .footer-services {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+
+            .footer-contact {
+                & > p {
+                    justify-content: normal;
+                }
+
+                &__button {
+                    margin-left: 0;
+                    margin-right: 0;
+
+                    padding-left: 1.5rem;
+                    padding-right: 1.5rem;
+
+                    padding-top: 0.625rem;
+                    padding-bottom: 0.625rem;
+
+                    svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+
+                    span {
+                        font-size: 1rem;
+                        line-height: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+</style>

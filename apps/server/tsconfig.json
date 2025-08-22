@@ -1,0 +1,25 @@
+{
+    "extends": ["../../tsconfig.json"],
+
+    "files": ["../../reset.d.ts"],
+    "include": ["src", "**/*.d.ts", "./*.config.ts"],
+    "exclude": ["**/dist", "**/node_modules", ".git", ".github", ".vscode"],
+
+    "compilerOptions": {
+        "target": "ES2021",
+        "module": "ES2022",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+
+        // * Handled by eslint
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+
+        "types": ["bun-types"],
+
+        "baseUrl": ".",
+        "paths": {
+            "@env": ["src/env.ts"]
+        }
+    }
+}

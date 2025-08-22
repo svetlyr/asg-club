@@ -1,0 +1,17 @@
+---
+import Button from "@components/button";
+import Layout from "@layouts/Layout.astro";
+import { navCollapseId } from "@components/navbar";
+---
+
+<Layout navCollapseId={navCollapseId}>
+    <div class="bg-black-primary py-44 px-global">
+        <section class="container m-auto text-center font-gilroy">
+            <h1 class="text-gradient font-gilroy text-8xl">404</h1>
+            <p class="text-gradient font-gilroy text-3xl italic">Page not found</p>
+            <Button href="/" class="btn-bg-animate mt-10 bg-transparent px-6 border-gradient">
+                <span class="relative">GO BACK</span>
+            </Button>
+        </section>
+    </div>
+</Layout>

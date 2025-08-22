@@ -1,0 +1,106 @@
+---
+import Link from "@components/link";
+import MainForm from "@components/form";
+import Card from "@components/card.astro";
+import Layout from "@layouts/Layout.astro";
+import { navCollapseId } from "@components/navbar";
+
+import Tiktok from "@icons/custom/tiktok";
+import Envelope from "@icons/sli/envolope";
+import Discord from "@icons/custom/discord";
+import Twitter from "@icons/sli/social-twitter";
+import Youtube from "@icons/sli/social-youtube";
+import Facebook from "@icons/sli/social-facebook";
+import Instagram from "@icons/sli/social-instagram";
+
+import { DISCORD, EMAIL, TWITTER, YOUTUBE, TIKTOK, FACEBOOK, INSTAGRAM } from "astro:env/server";
+
+const contacts = [
+    {
+        href: TWITTER,
+        title: "Twitter",
+        description: "@ChristianArapu",
+        Icon: Twitter,
+    },
+    {
+        href: DISCORD,
+        title: "Discord",
+        description: "@axel_sniper94",
+        Icon: Discord,
+    },
+    {
+        href: YOUTUBE,
+        title: "YouTube",
+        description: "@axelsnipergarage3139",
+        Icon: Youtube,
+    },
+    {
+        href: TIKTOK,
+        title: "TikTok",
+        description: "@christian_arapu",
+        Icon: Tiktok,
+    },
+    {
+        href: FACEBOOK,
+        title: "Facebook",
+        description: "@christian.arapu",
+        Icon: Facebook,
+    },
+    {
+        href: INSTAGRAM,
+        title: "Instagram",
+        description: "@christian_arapu",
+        Icon: Instagram,
+    },
+];
+---
+
+<Layout>
+    <div class="bg-image px-global">
+        <section class="container mx-auto py-40 text-center align-top">
+            <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">
+                Contact Us
+            </h1>
+        </section>
+    </div>
+    <div id={navCollapseId} class="nav-collapse-target"></div>
+    <div class="bg-black-secondary px-global">
+        <section class="container mx-auto py-20 text-center">
+            <div class="mx-auto flex w-full max-w-screen-md flex-wrap items-center justify-center gap-4 pb-10">
+                <Envelope class="size-12 icon-gradient" />
+                <Link href={`mailto:${EMAIL}`} class="text-[1.35rem] font-bold text-white sm:text-3xl">{EMAIL}</Link>
+            </div>
+
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+                {
+                    contacts.map(({ Icon, title, href, description }) => (
+                        <Card
+                            class="size-full p-6 lg:px-6 lg:py-10"
+                            newTab
+                            href={href}
+                            Icon={Icon}
+                            title={title}
+                            text={description}
+                        />
+                    ))
+                }
+            </div>
+        </section>
+    </div>
+    <div class="bg-black-tertiary px-global">
+        <section class="container mx-auto">
+            <MainForm client:visible={{ rootMargin: "200px" }} />
+        </section>
+    </div>
+</Layout>
+
+<style lang="scss">
+    .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("@assets/contact-us.jpg") center/cover no-repeat;
+    }
+</style>

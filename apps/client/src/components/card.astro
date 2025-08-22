@@ -1,0 +1,75 @@
+---
+import tw from "@utils/tw";
+import type { IconType } from "@icons";
+import Link, { type LinkProps } from "./link";
+
+interface Props extends LinkProps {
+    text?: string;
+    title: string;
+    class?: string;
+    Icon: IconType;
+    newTab?: boolean;
+}
+
+const { class: className = "", title, text, href = "", Icon, newTab, ...attrs } = Astro.props;
+---
+
+<Link
+    href={href}
+    newTab={newTab}
+    class={tw(
+        `card group cursor-pointer space-y-4 bg-black-tertiary text-center drop-shadow-md transition-transform duration-500 ease-in-out hover:-translate-y-1.5 hover:bg-gradient ${className}`,
+    )}
+    {...attrs}>
+    <Icon class="mx-auto size-11 icon-gradient group-hover:[&_path]:fill-white" />
+    <h4 class="text-xl">{title}</h4>
+    <p class="group-hover:text-white">{text}</p>
+</Link>
+
+<style lang="scss">
+    .card {
+        z-index: 1;
+        position: relative;
+
+        &:is(:first-of-type, :last-of-type) {
+            &::before,
+            &::after {
+                z-index: -1;
+                content: "";
+                position: absolute;
+            }
+
+            &::after {
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background-color: inherit;
+
+                &:hover {
+                    @apply bg-gradient;
+                }
+            }
+
+            &::before {
+                width: calc(50% + 10px);
+                height: calc(50% + 10px);
+                @apply bg-gradient transition-opacity duration-700;
+
+                &:hover {
+                    @apply opacity-30;
+                }
+            }
+        }
+
+        &:first-of-type::before {
+            top: -10px;
+            left: -10px;
+        }
+
+        &:last-of-type::before {
+            bottom: -10px;
+            right: -10px;
+        }
+    }
+</style>

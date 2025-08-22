@@ -1,0 +1,36 @@
+{
+    "extends": ["../../tsconfig.json"],
+
+    "files": ["../../reset.d.ts"],
+    "exclude": ["**/dist", "**/node_modules", ".git", ".github", ".vscode"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "verbatimModuleSyntax": false,
+
+        "baseUrl": ".",
+        "paths": {
+            "@env": ["./src/env.ts"],
+
+            "@/*": ["./src/*"],
+            "@payload-config": ["./src/payload.config.ts"]
+        }
+    }
+}

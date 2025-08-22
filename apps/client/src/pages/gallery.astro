@@ -1,0 +1,113 @@
+---
+import { Image } from "astro:assets";
+import { CMS_URL } from "astro:env/server";
+
+import cmsApi from "@api/server";
+import tryCatch from "@utils/tryCatch";
+import MainForm from "@components/form";
+import Button from "@components/button";
+import Layout from "@layouts/Layout.astro";
+import { navCollapseId } from "@components/navbar";
+import ImagePreview from "@components/imagePreview";
+import type { Gallery, PaginatedApiResponse } from "@api/types";
+
+import Cart from "@icons/sli/basket";
+
+const [gallery, error] = await tryCatch(
+    cmsApi.get<PaginatedApiResponse<Gallery>>("gallery", { queryParams: { pagination: "false" } }),
+);
+
+if (error) {
+    throw new Error("Build error: failed to fetch gallery items", error);
+}
+
+const gridClass = "gallery-grid";
+const gridItemClass = "gallery-item";
+---
+
+<script>
+    import { addOnClick } from "@utils/dom";
+    import { setFormValue } from "@stores/formStore";
+
+    const buttons = document.querySelectorAll<HTMLAnchorElement>(".gallery-order-btn");
+
+    buttons.forEach((button) => {
+        const { src, title } = button.dataset || {};
+
+        if (src && title) {
+            addOnClick(button, () => {
+                setFormValue("serviceType", "Premade Merch");
+                setFormValue("files", [new File([], src)]);
+            });
+        }
+    });
+</script>
+
+<Layout>
+    <div class="bg-image px-global">
+        <section class="container mx-auto py-40 text-center align-top">
+            <h1 class="text-gradient mb-28 text-nowrap font-gilroy text-[3.5rem] sm:text-7xl md:text-8xl">Gallery</h1>
+        </section>
+    </div>
+    <div id={navCollapseId} class="nav-collapse-target"></div>
+
+    <div class="bg-black-secondary px-global">
+        <section class={`${gridClass} container mx-auto columns-1 gap-10 py-20 sm:columns-2 md:columns-3 lg:columns-4`}>
+            {
+                gallery.docs.map(({ image, ...item }) => {
+                    const fullUrl = `${CMS_URL}${image.url}`;
+
+                    return (
+                        <div class="relative mb-10 break-inside-avoid bg-black-quaternary shadow-lg">
+                            <Image
+                                class={`${gridItemClass} w-full cursor-pointer object-contain`}
+                                src={fullUrl}
+                                alt={image.alt}
+                                width={image.width}
+                                height={image.height}
+                                data-src={fullUrl}
+                                data-alt={image.alt}
+                            />
+                            <div class="break-words px-4 py-2 pr-1">
+                                <h2 class="text-gradient font-gilroy text-xl">{item.title}</h2>
+                                {item.width && item.height && (
+                                    <p class="-mt-1 font-gilroy text-xs">
+                                        {item.width} x {item.height} {item.unit}
+                                    </p>
+                                )}
+                                <p class="pt-1 font-gilroy text-base">{item.description}</p>
+                            </div>
+                            <Button
+                                href="#form"
+                                aria-label="Order item"
+                                data-src={fullUrl}
+                                data-title={item.title}
+                                class="gallery-order-btn group btn-bg-animate absolute bottom-1 right-1 ml-auto flex w-fit items-center !border bg-transparent !p-1 border-gradient">
+                                <Cart class="size-4 icon-gradient group-hover:[&_path]:fill-white" />
+                            </Button>
+                        </div>
+                    );
+                })
+            }
+        </section>
+    </div>
+
+    <div class="bg-black-tertiary px-global">
+        <section class="container mx-auto">
+            <MainForm client:idle />
+        </section>
+    </div>
+
+    <ImagePreview client:idle gridClass={gridClass} gridItemClass={gridItemClass} />
+</Layout>
+
+<style lang="scss">
+    .bg-image {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+            url("@assets/gallery.webp") center/cover no-repeat;
+    }
+</style>
