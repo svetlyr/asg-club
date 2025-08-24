@@ -33,3 +33,5 @@ pnpm-debug.log*
 *.zip
 *.tar.gz
 *.pem
+
+*.db
