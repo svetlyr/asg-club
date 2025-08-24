@@ -75,15 +75,15 @@ const gridItemClass = "gallery-item";
                                         {item.width} x {item.height} {item.unit}
                                     </p>
                                 )}
-                                <p class="pt-1 font-gilroy text-base">{item.description}</p>
+                                <p class="max-w-[85%] pt-1 font-gilroy text-base">{item.description}</p>
                             </div>
                             <Button
                                 href="#form"
                                 aria-label="Order item"
                                 data-src={fullUrl}
                                 data-title={item.title}
-                                class="gallery-order-btn group btn-bg-animate absolute bottom-1 right-1 ml-auto flex w-fit items-center !border bg-transparent !p-1 border-gradient">
-                                <Cart class="size-4 icon-gradient group-hover:[&_path]:fill-white" />
+                                class="gallery-order-btn group btn-bg-animate absolute bottom-1 right-1 ml-auto flex w-fit items-center border-2 bg-transparent !p-1 border-gradient md:!border">
+                                <Cart class="size-5 icon-gradient md:size-4 group-hover:[&_path]:fill-white" />
                             </Button>
                         </div>
                     );
