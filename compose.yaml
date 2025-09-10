@@ -1,5 +1,5 @@
 services:
-    # *** Server and CMS
+    # * Server and CMS
     server:
         build:
             context: .
@@ -22,14 +22,20 @@ services:
         env_file:
             - apps/cms/.env
         environment:
-            DATABASE_URL: /app/payload.db
+            DATABASE_URL: postgres://asg-user:asg-password@server-db:5433/asg-club-server
         volumes:
             - ./apps/cms/payload.db:/app/payload.db
         ports:
             - "3001:3001"
         restart: unless-stopped
 
-    ## *** Database services
+
+    # * Database services
+    migrations:
+        build:
+            context: .
+            dockerfile: Dockerfile.migrations
+
     server-db:
         image: postgres:17-alpine
         container_name: pg_server_container
@@ -51,8 +57,29 @@ services:
             retries: 5
         restart: unless-stopped
 
+    cms-db:
+        image: postgres:17-alpine
+        container_name: pg_cms_container
 
-# *** Volumes
+        environment:
+            - POSTGRES_PORT=5432
+            - POSTGRES_USER=asg-user
+            - POSTGRES_DB=asg-club-server
+            - POSTGRES_PASSWORD=asg-password
+
+        ports:
+            - "5433:5432"
+        volumes:
+            - pgdata_cms:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        restart: unless-stopped
+
 volumes:
+    pgdata_cms:
+        driver: local
     pgdata_server:
         driver: local

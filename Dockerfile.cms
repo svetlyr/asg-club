@@ -44,7 +44,6 @@ COPY --from=build --chown=1001:1001 /app/apps/cms/.next/standalone/ ./
 COPY --from=build --chown=1001:1001 /app/apps/cms/public ./apps/cms/public
 COPY --from=build --chown=1001:1001 /app/apps/cms/.next/static ./apps/cms/.next/static
 
-
 USER 1001
 EXPOSE 3001
 ENTRYPOINT ["./entrypoint.sh"]
