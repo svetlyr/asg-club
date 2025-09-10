@@ -137,8 +137,6 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
         showToast("Order submitted successfully!");
         reset(form);
         resetStep();
-
-        return;
     };
 
     onMount(() => {
