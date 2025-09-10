@@ -4,17 +4,17 @@
     "": {
       "name": "asg-club",
       "devDependencies": {
-        "@eslint/js": "^9.34.0",
+        "@eslint/js": "^9.35.0",
         "@total-typescript/ts-reset": "^0.6.1",
-        "@types/node": "^22.18.0",
-        "@typescript-eslint/parser": "^8.41.0",
-        "eslint": "^9.34.0",
+        "@types/node": "^22.18.1",
+        "@typescript-eslint/parser": "^8.43.0",
+        "eslint": "^9.35.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
-        "globals": "^16.3.0",
+        "globals": "^16.4.0",
         "prettier": "^3.6.2",
         "typescript": "^5.9.2",
-        "typescript-eslint": "^8.41.0",
+        "typescript-eslint": "^8.43.0",
       },
     },
     "apps/client": {
@@ -63,7 +63,7 @@
         "@payloadcms/ui": "^3.54.0",
         "@t3-oss/env-nextjs": "^0.13.8",
         "cross-env": "^7.0.3",
-        "dotenv": "16.4.7",
+        "dotenv": "^16.4.7",
         "graphql": "^16.11.0",
         "jiti": "unjs/jiti",
         "next": "^15.5.2",
@@ -74,12 +74,12 @@
       },
       "devDependencies": {
         "@types/bun": "^1.2.21",
-        "@types/react": "19.1.1",
-        "@types/react-dom": "19.1.1",
-        "@vitejs/plugin-react": "4.5.2",
-        "eslint-config-next": "15.3.0",
-        "jsdom": "26.1.0",
-        "vite-tsconfig-paths": "5.1.4",
+        "@types/react": "^19.1.1",
+        "@types/react-dom": "^19.1.1",
+        "@vitejs/plugin-react": "^4.5.2",
+        "eslint-config-next": "^15.3.0",
+        "jsdom": "^26.1.0",
+        "vite-tsconfig-paths": "^5.1.4",
       },
     },
     "apps/server": {
@@ -2764,6 +2764,8 @@
     "deasync/node-addon-api": ["node-addon-api@1.7.2", "", {}, "sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg=="],
 
     "error-ex/is-arrayish": ["is-arrayish@0.2.1", "", {}, "sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg=="],
+
+    "eslint/jiti": ["jiti@github:unjs/jiti#61fa803", { "bin": { "jiti": "./lib/jiti-cli.mjs" } }, "unjs-jiti-61fa803"],
 
     "eslint-config-next/@typescript-eslint/eslint-plugin": ["@typescript-eslint/eslint-plugin@8.39.0", "", { "dependencies": { "@eslint-community/regexpp": "^4.10.0", "@typescript-eslint/scope-manager": "8.39.0", "@typescript-eslint/type-utils": "8.39.0", "@typescript-eslint/utils": "8.39.0", "@typescript-eslint/visitor-keys": "8.39.0", "graphemer": "^1.4.0", "ignore": "^7.0.0", "natural-compare": "^1.4.0", "ts-api-utils": "^2.1.0" }, "peerDependencies": { "@typescript-eslint/parser": "^8.39.0", "eslint": "^8.57.0 || ^9.0.0", "typescript": ">=4.8.4 <6.0.0" } }, "sha512-bhEz6OZeUR+O/6yx9Jk6ohX6H9JSFTaiY0v9/PuKT3oGK0rn0jNplLmyFUGV+a9gfYnVNwGDwS/UkLIuXNb2Rw=="],
 

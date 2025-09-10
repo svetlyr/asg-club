@@ -28,7 +28,7 @@
         "@payloadcms/ui": "^3.54.0",
         "@t3-oss/env-nextjs": "^0.13.8",
         "cross-env": "^7.0.3",
-        "dotenv": "16.4.7",
+        "dotenv": "^16.4.7",
         "graphql": "^16.11.0",
         "jiti": "unjs/jiti",
         "next": "^15.5.2",
@@ -39,11 +39,11 @@
     },
     "devDependencies": {
         "@types/bun": "^1.2.21",
-        "@types/react": "19.1.1",
-        "@types/react-dom": "19.1.1",
-        "@vitejs/plugin-react": "4.5.2",
-        "eslint-config-next": "15.3.0",
-        "jsdom": "26.1.0",
-        "vite-tsconfig-paths": "5.1.4"
+        "@types/react": "^19.1.1",
+        "@types/react-dom": "^19.1.1",
+        "@vitejs/plugin-react": "^4.5.2",
+        "eslint-config-next": "^15.3.0",
+        "jsdom": "^26.1.0",
+        "vite-tsconfig-paths": "^5.1.4"
     }
 }
