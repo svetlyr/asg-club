@@ -6,28 +6,31 @@
  * and re-run `payload generate:db-schema` to regenerate this file.
  */
 
-import type {} from "@payloadcms/db-sqlite";
+import type {} from "@payloadcms/db-postgres";
 import {
-    sqliteTable,
+    pgTable,
     index,
     uniqueIndex,
     foreignKey,
     integer,
-    text,
+    varchar,
+    timestamp,
+    serial,
     numeric,
-} from "@payloadcms/db-sqlite/drizzle/sqlite-core";
-import { sql, relations } from "@payloadcms/db-sqlite/drizzle";
+    jsonb,
+    pgEnum,
+} from "@payloadcms/db-postgres/drizzle/pg-core";
+import { sql, relations } from "@payloadcms/db-postgres/drizzle";
+export const enum_gallery_unit = pgEnum("enum_gallery_unit", ["cm", "inch"]);
 
-export const users_sessions = sqliteTable(
+export const users_sessions = pgTable(
     "users_sessions",
     {
         _order: integer("_order").notNull(),
         _parentID: integer("_parent_id").notNull(),
-        id: text("id").primaryKey(),
-        createdAt: text("created_at").default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        expiresAt: text("expires_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: varchar("id").primaryKey(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }),
+        expiresAt: timestamp("expires_at", { mode: "string", withTimezone: true, precision: 3 }).notNull(),
     },
     (columns) => ({
         _orderIdx: index("users_sessions_order_idx").on(columns._order),
@@ -40,26 +43,24 @@ export const users_sessions = sqliteTable(
     }),
 );
 
-export const users = sqliteTable(
+export const users = pgTable(
     "users",
     {
-        id: integer("id").primaryKey(),
-        username: text("username").notNull(),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        email: text("email").notNull(),
-        resetPasswordToken: text("reset_password_token"),
-        resetPasswordExpiration: text("reset_password_expiration").default(
-            sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-        ),
-        salt: text("salt"),
-        hash: text("hash"),
+        id: serial("id").primaryKey(),
+        username: varchar("username").notNull(),
+        updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        email: varchar("email").notNull(),
+        resetPasswordToken: varchar("reset_password_token"),
+        resetPasswordExpiration: timestamp("reset_password_expiration", {
+            mode: "string",
+            withTimezone: true,
+            precision: 3,
+        }),
+        salt: varchar("salt"),
+        hash: varchar("hash"),
         loginAttempts: numeric("login_attempts").default("0"),
-        lockUntil: text("lock_until").default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        lockUntil: timestamp("lock_until", { mode: "string", withTimezone: true, precision: 3 }),
     },
     (columns) => ({
         users_updated_at_idx: index("users_updated_at_idx").on(columns.updatedAt),
@@ -68,21 +69,17 @@ export const users = sqliteTable(
     }),
 );
 
-export const media = sqliteTable(
+export const media = pgTable(
     "media",
     {
-        id: integer("id").primaryKey(),
-        alt: text("alt").notNull(),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        url: text("url"),
-        thumbnailURL: text("thumbnail_u_r_l"),
-        filename: text("filename"),
-        mimeType: text("mime_type"),
+        id: serial("id").primaryKey(),
+        alt: varchar("alt").notNull(),
+        updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        url: varchar("url"),
+        thumbnailURL: varchar("thumbnail_u_r_l"),
+        filename: varchar("filename"),
+        mimeType: varchar("mime_type"),
         filesize: numeric("filesize"),
         width: numeric("width"),
         height: numeric("height"),
@@ -96,27 +93,23 @@ export const media = sqliteTable(
     }),
 );
 
-export const gallery = sqliteTable(
+export const gallery = pgTable(
     "gallery",
     {
-        id: integer("id").primaryKey(),
-        _order: text("_order"),
-        title: text("title").notNull(),
-        description: text("description"),
+        id: serial("id").primaryKey(),
+        _order: varchar("_order"),
+        title: varchar("title").notNull(),
+        description: varchar("description"),
         width: numeric("width"),
         height: numeric("height"),
-        unit: text("unit", { enum: ["cm", "inch"] }).default("cm"),
+        unit: enum_gallery_unit("unit").default("cm"),
         image: integer("image_id")
             .notNull()
             .references(() => media.id, {
                 onDelete: "set null",
             }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
     },
     (columns) => ({
         gallery__order_idx: index("gallery__order_idx").on(columns._order),
@@ -126,17 +119,13 @@ export const gallery = sqliteTable(
     }),
 );
 
-export const payload_locked_documents = sqliteTable(
+export const payload_locked_documents = pgTable(
     "payload_locked_documents",
     {
-        id: integer("id").primaryKey(),
-        globalSlug: text("global_slug"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        globalSlug: varchar("global_slug"),
+        updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
     },
     (columns) => ({
         payload_locked_documents_global_slug_idx: index("payload_locked_documents_global_slug_idx").on(
@@ -147,13 +136,13 @@ export const payload_locked_documents = sqliteTable(
     }),
 );
 
-export const payload_locked_documents_rels = sqliteTable(
+export const payload_locked_documents_rels = pgTable(
     "payload_locked_documents_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         usersID: integer("users_id"),
         mediaID: integer("media_id"),
         galleryID: integer("gallery_id"),
@@ -194,18 +183,14 @@ export const payload_locked_documents_rels = sqliteTable(
     }),
 );
 
-export const payload_preferences = sqliteTable(
+export const payload_preferences = pgTable(
     "payload_preferences",
     {
-        id: integer("id").primaryKey(),
-        key: text("key"),
-        value: text("value", { mode: "json" }),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        id: serial("id").primaryKey(),
+        key: varchar("key"),
+        value: jsonb("value"),
+        updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
     },
     (columns) => ({
         payload_preferences_key_idx: index("payload_preferences_key_idx").on(columns.key),
@@ -214,13 +199,13 @@ export const payload_preferences = sqliteTable(
     }),
 );
 
-export const payload_preferences_rels = sqliteTable(
+export const payload_preferences_rels = pgTable(
     "payload_preferences_rels",
     {
-        id: integer("id").primaryKey(),
+        id: serial("id").primaryKey(),
         order: integer("order"),
         parent: integer("parent_id").notNull(),
-        path: text("path").notNull(),
+        path: varchar("path").notNull(),
         usersID: integer("users_id"),
     },
     (columns) => ({
@@ -241,18 +226,14 @@ export const payload_preferences_rels = sqliteTable(
     }),
 );
 
-export const payload_migrations = sqliteTable(
+export const payload_migrations = pgTable(
     "payload_migrations",
     {
-        id: integer("id").primaryKey(),
-        name: text("name"),
+        id: serial("id").primaryKey(),
+        name: varchar("name"),
         batch: numeric("batch"),
-        updatedAt: text("updated_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
-        createdAt: text("created_at")
-            .notNull()
-            .default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`),
+        updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 }).defaultNow().notNull(),
     },
     (columns) => ({
         payload_migrations_updated_at_idx: index("payload_migrations_updated_at_idx").on(columns.updatedAt),
@@ -327,6 +308,7 @@ export const relations_payload_preferences = relations(payload_preferences, ({ m
 export const relations_payload_migrations = relations(payload_migrations, () => ({}));
 
 type DatabaseSchema = {
+    enum_gallery_unit: typeof enum_gallery_unit;
     users_sessions: typeof users_sessions;
     users: typeof users;
     media: typeof media;
@@ -347,7 +329,7 @@ type DatabaseSchema = {
     relations_payload_migrations: typeof relations_payload_migrations;
 };
 
-declare module "@payloadcms/db-sqlite" {
+declare module "@payloadcms/db-postgres" {
     export interface GeneratedDatabaseSchema {
         schema: DatabaseSchema;
     }

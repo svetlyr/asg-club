@@ -9,10 +9,24 @@ import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Gallery } from "./collections/Gallery";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import { sqliteAdapter } from "@payloadcms/db-sqlite";
+import { s3Storage } from "@payloadcms/storage-s3";
+import { postgresAdapter } from "@payloadcms/db-postgres";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+
+const s3 = s3Storage({
+    collections: { media: true },
+    config: {
+        credentials: {
+            accessKeyId: env.R2_ACCESS_KEY_ID,
+            secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+        },
+        region: "auto",
+        endpoint: env.R2_BUCKET_URL,
+    },
+    bucket: env.R2_BUCKET_NAME,
+});
 
 export default buildConfig({
     secret: env.PAYLOAD_SECRET,
@@ -29,15 +43,12 @@ export default buildConfig({
     editor: lexicalEditor({}),
     collections: [Users, Media, Gallery],
 
-    typescript: {
-        outputFile: path.resolve(dirname, "payload-types.ts"),
-    },
-    db: sqliteAdapter({
-        client: {
-            url: env.DATABASE_URL,
+    sharp,
+    plugins: [s3],
+    db: postgresAdapter({
+        pool: {
+            connectionString: env.DATABASE_URL,
         },
     }),
-
-    sharp,
-    plugins: [],
+    typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
 });

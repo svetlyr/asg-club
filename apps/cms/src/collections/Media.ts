@@ -2,11 +2,10 @@ import type { Media as MediaType } from "@/payload-types";
 import type { CollectionAfterChangeHook, CollectionConfig } from "payload";
 
 const ensureUrlExists: CollectionAfterChangeHook<MediaType> = async ({ doc, req }) => {
-    if (!doc.url || !doc.thumbnailURL || !doc.width || !doc.height) {
+    if (!doc.url || !doc.width || !doc.height) {
         console.error(
             `Media document with ID: ${doc.id} was saved without url, width or height. Deleting broken record.`,
         );
-
         await req.payload.delete({ collection: "media", id: doc.id });
 
         throw new Error(
@@ -38,13 +37,6 @@ export const Media: CollectionConfig = {
     upload: {
         staticDir: "media",
         mimeTypes: ["image/jpeg", "image/jpg", "image/png"],
-
-        imageSizes: [
-            {
-                name: "sm",
-                width: 480,
-            },
-        ],
-        adminThumbnail: "sm",
+        disableLocalStorage: true,
     },
 };
