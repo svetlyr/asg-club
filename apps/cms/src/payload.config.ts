@@ -31,6 +31,9 @@ const s3 = s3Storage({
 export default buildConfig({
     secret: env.PAYLOAD_SECRET,
     admin: {
+        components: {
+            actions: ["./components/DeployButton.tsx"],
+        },
         meta: {
             // * disable Dark Reader extension
             other: { "darkreader-lock": "true" },

@@ -4,6 +4,7 @@ import { createEnv } from "@t3-oss/env-nextjs";
 const env = createEnv({
     server: {
         PAYLOAD_SECRET: z.string(),
+        GITHUB_CLIENT_DEPLOY_PAT: z.string(),
         PORT: z.coerce.number().default(3001),
 
         DATABASE_URL: z.string(),

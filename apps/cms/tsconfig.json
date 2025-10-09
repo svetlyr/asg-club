@@ -22,7 +22,6 @@
         "types": ["bun"],
         "verbatimModuleSyntax": false,
 
-        "baseUrl": ".",
         "paths": {
             "@env": ["./src/env.ts"],
 

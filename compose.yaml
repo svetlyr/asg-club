@@ -22,7 +22,7 @@ services:
         env_file:
             - apps/cms/.env
         environment:
-            DATABASE_URL: postgres://asg-user:asg-password@server-db:5433/asg-club-server
+            DATABASE_URL: postgres://asg-user:asg-password@cms-db:5433/asg-club-server
         volumes:
             - ./apps/cms/payload.db:/app/payload.db
         ports:
@@ -64,7 +64,7 @@ services:
         environment:
             - POSTGRES_PORT=5432
             - POSTGRES_USER=asg-user
-            - POSTGRES_DB=asg-club-server
+            - POSTGRES_DB=asg-club-cms
             - POSTGRES_PASSWORD=asg-password
 
         ports:
