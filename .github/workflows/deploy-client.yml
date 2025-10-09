@@ -24,6 +24,7 @@ jobs:
               uses: withastro/action@v3
               with:
                   path: apps/client
+                  package-manager: bun@latest
 
     deploy:
         needs: build
