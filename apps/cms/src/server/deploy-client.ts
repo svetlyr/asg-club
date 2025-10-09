@@ -2,45 +2,29 @@
 
 import tryCatch from "@/utils/tryCatch";
 import env from "@env";
-import { revalidatePath } from "next/cache";
 
-type DispatchOk = {
-    status: number;
-    requestId?: string | null;
-    workflowId: string;
-    ref: string;
-};
 type DispatchErr = {
     status?: number;
     message: string;
 };
 
-type DeployOpts = {
-    ref?: string;
-    inputs?: Record<string, string>;
-    workflowId?: string;
-    pathToRevalidate?: string;
-};
-
-const ref = "master";
 const owner = "svetlyr";
 const repo = "asg-club";
-const workflowId = "deploy-client.yml";
+const eventType = "deploy-from-cms";
 const token = env.GITHUB_CLIENT_DEPLOY_PAT;
 
-export default async function deployClient(opts: DeployOpts = {}) {
-    const url = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${encodeURIComponent(
-        workflowId,
-    )}/dispatches`;
+export default async function deployClient() {
+    const url = `https://api.github.com/repos/${owner}/${repo}/dispatches`;
 
     const headers: HeadersInit = {
-        Accept: "application/vnd.github+json",
         Authorization: `Bearer ${token}`,
-        // "X-GitHub-Api-Version": "2022-11-28",
         "Content-Type": "application/json",
+        Accept: "application/vnd.github+json",
     };
 
-    const body = JSON.stringify({ ref });
+    const body = JSON.stringify({
+        event_type: eventType,
+    });
 
     const [response, error] = await tryCatch(
         fetch(url, {
@@ -55,15 +39,14 @@ export default async function deployClient(opts: DeployOpts = {}) {
         const err: DispatchErr = {
             message: error instanceof Error ? error.message : "Unknown fetch error",
         };
-        return [null, err];
+        return [null, err] as const;
     }
 
-    if (response.status === 204) {
-        const requestId = response.headers.get("x-github-request-id");
-        revalidatePath(opts.pathToRevalidate || "/");
-        const ok: DispatchOk = { status: 204, requestId, workflowId, ref };
-        return [ok, null];
-    }
-
-    return [null, error];
+    const requestId = response.headers.get("x-github-request-id");
+    const ok = {
+        status: response.status,
+        requestId,
+        eventType,
+    };
+    return [ok, null] as const;
 }
