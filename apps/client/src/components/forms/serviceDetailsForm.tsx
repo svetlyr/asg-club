@@ -64,7 +64,7 @@ const ServiceDetailsForm: VoidComponent = () => {
 
             <Show when={serviceType() !== "Premade Merch"}>
                 <Field name="files" type="File[]" keepActive>
-                    {(field, fieldProps) => <input {...fieldProps} type="file" multiple required />}
+                    {(_field, fieldProps) => <input {...fieldProps} type="file" multiple required />}
                 </Field>
 
                 <Field name="url" keepActive>

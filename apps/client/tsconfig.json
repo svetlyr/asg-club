@@ -3,7 +3,7 @@
 
     "files": ["../../reset.d.ts"],
     "exclude": ["**/dist", "**/node_modules", ".git", ".github", ".vscode"],
-    "include": ["src", "../cms/src", "**/*.d.ts", ".astro/types.d.ts", "./*.config.ts"],
+    "include": ["src", "**/*.d.ts", ".astro/types.d.ts", "./*.config.ts"],
 
     "compilerOptions": {
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
@@ -16,25 +16,22 @@
 
         "noUncheckedIndexedAccess": false,
 
-        "baseUrl": ".",
         "paths": {
-            "@api": ["src/api/index.ts"],
-            "@utils": ["src/utils/index.ts"],
+            "@api": ["./src/api/index.ts"],
+            "@utils": ["./src/utils/index.ts"],
 
-            "@api/*": ["src/api/*"],
+            "@api/*": ["./src/api/*"],
             "@cms/*": ["../cms/src/*"],
-            "@hooks/*": ["src/hooks/*"],
-            "@utils/*": ["src/utils/*"],
-            "@assets/*": ["src/assets/*"],
-            "@stores/*": ["src/stores/*"],
-            "@styles/*": ["src/styles/*"],
-            "@layouts/*": ["src/layouts/*"],
-            "@schemas/*": ["src/schemas/*"],
-            "@components/*": ["src/components/*"]
+            "@hooks/*": ["./src/hooks/*"],
+            "@utils/*": ["./src/utils/*"],
+            "@assets/*": ["./src/assets/*"],
+            "@stores/*": ["./src/stores/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@layouts/*": ["./src/layouts/*"],
+            "@schemas/*": ["./src/schemas/*"],
+            "@components/*": ["./src/components/*"]
         },
 
-        // "noEmit": false,
-        // "composite": true,
         "incremental": true,
         "skipLibCheck": false,
         "removeComments": true,

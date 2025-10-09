@@ -1,5 +1,5 @@
 import { Portal } from "solid-js/web";
-import Panzoom, { type PanzoomObject } from "@panzoom/panzoom";
+import Panzoom from "@panzoom/panzoom";
 import { createSignal, createEffect, onCleanup, Show, type VoidComponent } from "solid-js";
 
 type PreviewData = {
@@ -64,14 +64,12 @@ const ImagePreview: VoidComponent<Props> = ({ gridClass, gridItemClass }) => {
             if (!parent) return;
 
             document.addEventListener("keydown", handleKeyDown);
-            // parent.addEventListener("click", panzoom.zoomIn);
             parent.addEventListener("wheel", panzoom.zoomWithWheel);
 
             onCleanup(() => {
                 panzoom.destroy();
                 document.removeEventListener("keydown", handleKeyDown);
                 parent.removeEventListener("wheel", panzoom.zoomWithWheel);
-                // parent.removeEventListener("click", panzoom.zoomIn);
             });
         }
     });
