@@ -6,9 +6,9 @@
     "exclude": ["**/dist", "**/node_modules", ".git", ".github", ".vscode"],
 
     "compilerOptions": {
-        "target": "ES2021",
-        "module": "ES2022",
-        "moduleResolution": "node",
+        "target": "esnext",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
         "esModuleInterop": true,
 
         // * Handled by eslint
@@ -17,9 +17,8 @@
 
         "types": ["bun-types"],
 
-        "baseUrl": ".",
         "paths": {
-            "@env": ["src/env.ts"]
+            "@env": ["./src/env.ts"]
         }
     }
 }
