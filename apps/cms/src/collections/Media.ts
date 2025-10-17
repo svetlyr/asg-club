@@ -1,4 +1,4 @@
-import type { Media as MediaType } from "@/payload-types";
+import type { Media as MediaType } from "@payload-types";
 import type { CollectionAfterChangeHook, CollectionConfig } from "payload";
 
 const ensureUrlExists: CollectionAfterChangeHook<MediaType> = async ({ doc, req }) => {

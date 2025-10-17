@@ -19,13 +19,13 @@
         "jsx": "preserve",
         "incremental": true,
         "plugins": [{ "name": "next" }],
-        "types": ["bun"],
+        "types": ["bun", "node"],
         "verbatimModuleSyntax": false,
 
         "paths": {
             "@env": ["./src/env.ts"],
 
-            "@/*": ["./src/*"],
+            "@*": ["./src/*"],
             "@payload-config": ["./src/payload.config.ts"]
         }
     }
