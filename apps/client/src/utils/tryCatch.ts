@@ -30,4 +30,4 @@ function tryCatch<T, E = Error>(operation: Operation<T>): ResultSync<T, E> | Res
     }
 }
 
-export default tryCatch;
+export { tryCatch };

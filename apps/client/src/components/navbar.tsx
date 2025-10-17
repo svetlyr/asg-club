@@ -3,9 +3,9 @@ import { useWindowScrollPosition } from "@solid-primitives/scroll";
 import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
 import { createComputed, createEffect, createSignal, For, onCleanup, onMount, Show } from "solid-js";
 
-import Link from "./link";
-import Button from "./button";
-import createIsMobile from "@hooks/isMobile";
+import { Link } from "./link";
+import { Button } from "./button";
+import { createIsMobile } from "@hooks/isMobile";
 
 import XMark from "@icons/fa/xmark";
 import HamburgerMenu from "@icons/fa/bars";

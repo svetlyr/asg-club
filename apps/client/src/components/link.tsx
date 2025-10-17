@@ -22,4 +22,4 @@ const Link: ParentComponent<LinkProps> = ({ href, newTab, class: className = "",
     );
 };
 
-export default Link;
+export { Link };

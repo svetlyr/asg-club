@@ -1,17 +1,17 @@
 import { Dynamic } from "solid-js/web";
-import { getErrors, reset, valiForm, type SubmitHandler } from "@modular-forms/solid";
-import { createEffect, createMemo, on, onMount, Show, type Component } from "solid-js";
+import { getErrors, reset, type SubmitHandler } from "@modular-forms/solid";
+import { createEffect, createMemo, on, onMount, Show, type VoidComponent } from "solid-js";
 
-import Button from "./button";
-import Stepper from "./stepper";
-import serverApi from "@api/client";
-import tryCatch from "@utils/tryCatch";
-import ToastContainer from "./toastContainer";
+import { Button } from "./button";
+import { Stepper } from "./stepper";
+import { serverApi } from "@api/client";
+import { tryCatch } from "@utils/tryCatch";
+import { ToastContainer } from "./toastContainer";
 import { showToast } from "@stores/toastStore";
-import useMultiStepForm from "@hooks/useMultiStepForm";
+import { useMultiStepForm } from "@hooks/useMultiStepForm";
+import { makeValidateForm } from "@utils/validateForm";
 import { setFormValue, useForm } from "@stores/formStore";
-import { getServiceDetailsSchema } from "@schemas/serviceSchema";
-import { orderSchema, type OrderSchema, orderDefaults, basicDetailsSchema, type OrderKeys } from "@schemas/formSchema";
+import { type OrderSchema, orderDefaults, type OrderKeys } from "@schemas/formSchema";
 
 import CommentsForm from "./forms/commentsForm";
 import BasicDetailsForm from "./forms/basicDetailsForm";
@@ -48,41 +48,20 @@ const STEPS_DATA = [
     },
 ];
 
-type Props = {
-    wrapperClass?: string;
-};
-
-// eslint-disable-next-line solid/no-destructure
-const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
+const MainForm: VoidComponent = () => {
     let formRef!: HTMLFormElement;
-    const { form, Form } = useForm({
-        initialValues: orderDefaults,
-        validateOn: "submit",
-        revalidateOn: "input",
-        validate: (value) => {
-            switch (currentStepIndex()) {
-                case 0:
-                    return valiForm(basicDetailsSchema)(value);
-                case 1: {
-                    // * cant be undefined since we set initialValues
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    const serviceSchema = getServiceDetailsSchema(value.serviceType!);
-
-                    return valiForm(serviceSchema)(value);
-                }
-                case 2:
-                    return valiForm(orderSchema)(value);
-                default:
-                    return () => null;
-            }
-        },
-    });
-
     const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex, resetStep } = useMultiStepForm([
         BasicDetailsForm,
         ServiceDetailsForm,
         CommentsForm,
     ]);
+
+    const { form, Form } = useForm({
+        initialValues: orderDefaults,
+        validateOn: "submit",
+        revalidateOn: "input",
+        validate: makeValidateForm(currentStepIndex),
+    });
 
     createEffect(
         on(
@@ -152,7 +131,7 @@ const MainForm: Component<Props> = ({ wrapperClass = "" }) => {
     const step = createMemo(() => STEPS_DATA[currentStepIndex()]);
     return (
         <>
-            <div id="form" class={`flex items-start justify-center gap-x-16 py-32 ${wrapperClass}`}>
+            <div id="form" class="flex items-start justify-center gap-x-16 py-32">
                 <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit} ref={formRef}>
                     <h2 class="mb-6 text-center text-5xl lg:text-left">{step().title}</h2>
                     <p class="mb-20 text-center lg:mb-10 lg:text-left">{step().paragraph}</p>

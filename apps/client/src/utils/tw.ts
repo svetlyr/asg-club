@@ -16,4 +16,4 @@ const tw = extendTailwindMerge({
     },
 });
 
-export default tw;
+export { tw };

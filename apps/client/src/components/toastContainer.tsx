@@ -6,7 +6,7 @@ import { useToasts, beginRemoveToast, finalizeRemoveToast, type Toast } from "@s
 
 import "@styles/toast.scss";
 
-const ToastContainer: VoidComponent = () => {
+export const ToastContainer: VoidComponent = () => {
     const toasts = useToasts();
     const [refs, setRefs] = createSignal<Record<string, HTMLElement>>({});
 
@@ -47,5 +47,3 @@ const ToastContainer: VoidComponent = () => {
         </Portal>
     );
 };
-
-export default ToastContainer;

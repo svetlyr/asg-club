@@ -1,7 +1,7 @@
 import { type Component } from "solid-js";
 import { type Maybe } from "@modular-forms/solid";
 
-import Button from "@components/button";
+import { Button } from "@components/button";
 import { handleNumberTransform } from "@utils/form";
 import { handleKeyDown, handlePaste } from "./handlers";
 import { useForm, setFormValue } from "@stores/formStore";

@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 import type { JSX, ParentComponent } from "solid-js";
 
-import Link from "./link";
-import tw from "@utils/tw";
+import { Link } from "./link";
+import { tw } from "@utils/tw";
 import type { LinkProps } from "./link";
 
 type BaseButtonProps = JSX.IntrinsicElements["button"];
@@ -38,4 +38,4 @@ const Button: ParentComponent<Props> = ({ href, type, onClick, class: className 
     );
 };
 
-export default Button;
+export { Button };

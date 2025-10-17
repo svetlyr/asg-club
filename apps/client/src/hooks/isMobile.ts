@@ -30,4 +30,4 @@ const createIsMobile = (breakpoint: BreakpointKey = "md"): Accessor<boolean> => 
     return isMobile;
 };
 
-export default createIsMobile;
+export { createIsMobile };

@@ -10,7 +10,7 @@ type useMultiStepFormReturn = {
     resetStep: () => void;
 };
 
-export default function useMultiStepForm(steps: VoidComponent[]): useMultiStepFormReturn {
+export function useMultiStepForm(steps: VoidComponent[]): useMultiStepFormReturn {
     const [currentStepIndex, setCurrentStepIndex] = createSignal(0);
 
     const step = createMemo(() => steps[currentStepIndex()]);

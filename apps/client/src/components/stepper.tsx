@@ -5,7 +5,7 @@ type StepperProps = {
     steps: { stepperTitle: string; [key: PropertyKey]: unknown }[];
 };
 
-const Stepper: Component<StepperProps> = (props) => {
+export const Stepper: Component<StepperProps> = (props) => {
     return (
         <div class="mb-6 overflow-hidden">
             <div class="flex items-center justify-around">
@@ -38,5 +38,3 @@ const Stepper: Component<StepperProps> = (props) => {
         </div>
     );
 };
-
-export default Stepper;
