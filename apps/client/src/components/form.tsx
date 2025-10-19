@@ -6,6 +6,7 @@ import { Button } from "./button";
 import { Stepper } from "./stepper";
 import { serverApi } from "@api/client";
 import { tryCatch } from "@utils/tryCatch";
+import { buildFormData } from "@utils/form";
 import { ToastContainer } from "./toastContainer";
 import { showToast } from "@stores/toastStore";
 import { useMultiStepForm } from "@hooks/useMultiStepForm";
@@ -48,6 +49,7 @@ const STEPS_DATA = [
     },
 ];
 
+const toastDelay = 300;
 const MainForm: VoidComponent = () => {
     let formRef!: HTMLFormElement;
     const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex, resetStep } = useMultiStepForm([
@@ -65,17 +67,15 @@ const MainForm: VoidComponent = () => {
 
     createEffect(
         on(
-            [() => form.submitCount, () => form.invalid],
-
-            ([submitCount, invalid]) => {
-                if (submitCount && invalid) {
+            [() => form.submitCount],
+            () =>
+                requestAnimationFrame(() => {
                     const errors = getErrors(form);
 
                     Object.values(errors)
                         .filter((msg): msg is string => Boolean(msg))
-                        .forEach((msg, i) => setTimeout(() => showToast(msg), 500 * i));
-                }
-            },
+                        .forEach((msg, i) => setTimeout(() => showToast(msg), toastDelay * i));
+                }),
             { defer: true },
         ),
     );
@@ -85,18 +85,6 @@ const MainForm: VoidComponent = () => {
         // * this is stupid
         reset(form, { keepValues: true });
         navigate();
-    };
-
-    const buildFormData = ({ files, ...order }: OrderSchema): FormData => {
-        const formData = new FormData();
-
-        if (files) {
-            files.forEach((file) => formData.append("images", file, file.name));
-        }
-
-        formData.append("order", new Blob([JSON.stringify(order)], { type: "application/json" }), "order.json");
-
-        return formData;
     };
 
     const handleSubmit: SubmitHandler<OrderSchema> = async (value): Promise<void> => {
