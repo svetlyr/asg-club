@@ -14,7 +14,7 @@ export const ToastContainer: VoidComponent = () => {
 
     return (
         <Portal>
-            <div class="fixed bottom-4 left-4 z-50 flex min-w-96 flex-col gap-2 border border-red-400">
+            <div class="fixed bottom-4 left-4 z-50 flex min-w-96 flex-col gap-2">
                 <For each={toasts()}>
                     {(t: Toast) => {
                         onCleanup(() => setRefs(({ [t.id]: _, ...refs }) => refs));
