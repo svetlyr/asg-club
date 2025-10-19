@@ -17,9 +17,7 @@ import { type OrderSchema, orderDefaults, type OrderKeys } from "@schemas/formSc
 import CommentsForm from "./forms/commentsForm";
 import BasicDetailsForm from "./forms/basicDetailsForm";
 import ServiceDetailsForm from "./forms/serviceDetailsForm";
-
-import ArrowLeft from "@icons/sli/arrow-left";
-import ArrowRight from "@icons/sli/arrow-right";
+import { ArrowLeft, ArrowRight } from "@components/icons";
 
 import bike2 from "@assets/images/bike2.webp";
 import bike3 from "@assets/images/bike3.webp";

@@ -21,20 +21,10 @@ export type OrderKeys = keyof OrderSchema;
 
 export const orderDefaults: OrderSchema = {
     email: "",
-    fullname: "",
-    tel: "",
 
     serviceType: "Graphic Design",
-    url: "",
     description: "",
     files: undefined,
-    quantity: 0,
-    width: 0,
-    height: 0,
-    unitType: "cm",
-    size: "M",
-
-    comments: "",
 };
 
 export type BasicDetailsSchema = InferInput<typeof basicDetailsSchema>;

@@ -14,7 +14,7 @@ export const ToastContainer: VoidComponent = () => {
 
     return (
         <Portal>
-            <div class="fixed bottom-4 left-4 z-50 flex flex-col gap-2">
+            <div class="fixed bottom-4 left-4 z-50 flex min-w-96 flex-col gap-2 border border-red-400">
                 <For each={toasts()}>
                     {(t: Toast) => {
                         onCleanup(() => setRefs(({ [t.id]: _, ...refs }) => refs));
@@ -32,7 +32,7 @@ export const ToastContainer: VoidComponent = () => {
                                         finalizeRemoveToast(t.id);
                                     }
                                 }}>
-                                <span>{t.message}</span>
+                                <span class="w-auto">{t.message}</span>
                                 <button
                                     aria-label="Dismiss"
                                     class="ml-4 cursor-pointer border-0 bg-transparent font-bold text-current"

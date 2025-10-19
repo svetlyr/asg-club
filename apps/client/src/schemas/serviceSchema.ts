@@ -110,7 +110,6 @@ export function getServiceDetailsSchema(serviceType: ServiceType): ServiceDetail
     return pick(rawServiceDetailsSchema, keys);
 }
 
-// * Type helper that replaces "width" and "height" with "dimensions"
 type UiSchemaFields<S extends ServiceType> = (typeof additionalFields)[S] extends infer Fields extends readonly string[]
     ? "width" extends Fields[number]
         ? "height" extends Fields[number]
@@ -119,6 +118,7 @@ type UiSchemaFields<S extends ServiceType> = (typeof additionalFields)[S] extend
         : Fields
     : never;
 
+// * Type helper that replaces "width" and "height" with "dimensions"
 type UiSchemaFieldsMap = {
     [S in ServiceType]: UiSchemaFields<S>;
 };
