@@ -9,17 +9,17 @@
         "up": "bun update"
     },
     "devDependencies": {
-        "@eslint/js": "^9.37.0",
+        "@eslint/js": "^9.39.2",
         "@total-typescript/ts-reset": "^0.6.1",
-        "@types/node": "^22.18.9",
-        "@typescript-eslint/parser": "^8.46.0",
-        "eslint": "^9.37.0",
+        "@types/node": "^22.19.3",
+        "@typescript-eslint/parser": "^8.50.1",
+        "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
-        "globals": "^16.4.0",
-        "prettier": "^3.6.2",
+        "globals": "^16.5.0",
+        "prettier": "^3.7.4",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.46.0"
+        "typescript-eslint": "^8.50.1"
     },
     "resolutions": {
         "drizzle-orm": "^0.44.3"
