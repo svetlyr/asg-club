@@ -1,12 +1,13 @@
 import { For, type Component } from "solid-js";
 
 import { useForm } from "@stores/formStore";
-import { unitTypes } from "@schemas/serviceSchema";
+import { unitTypes, type UnitTypeKey } from "@constants";
 
 type Props = {
-    fieldKey: keyof typeof unitTypes;
+    fieldKey: UnitTypeKey;
 };
-const UnitTypeField: Component<Props> = (props) => {
+
+export const UnitTypeField: Component<Props> = (props) => {
     const { form, Field } = useForm();
 
     return (
@@ -33,5 +34,3 @@ const UnitTypeField: Component<Props> = (props) => {
         </Field>
     );
 };
-
-export default UnitTypeField;

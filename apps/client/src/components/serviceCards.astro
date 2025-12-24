@@ -1,7 +1,7 @@
 ---
 import Card from "@components/card.astro";
 import type { IconType } from "@icons";
-import type { ServiceType } from "@schemas/serviceSchema";
+import type { ServiceType } from "@constants";
 import { Cup, Tag, Key, Fire, Badge, Basket, Handbag, Picture, Pin } from "@components/icons";
 
 const cards = [
@@ -57,7 +57,7 @@ const cards = [
 <script>
     import { addOnClick } from "@utils/dom";
     import { setFormValue } from "@stores/formStore";
-    import { serviceTypes, type ServiceType } from "@schemas/serviceSchema";
+    import { serviceTypes, type ServiceType } from "@constants";
 
     const cards = document.querySelectorAll<HTMLAnchorElement>(".service-card[href='#form']");
 

@@ -1,14 +1,14 @@
 import type { VoidComponent, VoidProps } from "solid-js";
 
-import UnitTypeField from "./UnitTypeField";
-import type { unitTypes } from "@schemas/serviceSchema";
+import { type UnitTypeKey } from "@constants";
+import { UnitTypeField } from "./UnitTypeField";
 
 export type WithUnitComponent<P extends VoidProps = object> = VoidComponent<P> & {
     readonly __withUnit: true;
 };
-function withUnit<P extends VoidProps>(
+export function withUnit<P extends VoidProps>(
     ValueComponent: VoidComponent<P>,
-    fieldKey: keyof typeof unitTypes,
+    fieldKey: UnitTypeKey,
 ): WithUnitComponent<P> {
     const Wrapped: VoidComponent<P> & { __withUnit: true } = (props) => {
         return (
@@ -23,5 +23,3 @@ function withUnit<P extends VoidProps>(
     Wrapped.__withUnit = true;
     return Wrapped;
 }
-
-export default withUnit;

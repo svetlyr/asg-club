@@ -1,7 +1,6 @@
 ---
 import { Link } from "./link";
 import { Button } from "./button";
-import { serviceTypes } from "@schemas/serviceSchema";
 
 import asgLogo from "@assets/asg-logo.svg";
 import clubLogo from "@assets/club-logo.svg";
@@ -17,6 +16,7 @@ import {
 } from "@components/icons";
 
 import { INSTAGRAM, YOUTUBE, FACEBOOK, TIKTOK, EMAIL } from "astro:env/server";
+import { serviceTypes } from "@constants";
 
 const socials = [
     { href: INSTAGRAM, label: "Instagram", Icon: SocialInstagram },
@@ -29,7 +29,7 @@ const socials = [
 <script>
     import { addOnClick } from "@utils/dom";
     import { setFormValue } from "@stores/formStore";
-    import { serviceTypes, type ServiceType } from "@schemas/serviceSchema";
+    import { serviceTypes, type ServiceType } from "@constants";
 
     const services = document.querySelectorAll<HTMLAnchorElement>(".service[href='#form']");
 

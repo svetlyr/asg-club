@@ -1,16 +1,12 @@
-import type { Component } from "solid-js";
 import { type Maybe } from "@modular-forms/solid";
 
-import withUnit from "./withUnit";
+import { withUnit } from "./withUnit";
 import { Button } from "@components/button";
-import { handleNumberTransform } from "@utils/form";
+import { Plus, Menus } from "@components/icons";
 import { handleKeyDown, handlePaste } from "./handlers";
 import { setFormValue, useForm } from "@stores/formStore";
 
-import Plus from "@icons/custom/plus";
-import Menus from "@icons/custom/menus";
-
-const DimensionsField: Component = () => {
+export const DimensionsField = withUnit(() => {
     const { form, Field } = useForm();
 
     function updateDimension(key: "width" | "height", value: Maybe<number>, delta: number): void {
@@ -21,7 +17,7 @@ const DimensionsField: Component = () => {
 
     return (
         <>
-            <Field name="width" type="number" keepActive transform={handleNumberTransform}>
+            <Field name="width" type="number" keepActive>
                 {(field, fieldProps) => (
                     <div class="flex w-full">
                         <Button
@@ -82,6 +78,4 @@ const DimensionsField: Component = () => {
             </Field>
         </>
     );
-};
-
-export default withUnit(DimensionsField, "dimensions");
+}, "dimensions");

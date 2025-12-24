@@ -6,12 +6,12 @@ import { Button } from "./button";
 import { Stepper } from "./stepper";
 import { serverApi } from "@api/client";
 import { tryCatch } from "@utils/tryCatch";
+import { toast } from "@stores/toastStore";
 import { buildFormData } from "@utils/form";
 import { ToastContainer } from "./toastContainer";
-import { showToast } from "@stores/toastStore";
-import { useMultiStepForm } from "@hooks/useMultiStepForm";
-import { makeValidateForm } from "@utils/validateForm";
+import { makeFormValidator } from "@utils/validateForm";
 import { setFormValue, useForm } from "@stores/formStore";
+import { useMultiStepForm } from "@hooks/useMultiStepForm";
 import { type OrderSchema, orderDefaults, type OrderKeys } from "@schemas/formSchema";
 
 import CommentsForm from "./forms/commentsForm";
@@ -60,46 +60,40 @@ const MainForm: VoidComponent = () => {
         initialValues: orderDefaults,
         validateOn: "submit",
         revalidateOn: "input",
-        validate: makeValidateForm(currentStepIndex),
+        validate: makeFormValidator(currentStepIndex),
     });
 
+    // handle error toasts
     createEffect(
         on(
             [() => form.submitCount],
             () =>
                 requestAnimationFrame(() => {
-                    const errors = getErrors(form);
+                    const errors = Object.values(getErrors(form)).filter(Boolean);
 
-                    Object.values(errors)
-                        .filter((msg): msg is string => Boolean(msg))
-                        .forEach((msg, i) => setTimeout(() => showToast(msg), toastDelay * i));
+                    errors.forEach((msg, i) => setTimeout(() => toast.info(msg), toastDelay * i));
                 }),
             { defer: true },
         ),
     );
 
-    // ? find another way to reset form submit count
-    const handleNavigation = (navigate: () => void): void => {
-        // * this is stupid
-        reset(form, { keepValues: true });
-        navigate();
-    };
-
     const handleSubmit: SubmitHandler<OrderSchema> = async (value): Promise<void> => {
         if (!isLastStep()) {
-            handleNavigation(next);
+            next();
             return;
         }
+
+        console.log({ value });
 
         const formData = buildFormData(value);
         const [, error] = await tryCatch(serverApi.post("orders", formData));
 
         if (error) {
-            showToast("Failed to submit order. Please try again.");
+            toast.info("Failed to submit order. Please try again.");
             return;
         }
 
-        showToast("Order submitted successfully!");
+        toast.info("Order submitted successfully!");
         reset(form);
         resetStep();
     };
@@ -107,10 +101,9 @@ const MainForm: VoidComponent = () => {
     onMount(() => {
         const formData = new FormData(formRef);
 
+        // TODO: save to session storage on unMount, clear on success
         for (const [key, value] of formData.entries()) {
-            if (typeof value === "string") {
-                setFormValue(key as OrderKeys, value);
-            }
+            setFormValue(key as OrderKeys, value);
         }
     });
 
@@ -130,7 +123,7 @@ const MainForm: VoidComponent = () => {
                     <div class="mt-4 flex gap-x-5">
                         <Show when={!isFirstStep()}>
                             <Button
-                                onClick={() => handleNavigation(back)}
+                                onClick={() => back()}
                                 class="flex w-full items-center justify-center gap-x-1 bg-red-primary px-6 py-3 font-bold lg:w-fit">
                                 <ArrowLeft /> PREV
                             </Button>

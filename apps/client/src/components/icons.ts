@@ -24,3 +24,8 @@ export { default as Instagram } from "@icons/sli/social-instagram";
 
 export { default as ArrowLeft } from "@icons/sli/arrow-left";
 export { default as ArrowRight } from "@icons/sli/arrow-right";
+
+export { default as Docs } from "@icons/sli/docs";
+
+export { default as Plus } from "@icons/custom/plus";
+export { default as Menus } from "@icons/custom/menus";

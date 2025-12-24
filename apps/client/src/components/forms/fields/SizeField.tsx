@@ -1,10 +1,10 @@
-import { For, type VoidComponent } from "solid-js";
+import { For } from "solid-js";
 import { useForm } from "@stores/formStore";
 
-import withUnit from "./withUnit";
-import { sizes } from "@schemas/serviceSchema";
+import { sizes } from "@constants";
+import { withUnit } from "./withUnit";
 
-const SizeField: VoidComponent = () => {
+export const SizeField = withUnit(() => {
     const { Field } = useForm();
 
     return (
@@ -22,6 +22,4 @@ const SizeField: VoidComponent = () => {
             )}
         </Field>
     );
-};
-
-export default withUnit(SizeField, "size");
+}, "size");

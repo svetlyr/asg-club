@@ -1,4 +1,14 @@
-import { type ObjectSchema, type ErrorMessage, type ObjectEntries, type ObjectIssue, type ObjectKeys } from "valibot";
+import {
+    pick,
+    type ObjectKeys,
+    type ObjectIssue,
+    type ObjectSchema,
+    type ErrorMessage,
+    type ObjectEntries,
+} from "valibot";
+import { concatTuples } from "@utils";
+import { type ServiceType, additionalFields } from "@constants";
+import { baseServiceFields, rawServiceDetailsSchema, type ServiceDetailsSchema } from "@schemas/serviceSchema";
 
 /*
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
@@ -11,3 +21,9 @@ function getTypedSchemaKeys<TEntries extends ObjectEntries, TPipeline extends Er
 }
 
 export { getTypedSchemaKeys };
+
+export function getServiceDetailsSchema(serviceType: ServiceType): ServiceDetailsSchema {
+    const keys = concatTuples(baseServiceFields, additionalFields[serviceType]);
+
+    return pick(rawServiceDetailsSchema, keys);
+}

@@ -1,15 +1,12 @@
-import { type Component } from "solid-js";
+import { type VoidComponent } from "solid-js";
 import { type Maybe } from "@modular-forms/solid";
 
 import { Button } from "@components/button";
-import { handleNumberTransform } from "@utils/form";
+import { Plus, Menus } from "@components/icons";
 import { handleKeyDown, handlePaste } from "./handlers";
 import { useForm, setFormValue } from "@stores/formStore";
 
-import Plus from "@icons/custom/plus";
-import Menus from "@icons/custom/menus";
-
-const QuantityField: Component = () => {
+export const QuantityField: VoidComponent = () => {
     const { form, Field } = useForm();
 
     function updateQuantity(value: Maybe<number>, delta: number): void {
@@ -19,7 +16,7 @@ const QuantityField: Component = () => {
     }
 
     return (
-        <Field name="quantity" type="number" keepActive transform={handleNumberTransform}>
+        <Field name="quantity" type="number" keepActive>
             {(field, fieldProps) => (
                 <div class="flex">
                     <Button
@@ -50,5 +47,3 @@ const QuantityField: Component = () => {
         </Field>
     );
 };
-
-export default QuantityField;

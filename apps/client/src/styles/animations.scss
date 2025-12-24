@@ -1,5 +1,5 @@
 @mixin animate-appear($direction) {
-    $y-offset: if($direction == "up", 100px, -100px);
+    $y-offset: if(sass($direction == "up"): 100px; else: -100px,);
 
     $animation-name: fade-in-#{$direction};
 

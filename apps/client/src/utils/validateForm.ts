@@ -1,10 +1,10 @@
 import { type Accessor } from "solid-js";
 import { valiForm, type ValidateForm, type FormErrors } from "@modular-forms/solid";
 
-import { getServiceDetailsSchema } from "@schemas/serviceSchema";
+import { getServiceDetailsSchema } from "./schema";
 import { type OrderSchema, basicDetailsSchema, orderSchema } from "@schemas/formSchema";
 
-export function makeValidateForm(stepIndex: Accessor<number>): ValidateForm<OrderSchema> {
+export function makeFormValidator(stepIndex: Accessor<number>): ValidateForm<OrderSchema> {
     return (values) => {
         switch (stepIndex()) {
             case 0:

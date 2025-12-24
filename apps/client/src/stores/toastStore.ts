@@ -1,6 +1,6 @@
 import { createSignal, type Accessor } from "solid-js";
 
-type Toast = {
+export type Toast = {
     id: string;
     message: string;
     leaving: boolean;
@@ -8,12 +8,12 @@ type Toast = {
 
 const [toasts, setToasts] = createSignal<Toast[]>([]);
 
-function genId(): string {
+function generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 function showToast(message: string, timeout = 5000): void {
-    const id = genId();
+    const id = generateId();
     setToasts((prev) => [...prev, { id, message, leaving: false }]);
     setTimeout(() => beginRemoveToast(id), timeout);
 }
@@ -30,4 +30,8 @@ function useToasts(): Accessor<Toast[]> {
     return toasts;
 }
 
-export { type Toast, showToast, beginRemoveToast, finalizeRemoveToast, useToasts };
+export const toast = {
+    info: (message: string, timeout = 5000): void => showToast(message, timeout),
+};
+
+export { showToast, beginRemoveToast, finalizeRemoveToast, useToasts };

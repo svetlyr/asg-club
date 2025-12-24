@@ -16,6 +16,7 @@ type FormApi = CreateFormReturn[0];
 type Components = CreateFormReturn[1];
 type FormComponent = Components["Form"];
 type FieldComponent = Components["Field"];
+export type FieldComponentProps = Parameters<FieldComponent>[0];
 
 export type FormStore = {
     form: FormApi;

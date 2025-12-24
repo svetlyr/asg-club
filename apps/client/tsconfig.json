@@ -19,6 +19,7 @@
         "paths": {
             "@api": ["./src/api/index.ts"],
             "@utils": ["./src/utils/index.ts"],
+            "@constants": ["./src/constants.ts"],
 
             "@api/*": ["./src/api/*"],
             "@cms/*": ["../cms/src/*"],

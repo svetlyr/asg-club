@@ -5,6 +5,7 @@
         "apps/*"
     ],
     "scripts": {
+        "dev:client": "bun run --filter=client dev",
         "up": "bun update"
     },
     "devDependencies": {
