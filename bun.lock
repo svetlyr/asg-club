@@ -4,17 +4,17 @@
     "": {
       "name": "asg-club",
       "devDependencies": {
-        "@eslint/js": "^9.37.0",
+        "@eslint/js": "^9.39.2",
         "@total-typescript/ts-reset": "^0.6.1",
-        "@types/node": "^22.18.9",
-        "@typescript-eslint/parser": "^8.46.0",
-        "eslint": "^9.37.0",
+        "@types/node": "^22.19.3",
+        "@typescript-eslint/parser": "^8.50.1",
+        "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
-        "globals": "^16.4.0",
-        "prettier": "^3.6.2",
+        "globals": "^16.5.0",
+        "prettier": "^3.7.4",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.46.0",
+        "typescript-eslint": "^8.50.1",
       },
     },
     "apps/client": {
@@ -24,6 +24,7 @@
         "@astrojs/check": "^0.9.6",
         "@astrojs/solid-js": "^5.1.3",
         "@astrojs/tailwind": "^6.0.2",
+        "@astrojs/ts-plugin": "^1.10.6",
         "@fontsource-variable/roboto-slab": "^5.2.8",
         "@fontsource/poppins": "^5.2.7",
         "@fontsource/roboto": "^5.2.9",
@@ -152,6 +153,8 @@
     "@astrojs/tailwind": ["@astrojs/tailwind@6.0.2", "", { "dependencies": { "autoprefixer": "^10.4.21", "postcss": "^8.5.3", "postcss-load-config": "^4.0.2" }, "peerDependencies": { "astro": "^3.0.0 || ^4.0.0 || ^5.0.0", "tailwindcss": "^3.0.24" } }, "sha512-j3mhLNeugZq6A8dMNXVarUa8K6X9AW+QHU9u3lKNrPLMHhOQ0S7VeWhHwEeJFpEK1BTKEUY1U78VQv2gN6hNGg=="],
 
     "@astrojs/telemetry": ["@astrojs/telemetry@3.3.0", "", { "dependencies": { "ci-info": "^4.2.0", "debug": "^4.4.0", "dlv": "^1.1.3", "dset": "^3.1.4", "is-docker": "^3.0.0", "is-wsl": "^3.1.0", "which-pm-runs": "^1.1.0" } }, "sha512-UFBgfeldP06qu6khs/yY+q1cDAaArM2/7AEIqQ9Cuvf7B1hNLq0xDrZkct+QoIGyjq56y8IaE2I3CTvG99mlhQ=="],
+
+    "@astrojs/ts-plugin": ["@astrojs/ts-plugin@1.10.6", "", { "dependencies": { "@astrojs/compiler": "^2.10.3", "@astrojs/yaml2ts": "^0.2.2", "@jridgewell/sourcemap-codec": "^1.4.15", "@volar/language-core": "~2.4.23", "@volar/typescript": "~2.4.23", "semver": "^7.3.8", "vscode-languageserver-textdocument": "^1.0.11" } }, "sha512-Ke5CNwxn/ozsh6THJKuayUlBToa3uiPDi2oSwcXmTdeiJ0PGr+UkdQJf9hdMgBjbIka9fhnSn3UhYamfNfJ73A=="],
 
     "@astrojs/yaml2ts": ["@astrojs/yaml2ts@0.2.2", "", { "dependencies": { "yaml": "^2.5.0" } }, "sha512-GOfvSr5Nqy2z5XiwqTouBBpy5FyI6DEe+/g/Mk5am9SjILN1S5fOEvYK0GuWHg98yS/dobP4m8qyqw/URW35fQ=="],
 
@@ -2930,8 +2933,6 @@
     "unist-util-visit/unist-util-visit-parents": ["unist-util-visit-parents@6.0.1", "", { "dependencies": { "@types/unist": "^3.0.0", "unist-util-is": "^6.0.0" } }, "sha512-L/PqWzfTP9lzzEa6CKs0k2nARxTdZduw3zyh8d2NVBnsyvHjSX4TWse388YrrQKbvI8w20fGjGlhgT96WwKykw=="],
 
     "unstorage/ofetch": ["ofetch@1.5.1", "", { "dependencies": { "destr": "^2.0.5", "node-fetch-native": "^1.6.7", "ufo": "^1.6.1" } }, "sha512-2W4oUZlVaqAPAil6FUg/difl6YhqhUR7x2eZY4bQCko22UXg3hptq9KLQdqFClV+Wu85UX7hNtdGTngi/1BxcA=="],
-
-    "vite/jiti": ["jiti@github:unjs/jiti#ddb4683", { "bin": { "jiti": "./lib/jiti-cli.mjs" } }, "unjs-jiti-ddb4683"],
 
     "vite-plugin-solid/@babel/core": ["@babel/core@7.28.4", "", { "dependencies": { "@babel/code-frame": "^7.27.1", "@babel/generator": "^7.28.3", "@babel/helper-compilation-targets": "^7.27.2", "@babel/helper-module-transforms": "^7.28.3", "@babel/helpers": "^7.28.4", "@babel/parser": "^7.28.4", "@babel/template": "^7.27.2", "@babel/traverse": "^7.28.4", "@babel/types": "^7.28.4", "@jridgewell/remapping": "^2.3.5", "convert-source-map": "^2.0.0", "debug": "^4.1.0", "gensync": "^1.0.0-beta.2", "json5": "^2.2.3", "semver": "^6.3.1" } }, "sha512-2BCOP7TN8M+gVDj7/ht3hsaO/B/n5oDbiAyyvnRlNOs+u1o+JWNYTQrmpuNp1/Wq2gcFrI01JAW+paEKDMx/CA=="],
 

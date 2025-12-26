@@ -3,9 +3,9 @@ import { createFileUploader } from "@solid-primitives/upload";
 import { createEffect, createMemo, For, on, Show } from "solid-js";
 import { getErrors, getValues, setValue, valiField } from "@modular-forms/solid";
 
-import { toast } from "@stores/toastStore";
 import { filesSchema } from "@schemas/serviceSchema";
 import { fileTypes, serviceTypes } from "@constants";
+import { handleErrorToasts } from "@stores/toastStore";
 import { useFormValue, useForm } from "@stores/formStore";
 import { AdditionalFields } from "./additionalServiceFields";
 
@@ -18,23 +18,16 @@ const ServiceDetailsForm: VoidComponent = () => {
 
     const handleSelectFile = (): void => {
         selectFiles((uploads) => {
-            const nextFiles = uploads.map((u) => u.file);
+            const files = uploads.map((u) => u.file);
 
-            setValue(form, "files", nextFiles, { shouldValidate: true });
+            setValue(form, "files", files, { shouldValidate: true });
         });
     };
 
     createEffect(
         on(
             () => getErrors(form).files,
-            () => {
-                // TODO: refactor into helper
-                requestAnimationFrame(() => {
-                    const errors = Object.values(getErrors(form)).filter(Boolean);
-
-                    errors.forEach((msg, i) => setTimeout(() => toast.info(msg), 300 * i));
-                });
-            },
+            (errors) => handleErrorToasts(errors),
             { defer: true },
         ),
     );

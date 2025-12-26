@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { Dynamic } from "solid-js/web";
 import { getErrors, reset, type SubmitHandler } from "@modular-forms/solid";
 import { createEffect, createMemo, on, onMount, Show, type VoidComponent } from "solid-js";
@@ -6,12 +7,12 @@ import { Button } from "./button";
 import { Stepper } from "./stepper";
 import { serverApi } from "@api/client";
 import { tryCatch } from "@utils/tryCatch";
-import { toast } from "@stores/toastStore";
 import { buildFormData } from "@utils/form";
 import { ToastContainer } from "./toastContainer";
 import { makeFormValidator } from "@utils/validateForm";
 import { setFormValue, useForm } from "@stores/formStore";
 import { useMultiStepForm } from "@hooks/useMultiStepForm";
+import { handleErrorToasts, toast } from "@stores/toastStore";
 import { type OrderSchema, orderDefaults, type OrderKeys } from "@schemas/formSchema";
 
 import CommentsForm from "./forms/commentsForm";
@@ -47,8 +48,7 @@ const STEPS_DATA = [
     },
 ];
 
-const toastDelay = 300;
-const MainForm: VoidComponent = () => {
+export const MainForm: VoidComponent = () => {
     let formRef!: HTMLFormElement;
     const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex, resetStep } = useMultiStepForm([
         BasicDetailsForm,
@@ -63,37 +63,26 @@ const MainForm: VoidComponent = () => {
         validate: makeFormValidator(currentStepIndex),
     });
 
-    // handle error toasts
     createEffect(
         on(
-            [() => form.submitCount],
-            () =>
-                requestAnimationFrame(() => {
-                    const errors = Object.values(getErrors(form)).filter(Boolean);
-
-                    errors.forEach((msg, i) => setTimeout(() => toast.info(msg), toastDelay * i));
-                }),
+            () => form.submitCount,
+            () => handleErrorToasts(getErrors(form).files),
             { defer: true },
         ),
     );
 
     const handleSubmit: SubmitHandler<OrderSchema> = async (value): Promise<void> => {
-        if (!isLastStep()) {
-            next();
-            return;
-        }
+        if (!isLastStep()) return next();
 
         console.log({ value });
 
         const formData = buildFormData(value);
         const [, error] = await tryCatch(serverApi.post("orders", formData));
 
-        if (error) {
-            toast.info("Failed to submit order. Please try again.");
-            return;
-        }
+        if (error) return toast.info("Failed to submit order. Please try again.");
 
         toast.info("Order submitted successfully!");
+
         reset(form);
         resetStep();
     };
@@ -103,7 +92,7 @@ const MainForm: VoidComponent = () => {
 
         // TODO: save to session storage on unMount, clear on success
         for (const [key, value] of formData.entries()) {
-            setFormValue(key as OrderKeys, value);
+            setFormValue(key as OrderKeys, value as string);
         }
     });
 
@@ -141,5 +130,3 @@ const MainForm: VoidComponent = () => {
         </>
     );
 };
-
-export default MainForm;

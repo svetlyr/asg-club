@@ -4,9 +4,9 @@ import { CMS_URL } from "astro:env/server";
 
 import cmsApi from "@api/server";
 import { tryCatch } from "@utils/tryCatch";
-import MainForm from "@components/form";
+import { MainForm } from "@components/form";
 import { Button } from "@components/button";
-import Layout from "@layouts/Layout.astro";
+import { Layout } from "@layouts";
 import { navCollapseId } from "@components/navbar";
 import ImagePreview from "@components/imagePreview";
 import type { Gallery, PaginatedApiResponse } from "@api/types";

@@ -34,4 +34,13 @@ export const toast = {
     info: (message: string, timeout = 5000): void => showToast(message, timeout),
 };
 
+export const handleErrorToasts = (errors: string | string[] | undefined, delay = 300): void => {
+    const messages = Array.isArray(errors) ? errors : [errors];
+    const msgs = messages.filter(Boolean);
+
+    requestAnimationFrame(() => {
+        msgs.forEach((msg, i) => setTimeout(() => toast.info(msg), delay * i));
+    });
+};
+
 export { showToast, beginRemoveToast, finalizeRemoveToast, useToasts };

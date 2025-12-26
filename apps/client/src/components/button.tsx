@@ -4,7 +4,7 @@ import type { JSX, ParentComponent } from "solid-js";
 
 import { Link } from "./link";
 import { tw } from "@utils/tw";
-import type { LinkProps } from "./link";
+import { type LinkProps } from "./link";
 
 type BaseButtonProps = JSX.IntrinsicElements["button"];
 interface ButtonOnlyProps extends BaseButtonProps {
