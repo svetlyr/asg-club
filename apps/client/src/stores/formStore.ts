@@ -1,6 +1,7 @@
-import { map } from "nanostores";
+import { atom } from "nanostores";
 import {
     createForm,
+    getErrors,
     getValue,
     setValue,
     type FieldPath,
@@ -22,27 +23,25 @@ export type FormStore = {
     form: FormApi;
     Form: FormComponent;
     Field: FieldComponent;
+    errors: () => Record<string, string | undefined>;
 };
 
 type InitFormOptions = MFormOptions<OrderSchema>;
 
-const formStore = map<Partial<FormStore>>({});
+const formStore = atom<FormStore | null>(null);
 
 export function useForm(opts?: InitFormOptions): FormStore {
-    const currentStore = formStore.get();
-
-    if (currentStore.form) {
-        return currentStore as FormStore;
-    }
+    const store = formStore.get();
+    if (store) return store;
 
     const [form, { Form, Field }] = createForm<OrderSchema>(opts);
-    formStore.set({ form, Form, Field });
+    const next = { form, Form, Field, errors: () => getErrors(form) };
 
-    return formStore.get() as FormStore;
+    return (formStore.set(next), next);
 }
 
 export function useFormValue<K extends FieldPath<OrderSchema>>(key: K, opts?: GetValueOptions): OrderSchema[K] {
-    const { form } = formStore.get();
+    const { form } = formStore.get() ?? {};
     if (!form) {
         throw new Error("FormStore not initialized. Ensure `useForm` is called in a parent component.");
     }
@@ -53,7 +52,7 @@ export function useFormValue<K extends FieldPath<OrderSchema>>(key: K, opts?: Ge
 }
 
 export function setFormValue<K extends FieldPath<OrderSchema>>(key: K, value: FieldPathValue<OrderSchema, K>): void {
-    const { form } = formStore.get();
+    const { form } = formStore.get() ?? {};
     if (!form) {
         throw new Error("FormStore not initialized. Ensure `useForm` is called in a parent component.");
     }

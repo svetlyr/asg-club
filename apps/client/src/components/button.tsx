@@ -6,22 +6,34 @@ import { Link } from "./link";
 import { tw } from "@utils/tw";
 import { type LinkProps } from "./link";
 
+interface LinkOnlyProps extends LinkProps {
+    type?: never;
+    onClick?: never;
+}
+
 type BaseButtonProps = JSX.IntrinsicElements["button"];
 interface ButtonOnlyProps extends BaseButtonProps {
     type?: "button" | "submit" | "reset" | "menu";
     href?: never;
 }
 
-interface AnchorOnlyProps extends LinkProps {
-    type?: never;
-    onClick?: never;
-}
-
-type Props = ButtonOnlyProps | AnchorOnlyProps;
+type Props = { animated?: boolean } & (ButtonOnlyProps | LinkOnlyProps);
 
 // eslint-disable-next-line solid/no-destructure
-const Button: ParentComponent<Props> = ({ href, type, onClick, class: className = "", children, ...attrs }) => {
-    const classes = `px-4 py-2 font-semibold text-white ${className}`;
+export const Button: ParentComponent<Props> = ({
+    href,
+    type,
+    onClick,
+    animated,
+    children,
+    class: className = "",
+    ...attrs
+}) => {
+    const classes = tw([
+        className,
+        "px-4 py-2 font-semibold text-white",
+        animated ? "btn-bg-animate bg-transparent text-white border-gradient" : "",
+    ]);
 
     if (href) {
         return (
@@ -32,10 +44,8 @@ const Button: ParentComponent<Props> = ({ href, type, onClick, class: className 
     }
 
     return (
-        <button type={type ?? "button"} onClick={onClick} class={tw(classes)} {...(attrs as BaseButtonProps)}>
+        <button type={type ?? "button"} onClick={onClick} class={classes} {...(attrs as BaseButtonProps)}>
             {children}
         </button>
     );
 };
-
-export { Button };

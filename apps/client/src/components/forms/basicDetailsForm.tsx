@@ -1,26 +1,22 @@
 import type { Component } from "solid-js";
 import { useForm } from "@stores/formStore";
+import { FieldControl } from "./fields/fieldControl";
 
 import PhoneIcon from "@icons/sli/phone";
 
-const BasicDetailsForm: Component = () => {
+export const BasicDetailsForm: Component = () => {
     const { form, Field } = useForm();
 
     return (
         <>
             <Field name="email" keepActive>
                 {(field, fieldProps) => (
-                    <input
-                        {...fieldProps}
-                        required
-                        value={field.value}
+                    <FieldControl
+                        field={field}
+                        fieldProps={fieldProps}
                         type="email"
                         placeholder="Email"
                         class="transition-colors duration-300"
-                        classList={{
-                            "border-red-500": !!form.submitCount && !!field.error,
-                            "border-green-500": !!form.submitCount && field.dirty && !field.error,
-                        }}
                     />
                 )}
             </Field>
@@ -61,5 +57,3 @@ const BasicDetailsForm: Component = () => {
         </>
     );
 };
-
-export default BasicDetailsForm;

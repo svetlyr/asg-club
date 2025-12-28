@@ -1,7 +1,7 @@
 import { For, type Component } from "solid-js";
 
 type StepperProps = {
-    currentStep: () => number;
+    stepIndex: () => number;
     steps: { stepperTitle: string; [key: PropertyKey]: unknown }[];
 };
 
@@ -15,17 +15,17 @@ export const Stepper: Component<StepperProps> = (props) => {
                             <div
                                 class={"flex w-full flex-col items-center"}
                                 classList={{
-                                    "stepper-item": props.currentStep() < index(),
-                                    "stepper-item__active": props.currentStep() === index(),
-                                    "stepper-item__completed": props.currentStep() > index(),
+                                    "stepper-item": props.stepIndex() < index(),
+                                    "stepper-item__active": props.stepIndex() === index(),
+                                    "stepper-item__completed": props.stepIndex() > index(),
                                 }}>
                                 <div
                                     class={
                                         "z-10 flex size-10 items-center justify-center rounded-full border-2 border-none"
                                     }
                                     classList={{
-                                        "stepper-item--label": props.currentStep() < index(),
-                                        "stepper-item--label__filled": props.currentStep() >= index(),
+                                        "stepper-item--label": props.stepIndex() < index(),
+                                        "stepper-item--label__filled": props.stepIndex() >= index(),
                                     }}>
                                     <span class="z-10 text-lg font-semibold text-white">{index() + 1}</span>
                                 </div>

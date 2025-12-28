@@ -20,7 +20,7 @@ const fieldMap = {
     dimensions: DimensionsField,
 } satisfies FieldMapType;
 
-export const AdditionalFields: VoidComponent = () => {
+export const AdditionalServiceFields: VoidComponent = () => {
     const serviceType = createMemo(() => useFormValue("serviceType"));
 
     return <For each={uiSchemaFields[serviceType()]}>{(fieldKey) => <Dynamic component={fieldMap[fieldKey]} />}</For>;

@@ -1,21 +1,28 @@
-import type { VoidComponent } from "solid-js";
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { type VoidComponent } from "solid-js";
 import { createFileUploader } from "@solid-primitives/upload";
 import { createEffect, createMemo, For, on, Show } from "solid-js";
-import { getErrors, getValues, setValue, valiField } from "@modular-forms/solid";
+import { clearError, getErrors, setValue, valiField, valiForm } from "@modular-forms/solid";
 
 import { filesSchema } from "@schemas/serviceSchema";
 import { fileTypes, serviceTypes } from "@constants";
-import { handleErrorToasts } from "@stores/toastStore";
+import { toast } from "@stores/toastStore";
 import { useFormValue, useForm } from "@stores/formStore";
-import { AdditionalFields } from "./additionalServiceFields";
+import { AdditionalServiceFields } from "./additionalServiceFields";
 
 import { Docs } from "@components/icons";
+import { Button } from "@components/button";
+import { FieldControl } from "./fields/fieldControl";
 
-const ServiceDetailsForm: VoidComponent = () => {
-    const { form, Field } = useForm();
+export const ServiceDetailsForm: VoidComponent = () => {
+    const { form, errors, Field } = useForm();
     const serviceType = createMemo(() => useFormValue("serviceType"));
-    const { files, selectFiles } = createFileUploader({ multiple: true, accept: fileTypes.join(",") });
+    const { selectFiles, files, clearFiles, removeFile } = createFileUploader({
+        multiple: true,
+        accept: fileTypes.join(","),
+    });
 
+    // TODO: delete files after validation fail
     const handleSelectFile = (): void => {
         selectFiles((uploads) => {
             const files = uploads.map((u) => u.file);
@@ -24,18 +31,16 @@ const ServiceDetailsForm: VoidComponent = () => {
         });
     };
 
-    createEffect(
-        on(
-            () => getErrors(form).files,
-            (errors) => handleErrorToasts(errors),
-            { defer: true },
-        ),
-    );
+    // ? stale closure, old msg is still there
+    const handleErrors = (msg?: string) => {
+        console.log("errors", msg);
 
-    createEffect(() => {
-        console.log("form", getValues(form));
-        console.log("files", files());
-    });
+        toast.info(msg);
+        clearFiles();
+        clearError(form, "files");
+        console.log(errors());
+    };
+    createEffect(on(() => errors().files, handleErrors, { defer: true }));
 
     return (
         <>
@@ -55,14 +60,11 @@ const ServiceDetailsForm: VoidComponent = () => {
 
             <Field name="description" keepActive>
                 {(field, fieldProps) => (
-                    <textarea
-                        {...fieldProps}
-                        value={field.value}
-                        classList={{
-                            "border-red-500": !!field.error,
-                            "border-green-500": field.dirty && !field.error,
-                        }}
+                    <FieldControl
                         rows={7}
+                        as="textarea"
+                        field={field}
+                        fieldProps={fieldProps}
                         placeholder="Description of what you want. Please be as detailed as possible, since it will help us understand you better. Minimum 10 characters required."
                     />
                 )}
@@ -73,33 +75,26 @@ const ServiceDetailsForm: VoidComponent = () => {
             <Show when={serviceType() !== "Premade Merch"}>
                 <Field name="files" type="File[]" keepActive validate={valiField(filesSchema)}>
                     {() => (
-                        <>
-                            <button onClick={handleSelectFile} type="button">
-                                <Docs /> Select Files
-                            </button>
-                        </>
+                        <Button onClick={handleSelectFile} class="flex items-center md:px-6">
+                            <Docs class="mr-4" />
+                            <span class="text-sm md:text-base">Select Files</span>
+                        </Button>
                     )}
                 </Field>
 
                 <Field name="url" keepActive>
                     {(field, fieldProps) => (
-                        <input
-                            {...fieldProps}
-                            value={field.value}
-                            classList={{
-                                "border-red-500": !!field.error,
-                                "border-green-500": field.dirty && !field.error,
-                            }}
+                        <FieldControl
                             type="url"
+                            field={field}
+                            fieldProps={fieldProps}
                             placeholder="URL (optional). Provide a link if you have a specific design or style in mind."
                         />
                     )}
                 </Field>
 
-                <AdditionalFields />
+                <AdditionalServiceFields />
             </Show>
         </>
     );
 };
-
-export default ServiceDetailsForm;

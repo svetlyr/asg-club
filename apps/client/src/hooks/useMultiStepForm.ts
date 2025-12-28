@@ -1,7 +1,7 @@
 import { createSignal, createMemo, type Accessor, type VoidComponent } from "solid-js";
 
 type useMultiStepFormReturn = {
-    currentStepIndex: Accessor<number>;
+    currentIndex: Accessor<number>;
     currentStep: Accessor<VoidComponent>;
     isFirstStep: Accessor<boolean>;
     isLastStep: Accessor<boolean>;
@@ -11,26 +11,26 @@ type useMultiStepFormReturn = {
 };
 
 export function useMultiStepForm(steps: VoidComponent[]): useMultiStepFormReturn {
-    const [currentStepIndex, setCurrentStepIndex] = createSignal(0);
+    const [index, setIndex] = createSignal(0);
 
-    const step = createMemo(() => steps[currentStepIndex()]);
-    const isFirst = createMemo(() => currentStepIndex() === 0);
-    const isLast = createMemo(() => currentStepIndex() === steps.length - 1);
+    const step = createMemo(() => steps[index()]);
+    const isFirst = createMemo(() => index() === 0);
+    const isLast = createMemo(() => index() === steps.length - 1);
 
     function next(): void {
-        setCurrentStepIndex((i) => Math.min(i + 1, steps.length - 1));
+        setIndex((i) => Math.min(i + 1, steps.length - 1));
     }
 
     function back(): void {
-        setCurrentStepIndex((i) => Math.max(i - 1, 0));
+        setIndex((i) => Math.max(i - 1, 0));
     }
 
     function reset(): void {
-        setCurrentStepIndex(0);
+        setIndex(0);
     }
 
     return {
-        currentStepIndex,
+        currentIndex: index,
         currentStep: step,
         isFirstStep: isFirst,
         isLastStep: isLast,

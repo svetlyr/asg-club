@@ -1,4 +1,4 @@
-import type { Component } from "solid-js";
+import { type Component } from "solid-js";
 import { useWindowScrollPosition } from "@solid-primitives/scroll";
 import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
 import { createComputed, createEffect, createSignal, For, onCleanup, onMount, Show } from "solid-js";
@@ -26,10 +26,10 @@ type Props = {
     class?: string;
 };
 
+const navbarHeight = 74;
+const scrollThreshold = 200;
 // eslint-disable-next-line solid/no-destructure
-const Navbar: Component<Props> = ({ path, class: className = "" }) => {
-    const navbarHeight = 74;
-    const scrollThreshold = 200;
+const Header: Component<Props> = ({ path, class: className = "" }) => {
     const isMobile = createIsMobile("md");
     const scroll = useWindowScrollPosition();
     const [isMenuOpen, setIsMenuOpen] = createSignal<boolean>(false);
@@ -121,18 +121,16 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
                                                 href={href}
                                                 data-astro-prefetch={prefetch}
                                                 classList={{ "text-red-primary": path.includes(href) }}
-                                                class="text-sm transition-colors duration-500 ease-in-out hover:text-red-primary md:text-base lg:text-lg">
+                                                class="transition-olors text-sm duration-500 ease-in-out hover:text-red-primary md:text-base lg:text-lg">
                                                 {title}
                                             </Link>
                                         </li>
                                     )}
                                 </For>
                             </Show>
-                            <Button
-                                href="#form"
-                                class="group btn-bg-animate flex items-center bg-transparent border-gradient md:px-6">
+                            <Button animated href="#form" class="flex items-center md:px-6">
                                 <Motorcycle class="mr-2 size-4 md:size-5" />
-                                <span class="text-sm md:text-base group-hover:[&_path]:fill-white">ORDER</span>
+                                <span class="text-sm md:text-base">ORDER</span>
                             </Button>
                         </ul>
                     </div>
@@ -169,4 +167,4 @@ const Navbar: Component<Props> = ({ path, class: className = "" }) => {
     );
 };
 
-export { Navbar, navCollapseId };
+export { Header, navCollapseId };

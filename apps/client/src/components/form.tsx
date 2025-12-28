@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { Dynamic } from "solid-js/web";
 import { getErrors, reset, type SubmitHandler } from "@modular-forms/solid";
@@ -7,17 +8,19 @@ import { Button } from "./button";
 import { Stepper } from "./stepper";
 import { serverApi } from "@api/client";
 import { tryCatch } from "@utils/tryCatch";
+import { toast } from "@stores/toastStore";
 import { buildFormData } from "@utils/form";
+import { toastsWithDelay } from "@utils/toast";
 import { ToastContainer } from "./toastContainer";
+import { orderDefaults } from "@schemas/formSchema";
 import { makeFormValidator } from "@utils/validateForm";
 import { setFormValue, useForm } from "@stores/formStore";
 import { useMultiStepForm } from "@hooks/useMultiStepForm";
-import { handleErrorToasts, toast } from "@stores/toastStore";
-import { type OrderSchema, orderDefaults, type OrderKeys } from "@schemas/formSchema";
+import type { OrderSchema, OrderKeys } from "@schemas/formSchema";
 
-import CommentsForm from "./forms/commentsForm";
-import BasicDetailsForm from "./forms/basicDetailsForm";
-import ServiceDetailsForm from "./forms/serviceDetailsForm";
+import { CommentsForm } from "./forms/commentsForm";
+import { BasicDetailsForm } from "./forms/basicDetailsForm";
+import { ServiceDetailsForm } from "./forms/serviceDetailsForm";
 import { ArrowLeft, ArrowRight } from "@components/icons";
 
 import bike2 from "@assets/images/bike2.webp";
@@ -50,31 +53,24 @@ const STEPS_DATA = [
 
 export const MainForm: VoidComponent = () => {
     let formRef!: HTMLFormElement;
-    const { isFirstStep, isLastStep, next, back, currentStep, currentStepIndex, resetStep } = useMultiStepForm([
+    const { isFirstStep, isLastStep, next, back, currentStep, currentIndex, resetStep } = useMultiStepForm([
         BasicDetailsForm,
         ServiceDetailsForm,
         CommentsForm,
     ]);
 
-    const { form, Form } = useForm({
+    const { form, errors, Form } = useForm({
         initialValues: orderDefaults,
         validateOn: "submit",
         revalidateOn: "input",
-        validate: makeFormValidator(currentStepIndex),
+        validate: makeFormValidator(currentIndex),
     });
 
-    createEffect(
-        on(
-            () => form.submitCount,
-            () => handleErrorToasts(getErrors(form).files),
-            { defer: true },
-        ),
-    );
+    const handleErrors = (_: unknown) => toastsWithDelay(errors, 300);
+    createEffect(on(() => form.submitCount, handleErrors, { defer: true }));
 
     const handleSubmit: SubmitHandler<OrderSchema> = async (value): Promise<void> => {
         if (!isLastStep()) return next();
-
-        console.log({ value });
 
         const formData = buildFormData(value);
         const [, error] = await tryCatch(serverApi.post("orders", formData));
@@ -90,20 +86,20 @@ export const MainForm: VoidComponent = () => {
     onMount(() => {
         const formData = new FormData(formRef);
 
-        // TODO: save to session storage on unMount, clear on success
+        // TODO: save to session storage on unMount
         for (const [key, value] of formData.entries()) {
             setFormValue(key as OrderKeys, value as string);
         }
     });
 
-    const step = createMemo(() => STEPS_DATA[currentStepIndex()]);
+    const step = createMemo(() => STEPS_DATA[currentIndex()]);
     return (
         <>
             <div id="form" class="flex items-start justify-center gap-x-16 py-32">
                 <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit} ref={formRef}>
                     <h2 class="mb-6 text-center text-5xl lg:text-left">{step().title}</h2>
                     <p class="mb-20 text-center lg:mb-10 lg:text-left">{step().paragraph}</p>
-                    <Stepper currentStep={currentStepIndex} steps={STEPS_DATA} />
+                    <Stepper stepIndex={currentIndex} steps={STEPS_DATA} />
 
                     <div class="space-y-4">
                         <Dynamic component={currentStep()} />
