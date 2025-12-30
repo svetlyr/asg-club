@@ -26,6 +26,7 @@ export class ApiClient {
         return body;
     }
 
+    // TODO: refactor this
     private async request<T>(endpoint: string, options: RequestInit = {}, queryParams?: QueryParams): Promise<T> {
         const url = new URL(endpoint, this.baseUrl);
         const params = new URLSearchParams(
@@ -36,10 +37,12 @@ export class ApiClient {
         const headers = new Headers(options.headers);
         const body = this.prepareBody(options.body, headers);
 
+        // TODO: set default headers
         if (!headers.has("Accept")) {
             headers.set("Accept", "application/json");
         }
 
+        // TODO: abstract this out
         const response = await fetch(url, { ...options, headers, body });
 
         if (!response.ok) {
@@ -47,6 +50,7 @@ export class ApiClient {
         }
 
         if (response.status === 204 || response.headers.get("Content-Length") === "0") {
+            // TODO: this is stupid
             return undefined as T;
         }
 

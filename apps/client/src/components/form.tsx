@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { Dynamic } from "solid-js/web";
-import { getErrors, reset, type SubmitHandler } from "@modular-forms/solid";
+import { reset, type SubmitHandler } from "@modular-forms/solid";
 import { createEffect, createMemo, on, onMount, Show, type VoidComponent } from "solid-js";
 
 import { Button } from "./button";
@@ -53,11 +53,16 @@ const STEPS_DATA = [
 
 export const MainForm: VoidComponent = () => {
     let formRef!: HTMLFormElement;
-    const { isFirstStep, isLastStep, next, back, currentStep, currentIndex, resetStep } = useMultiStepForm([
-        BasicDetailsForm,
-        ServiceDetailsForm,
-        CommentsForm,
-    ]);
+    const {
+        isFirstStep,
+        isLastStep,
+        next,
+        back,
+        resetStep,
+        currentIndex,
+        currentStep: Step,
+    } = useMultiStepForm([BasicDetailsForm, ServiceDetailsForm, CommentsForm]);
+    const stepData = createMemo(() => STEPS_DATA[currentIndex()]);
 
     const { form, errors, Form } = useForm({
         initialValues: orderDefaults,
@@ -69,16 +74,18 @@ export const MainForm: VoidComponent = () => {
     const handleErrors = (_: unknown) => toastsWithDelay(errors, 300);
     createEffect(on(() => form.submitCount, handleErrors, { defer: true }));
 
-    const handleSubmit: SubmitHandler<OrderSchema> = async (value): Promise<void> => {
+    const handleSubmit: SubmitHandler<OrderSchema> = async (value) => {
         if (!isLastStep()) return next();
 
         const formData = buildFormData(value);
         const [, error] = await tryCatch(serverApi.post("orders", formData));
 
-        if (error) return toast.info("Failed to submit order. Please try again.");
-
-        toast.info("Order submitted successfully!");
-
+        if (error) {
+            toast.info("Failed to submit order. Please try again.");
+            return;
+        } else {
+            toast.info("Order submitted successfully!");
+        }
         reset(form);
         resetStep();
     };
@@ -92,17 +99,16 @@ export const MainForm: VoidComponent = () => {
         }
     });
 
-    const step = createMemo(() => STEPS_DATA[currentIndex()]);
     return (
         <>
             <div id="form" class="flex items-start justify-center gap-x-16 py-32">
                 <Form class="w-full lg:max-w-xl" onSubmit={handleSubmit} ref={formRef}>
-                    <h2 class="mb-6 text-center text-5xl lg:text-left">{step().title}</h2>
-                    <p class="mb-20 text-center lg:mb-10 lg:text-left">{step().paragraph}</p>
+                    <h2 class="mb-6 text-center text-5xl lg:text-left">{stepData().title}</h2>
+                    <p class="mb-20 text-center lg:mb-10 lg:text-left">{stepData().paragraph}</p>
                     <Stepper stepIndex={currentIndex} steps={STEPS_DATA} />
 
                     <div class="space-y-4">
-                        <Dynamic component={currentStep()} />
+                        <Dynamic component={Step()} />
                     </div>
 
                     <div class="mt-4 flex gap-x-5">
@@ -120,7 +126,7 @@ export const MainForm: VoidComponent = () => {
                         </Button>
                     </div>
                 </Form>
-                <img width={522} class="hidden pr-4 lg:block" src={step().image} loading="lazy" decoding="async" />
+                <img width={522} class="hidden pr-4 lg:block" src={stepData().image} loading="lazy" decoding="async" />
             </div>
             <ToastContainer />
         </>
