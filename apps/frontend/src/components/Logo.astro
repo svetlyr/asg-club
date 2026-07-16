@@ -1,0 +1,57 @@
+---
+interface Props {
+    small?: boolean;
+}
+const { small = false } = Astro.props;
+---
+
+<span class:list={['logo', { small }]}>
+	<span class="mark">ASG</span>
+</span>
+
+<style>
+.logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 42px;
+	padding: 0 15px;
+	background: #0a0a0b;
+	border: 1px solid var(--line);
+	border-radius: 4px;
+	overflow: hidden;
+
+	.mark {
+		font-weight: 900;
+		font-style: italic;
+		font-size: 25px;
+		letter-spacing: -2px;
+		color: var(--accent);
+		transform: skewX(-6deg);
+		display: inline-block;
+		text-shadow:
+			1px 1px 0 var(--accent-hover),
+			2px 2px 0 var(--accent-hover),
+			3px 3px 0 color-mix(in srgb, var(--accent-hover) 78%, #000),
+			4px 4px 0 color-mix(in srgb, var(--accent-hover) 62%, #000),
+			5px 5px 0 color-mix(in srgb, var(--accent-hover) 48%, #000),
+			6px 7px 8px rgba(0, 0, 0, 0.6);
+	}
+
+	&.small {
+		height: 36px;
+		padding: 0 13px;
+
+		.mark {
+			font-size: 20px;
+			letter-spacing: -1.6px;
+			text-shadow:
+				1px 1px 0 var(--accent-hover),
+				2px 2px 0 var(--accent-hover),
+				3px 3px 0 color-mix(in srgb, var(--accent-hover) 70%, #000),
+				4px 4px 0 color-mix(in srgb, var(--accent-hover) 52%, #000),
+				5px 6px 7px rgba(0, 0, 0, 0.6);
+		}
+	}
+}
+</style>

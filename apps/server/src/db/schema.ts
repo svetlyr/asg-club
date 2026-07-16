@@ -1,41 +1,56 @@
-import { pgTable, varchar, pgEnum, smallint, serial, real } from "drizzle-orm/pg-core";
+import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const servicesEnum = pgEnum("services", [
-    "Graphic Design",
-    "Stickers/Decals",
-    "Jacket Pins",
-    "Wall Posters/Banners",
-    "T-Shirts",
-    "Mugs",
-    "Keychains",
-    "Metal Badges and Medals",
-    "Custom Merch",
-]);
+// * Values match product ids in the frontend catalogue (apps/frontend/src/data/site.ts)
+export const productIds = [
+    "design",
+    "stickers",
+    "pins",
+    "posters",
+    "tshirts",
+    "mugs",
+    "keychains",
+    "badges",
+    "merch",
+] as const;
 
-export const unitEnum = pgEnum("units", ["cm", "inch"]);
+export const statusValues = [
+    "new",
+    "awaiting_design",
+    "awaiting_production",
+    "awaiting_markup",
+    "invoiced",
+    "paid",
+    "manual",
+] as const;
 
-export const sizesEnum = pgEnum("sizes", ["XS", "S", "M", "L", "XL", "XXL"]);
+export const orders = sqliteTable("orders", {
+    id: integer().primaryKey({ autoIncrement: true }),
 
-export const orders = pgTable("orders", {
-    id: serial().primaryKey(),
-    email: varchar().notNull(),
-    fullname: varchar().notNull(),
-    tel: varchar("telephone"),
-    serviceType: servicesEnum().notNull(),
-    description: varchar().notNull(),
-    url: varchar(),
-    quantity: smallint(),
-    width: real(),
-    height: real(),
-    size: sizesEnum(),
-    unitType: unitEnum(),
-    comments: varchar(),
+    firstName: text().notNull(),
+    lastName: text().notNull(),
+    email: text().notNull(),
+    tel: text("telephone"),
 
-    designerPrice: real().default(0),
-    printerPrice: real().default(0),
-    factoryPrice: real().default(0),
+    product: text({ enum: productIds }).notNull(),
+    needsDesign: integer({ mode: "boolean" }).notNull().default(false),
+    description: text().notNull(),
+
+    status: text({ enum: statusValues }).notNull().default("new"),
+
+    designPrice: real(),
+    productionPrice: real(),
+    markup: real(),
     finalPrice: real(),
 
-    counter: smallint().default(0),
-    text: varchar().default(""),
+    paypalInvoiceId: text(),
+    // * Telegram file ids of the reference photos, reused when forwarding to the next specialist
+    photoFileIds: text({ mode: "json" }).$type<string[]>(),
+
+    createdAt: integer({ mode: "timestamp" })
+        .notNull()
+        .$defaultFn(() => new Date()),
+    updatedAt: integer({ mode: "timestamp" })
+        .notNull()
+        .$defaultFn(() => new Date())
+        .$onUpdate(() => new Date()),
 });

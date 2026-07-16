@@ -1,23 +1,19 @@
-node_modules
-Dockerfile*
-docker-compose*
-.dockerignore
 .git
 .gitignore
+.vscode
 README.md
 LICENSE
-.vscode
-Makefile
-helm-charts
 .env
-.editorconfig
-.idea
-.next
-**/.next
-coverage*
+**/.env
 
-apps/server/node_modules
-apps/server/dist
+node_modules
+**/node_modules
+**/dist
+**/.astro
 
-apps/client/node_modules
-apps/client/dist
+Dockerfile*
+compose*
+.dockerignore
+
+data
+*.db

@@ -1,0 +1,34 @@
+---
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import OrderForm from "../components/OrderForm.astro";
+import Payment from "../components/Payment.astro";
+import Process from "../components/Process.astro";
+import ProductGrid from "../components/ProductGrid.astro";
+import { site } from "../data/site";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={site.tagline} />
+		<title>{site.brand} — Custom Merch, Made To Order</title>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<Hero />
+			<ProductGrid />
+			<Process />
+			<OrderForm />
+			<Payment />
+		</main>
+		<Footer />
+	</body>
+</html>

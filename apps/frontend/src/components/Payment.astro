@@ -1,0 +1,128 @@
+---
+const methods = [
+    { code: "PP", name: "PayPal", note: "Fast, buyer-protected" },
+    { code: "BT", name: "Bank Transfer", note: "Direct, no fees" },
+];
+---
+
+<section class="band">
+	<div class="inner">
+		<div>
+			<div class="kicker">PAYMENT &amp; TRUST</div>
+			<h3>Pay only after you approve the mockup</h3>
+			<p>
+				No upfront charge to send a request. Your details and uploads are used solely to prepare
+				your order.
+			</p>
+		</div>
+		<div class="methods">
+			{
+				methods.map((m) => (
+					<div class="method">
+						<div class="code">{m.code}</div>
+						<div>
+							<div class="mname">{m.name}</div>
+							<div class="mnote">{m.note}</div>
+						</div>
+					</div>
+				))
+			}
+			<div class="secure">🔒 Details kept private &amp; secure</div>
+		</div>
+	</div>
+</section>
+
+<style>
+.band {
+	border-top: 1px solid var(--line);
+	background: var(--bg-secondary);
+}
+.inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 72px 24px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 32px;
+
+	.kicker {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 3px;
+		color: var(--accent);
+		margin-bottom: 14px;
+	}
+
+	h3 {
+		margin: 0;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: -0.3px;
+		font-size: clamp(22px, 3vw, 30px);
+		max-width: 18ch;
+	}
+
+	p {
+		margin: 14px 0 0;
+		font-size: 14.5px;
+		line-height: 1.55;
+		color: var(--muted);
+		max-width: 48ch;
+	}
+
+	.methods {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		min-width: 240px;
+
+		.method {
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			border: 1px solid var(--line);
+			border-radius: 4px;
+			padding: 16px 18px;
+			background: var(--bg-primary);
+			transition: border-color 0.15s;
+
+			&:hover {
+				border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+			}
+
+			.code {
+				font-family: var(--font-mono);
+				font-weight: 600;
+				font-size: 13px;
+				color: var(--accent);
+				border: 1px solid var(--line);
+				border-radius: 3px;
+				padding: 6px 9px;
+			}
+
+			.mname {
+				font-weight: 700;
+				font-size: 15px;
+			}
+
+			.mnote {
+				font-size: 12.5px;
+				color: var(--muted);
+			}
+		}
+
+		.secure {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 12.5px;
+			color: var(--muted);
+			font-family: var(--font-mono);
+			letter-spacing: 0.5px;
+			margin-top: 2px;
+		}
+	}
+}
+</style>

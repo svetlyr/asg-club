@@ -1,4 +1,5 @@
 const { env } = process;
-const { DATABASE_URL } = env;
 
-export { env as default, DATABASE_URL };
+const DATABASE_PATH = env.DATABASE_PATH ?? "orders.db";
+
+export { DATABASE_PATH, env as default };

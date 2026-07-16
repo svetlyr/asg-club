@@ -1,190 +1,149 @@
 {
-  "id": "e35fdf54-59b4-4847-b070-1c67293cf7dd",
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "edf89966-d28a-4f2f-ba5d-50261e316f69",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "7",
-  "dialect": "postgresql",
   "tables": {
-    "public.orders": {
+    "orders": {
       "name": "orders",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": true
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "email": {
           "name": "email",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
-        },
-        "fullname": {
-          "name": "fullname",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "telephone": {
           "name": "telephone",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
-        "serviceType": {
-          "name": "serviceType",
-          "type": "services",
-          "typeSchema": "public",
+        "product": {
+          "name": "product",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
+        },
+        "needsDesign": {
+          "name": "needsDesign",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         },
         "description": {
           "name": "description",
-          "type": "varchar",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
-        "url": {
-          "name": "url",
-          "type": "varchar",
+        "status": {
+          "name": "status",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'new'"
         },
-        "quantity": {
-          "name": "quantity",
-          "type": "smallint",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "width": {
-          "name": "width",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "height": {
-          "name": "height",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "size": {
-          "name": "size",
-          "type": "sizes",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "unitType": {
-          "name": "unitType",
-          "type": "units",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "comments": {
-          "name": "comments",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "designerPrice": {
-          "name": "designerPrice",
+        "designPrice": {
+          "name": "designPrice",
           "type": "real",
           "primaryKey": false,
           "notNull": false,
-          "default": 0
+          "autoincrement": false
         },
-        "printerPrice": {
-          "name": "printerPrice",
+        "productionPrice": {
+          "name": "productionPrice",
           "type": "real",
           "primaryKey": false,
           "notNull": false,
-          "default": 0
+          "autoincrement": false
         },
-        "factoryPrice": {
-          "name": "factoryPrice",
+        "markup": {
+          "name": "markup",
           "type": "real",
           "primaryKey": false,
           "notNull": false,
-          "default": 0
+          "autoincrement": false
         },
         "finalPrice": {
           "name": "finalPrice",
           "type": "real",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
-        "counter": {
-          "name": "counter",
-          "type": "smallint",
+        "paypalInvoiceId": {
+          "name": "paypalInvoiceId",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
-          "default": 0
+          "autoincrement": false
         },
-        "text": {
-          "name": "text",
-          "type": "varchar",
+        "photoFileIds": {
+          "name": "photoFileIds",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
-          "default": "''"
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
+      "checkConstraints": {}
     }
   },
-  "enums": {
-    "public.services": {
-      "name": "services",
-      "schema": "public",
-      "values": [
-        "Graphic Design",
-        "Stickers/Decals",
-        "Jacket Pins",
-        "Wall Posters/Banners",
-        "T-Shirts",
-        "Mugs",
-        "Keychains",
-        "Metal Badges and Medals",
-        "Custom Merch"
-      ]
-    },
-    "public.sizes": {
-      "name": "sizes",
-      "schema": "public",
-      "values": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ]
-    },
-    "public.units": {
-      "name": "units",
-      "schema": "public",
-      "values": [
-        "cm",
-        "inch"
-      ]
-    }
-  },
-  "schemas": {},
-  "sequences": {},
-  "roles": {},
-  "policies": {},
   "views": {},
+  "enums": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
   }
 }

@@ -6,30 +6,24 @@ WORKDIR /usr/src/app
 # Manifests
 FROM base AS manifests
 COPY package.json bun.lock ./
-COPY apps/cms/package.json ./apps/cms/
 COPY apps/server/package.json ./apps/server/
-COPY apps/client/package.json ./apps/client/
+COPY apps/frontend/package.json ./apps/frontend/
 
-# All dependencies
-FROM manifests AS all_deps
+# Server dependencies only
+FROM manifests AS deps
 RUN --mount=type=cache,target=/root/.bun/install/cache <<EOF
     set -e
     bun install --filter=server --frozen-lockfile
 EOF
 
-# TODO: add migration image
-
-# Build server
+# Build the single-file server binary
 FROM base AS build
-COPY --from=all_deps /usr/src/app/node_modules ./node_modules
-
+COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=manifests /usr/src/app .
-COPY tsconfig.json reset.d.ts ./
-
+COPY tsconfig.json ./
 COPY apps/server ./apps/server
 
 RUN bun run --filter=server build
-
 
 # Prod image
 FROM gcr.io/distroless/base
@@ -38,7 +32,9 @@ WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
 COPY --from=build --chown=1001:1001 /usr/src/app/apps/server/dist ./dist
+# * Migrations run on boot from this folder (MIGRATIONS_DIR, default ./drizzle)
+COPY --chown=1001:1001 apps/server/drizzle ./drizzle
 
 USER 1001
 EXPOSE 3000
-CMD [ "./dist/server"]
+CMD [ "./dist/server" ]

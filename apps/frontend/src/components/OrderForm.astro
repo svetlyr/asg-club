@@ -1,0 +1,677 @@
+---
+import { products } from "../data/site";
+---
+
+<script>
+	const MAX_FILES = 10;
+
+	const section = document.getElementById('order')!;
+	const form = document.getElementById('order-form') as HTMLFormElement;
+	const select = document.getElementById('product-select') as HTMLSelectElement;
+	const successPanel = section.querySelector<HTMLElement>('[data-success]')!;
+
+	// --- product selection sync (grid card radios <-> select) ---
+
+	const radios = [...document.querySelectorAll<HTMLInputElement>('input[name="product"]')];
+
+	for (const radio of radios) {
+		radio.addEventListener('click', () => {
+			select.value = radio.value;
+			section.scrollIntoView({ behavior: 'smooth' });
+		});
+	}
+	select.addEventListener('change', () => {
+		for (const radio of radios) radio.checked = radio.value === select.value;
+	});
+
+	// --- reference photos ---
+
+	interface Photo {
+		id: string;
+		name: string;
+		url: string;
+	}
+	let photos: Photo[] = [];
+
+	const dropzone = section.querySelector<HTMLElement>('[data-dropzone]')!;
+	const fileInput = section.querySelector<HTMLInputElement>('[data-file-input]')!;
+	const thumbs = section.querySelector<HTMLElement>('[data-thumbs]')!;
+	const thumbTemplate = section.querySelector<HTMLTemplateElement>('[data-thumb-template]')!;
+	const count = section.querySelector<HTMLElement>('[data-count]')!;
+
+	function renderPhotos() {
+		thumbs.replaceChildren(
+			...photos.map((photo) => {
+				const node = thumbTemplate.content.firstElementChild!.cloneNode(true) as HTMLElement;
+				const img = node.querySelector('img')!;
+				img.src = photo.url;
+				img.alt = photo.name;
+				node.querySelector('.rm')!.addEventListener('click', () => removePhoto(photo.id));
+				return node;
+			})
+		);
+		thumbs.hidden = photos.length === 0;
+		count.textContent = `${photos.length} / ${MAX_FILES}`;
+		count.classList.toggle('full', photos.length >= MAX_FILES);
+	}
+
+	function addPhotos(list: FileList | null | undefined) {
+		const incoming = [...(list ?? [])].filter((f) => f.type.startsWith('image/'));
+		const room = Math.max(0, MAX_FILES - photos.length);
+		for (const file of incoming.slice(0, room)) {
+			photos.push({
+				id: 'f' + Date.now() + Math.random().toString(36).slice(2, 7),
+				name: file.name,
+				url: URL.createObjectURL(file),
+			});
+		}
+		renderPhotos();
+	}
+
+	function removePhoto(id: string) {
+		const target = photos.find((p) => p.id === id);
+		if (target) URL.revokeObjectURL(target.url);
+		photos = photos.filter((p) => p.id !== id);
+		renderPhotos();
+	}
+
+	dropzone.addEventListener('click', (e) => {
+		if (e.target !== fileInput) fileInput.click();
+	});
+	fileInput.addEventListener('change', () => {
+		addPhotos(fileInput.files);
+		fileInput.value = '';
+	});
+	dropzone.addEventListener('dragover', (e) => {
+		e.preventDefault();
+		dropzone.classList.add('dragover');
+	});
+	dropzone.addEventListener('dragleave', (e) => {
+		e.preventDefault();
+		dropzone.classList.remove('dragover');
+	});
+	dropzone.addEventListener('drop', (e) => {
+		e.preventDefault();
+		dropzone.classList.remove('dragover');
+		addPhotos(e.dataTransfer?.files);
+	});
+
+	// --- submit / success / reset (validation is native: required + :user-invalid) ---
+
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const firstName = (document.getElementById('f-first') as HTMLInputElement).value;
+		const email = (document.getElementById('f-email') as HTMLInputElement).value;
+		const n = photos.length;
+		successPanel.querySelector('[data-s-name]')!.textContent = firstName;
+		successPanel.querySelector('[data-s-email]')!.textContent = email;
+		successPanel.querySelector('[data-s-product]')!.textContent = select.value
+			? select.selectedOptions[0].textContent
+			: 'a custom order';
+		successPanel.querySelector('[data-s-photos]')!.textContent = n
+			? ` with ${n} reference photo${n > 1 ? 's' : ''}`
+			: '';
+		form.hidden = true;
+		successPanel.hidden = false;
+		section.scrollIntoView({ behavior: 'smooth' });
+	});
+
+	successPanel.querySelector('[data-reset]')!.addEventListener('click', () => {
+		for (const p of photos) URL.revokeObjectURL(p.url);
+		photos = [];
+		renderPhotos();
+		form.reset();
+		successPanel.hidden = true;
+		form.hidden = false;
+	});
+</script>
+
+<section id="order" class="sec">
+	<div class="wrap">
+		<div class="kicker">03 / ORDER DETAILS</div>
+		<h2>Tell us what to build</h2>
+		<p class="lead">
+			We reply with a custom mockup before anything is produced. Fields marked optional can be left
+			blank.
+		</p>
+
+		<div class="success" data-success hidden>
+			<div class="shead">
+				<div class="scheck">✓</div>
+				<h3>Order details received</h3>
+			</div>
+			<p class="sbody">
+				Thanks, <span data-s-name></span>. We've logged your request for <strong data-s-product
+				></strong><span data-s-photos></span>. Expect a custom mockup and quote at <strong
+					data-s-email></strong> within one business day.
+			</p>
+			<button type="button" class="again" data-reset>Start another order</button>
+		</div>
+
+		<form id="order-form" class="panel">
+			<div class="selwrap">
+				<label class="mlabel" for="product-select">Selected product</label>
+				<div class="selbox">
+					<select id="product-select" class="sel">
+						<option value="">Choose a product…</option>
+						{products.map((p) => <option value={p.id}>{p.name}</option>)}
+					</select>
+					<span class="arrow">▼</span>
+				</div>
+				<div class="hint">Or tap a card in the catalogue above — your pick stays in sync.</div>
+			</div>
+
+			<div class="grid2">
+				<div>
+					<label class="mlabel" for="f-first">First name *</label>
+					<input
+						id="f-first"
+						class="input"
+						placeholder="John"
+						autocomplete="given-name"
+						required
+					/>
+					<div class="err">First name is required</div>
+				</div>
+				<div>
+					<label class="mlabel" for="f-last">Last name *</label>
+					<input
+						id="f-last"
+						class="input"
+						placeholder="Rider"
+						autocomplete="family-name"
+						required
+					/>
+					<div class="err">Last name is required</div>
+				</div>
+			</div>
+
+			<div class="grid2 mt">
+				<div>
+					<label class="mlabel" for="f-email">Email address *</label>
+					<input
+						id="f-email"
+						class="input"
+						type="email"
+						placeholder="you@example.com"
+						autocomplete="email"
+						required
+					/>
+					<div class="err">Enter a valid email address</div>
+				</div>
+				<div>
+					<label class="mlabel" for="f-phone">Phone <span class="opt">(optional)</span></label>
+					<input
+						id="f-phone"
+						class="input"
+						type="tel"
+						placeholder="+00 000 000 000"
+						autocomplete="tel"
+					/>
+				</div>
+			</div>
+
+			<div class="upload">
+				<div class="uphead">
+					<span class="mlabel nom">Reference photos <span class="opt">(up to 10)</span></span>
+					<span class="count" data-count>0 / 10</span>
+				</div>
+				<div class="dz" data-dropzone>
+					<div class="dzicon">⤓</div>
+					<div class="dztitle">Drag &amp; drop photos here</div>
+					<div class="dzsub">or click to browse — JPG / PNG, up to 10 files</div>
+					<input type="file" accept="image/*" multiple data-file-input hidden />
+				</div>
+				<div class="thumbs" data-thumbs hidden></div>
+				<template data-thumb-template>
+					<div class="thumb">
+						<img alt="" />
+						<button type="button" class="rm" aria-label="Remove photo">✕</button>
+					</div>
+				</template>
+			</div>
+
+			<div class="details">
+				<label class="dlabel" for="f-details"
+					>Provide as much product information as possible, size, height, etc. *</label
+				>
+				<div class="dhint">
+					Quantities, dimensions, colours, materials, deadlines — the more detail, the more
+					accurate your mockup and quote.
+				</div>
+				<textarea
+					id="f-details"
+					class="input area"
+					rows="6"
+					placeholder="e.g. 25 enamel jacket pins, 38mm, 3 colours on black nickel, based on the attached logo. Needed by mid-August…"
+					required></textarea>
+				<div class="err">Please describe what you want made</div>
+			</div>
+
+			<div class="actions">
+				<button type="submit" class="submit">Submit Order Details</button>
+				<span class="summary">Please complete the highlighted fields.</span>
+			</div>
+		</form>
+	</div>
+</section>
+
+
+
+<style>
+.sec {
+	border-top: 1px solid var(--line);
+}
+
+.wrap {
+	max-width: 920px;
+	margin: 0 auto;
+	padding: 96px 24px;
+
+	@media (max-width: 760px) {
+		padding-top: 64px;
+		padding-bottom: 64px;
+	}
+
+	.kicker {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 3px;
+		color: var(--accent);
+		margin-bottom: 14px;
+	}
+
+	h2 {
+		margin: 0 0 8px;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: -0.5px;
+		font-size: clamp(28px, 4vw, 42px);
+	}
+
+	.lead {
+		margin: 0 0 38px;
+		font-size: 15.5px;
+		line-height: 1.55;
+		color: var(--muted);
+		max-width: 56ch;
+	}
+}
+
+.panel {
+	border: 1px solid var(--line);
+	border-radius: 5px;
+	background: var(--bg-secondary);
+	padding: clamp(24px, 4vw, 40px);
+
+	&:has(:user-invalid) .summary {
+		display: inline;
+	}
+
+	.mlabel {
+		display: block;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		color: var(--muted);
+		margin-bottom: 9px;
+	}
+
+	.opt {
+		color: color-mix(in srgb, var(--muted) 75%, transparent);
+	}
+
+	.input {
+		width: 100%;
+		padding: 13px 14px;
+		background: var(--bg-primary);
+		border: 1px solid var(--line);
+		border-radius: 3px;
+		color: var(--text);
+		font-size: 15px;
+		line-height: 1.4;
+		outline: none;
+		transition: border-color 0.15s;
+
+		&:focus {
+			border-color: color-mix(in srgb, var(--accent) 70%, var(--line));
+		}
+
+		&:user-invalid {
+			border-color: var(--danger);
+		}
+
+		&.area {
+			min-height: 140px;
+		}
+
+		&:user-invalid + .err {
+			display: block;
+			opacity: 1;
+
+			@starting-style {
+				opacity: 0;
+			}
+		}
+	}
+
+	.err {
+		color: var(--danger);
+		font-size: 12.5px;
+		margin-top: 7px;
+		font-family: var(--font-mono);
+		letter-spacing: 0.3px;
+		display: none;
+		opacity: 0;
+		transition:
+			opacity 0.2s,
+			display 0.2s allow-discrete;
+	}
+
+	.selwrap {
+		margin-bottom: 30px;
+		max-width: 440px;
+
+		.mlabel {
+			margin-bottom: 10px;
+		}
+
+		.selbox {
+			position: relative;
+
+			.sel {
+				width: 100%;
+				padding: 13px 40px 13px 14px;
+				background: var(--bg-primary);
+				border: 1px solid var(--line);
+				border-radius: 3px;
+				color: var(--muted);
+				font-size: 15px;
+				font-weight: 600;
+				line-height: 1.4;
+				outline: none;
+				cursor: pointer;
+				appearance: none;
+				transition:
+					border-color 0.15s,
+					color 0.15s;
+
+				&:not(:has(option[value='']:checked)) {
+					border-color: var(--accent);
+					color: var(--text);
+				}
+
+				option {
+					background: var(--bg-secondary);
+					color: var(--text);
+				}
+			}
+
+			.arrow {
+				position: absolute;
+				right: 15px;
+				top: 50%;
+				transform: translateY(-50%);
+				pointer-events: none;
+				color: var(--accent);
+				font-size: 10px;
+			}
+		}
+
+		.hint {
+			font-size: 12.5px;
+			color: var(--muted);
+			margin-top: 9px;
+			line-height: 1.4;
+		}
+	}
+
+	.grid2 {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 20px;
+
+		&.mt {
+			margin-top: 20px;
+		}
+	}
+
+	.upload {
+		margin-top: 30px;
+
+		.uphead {
+			display: flex;
+			align-items: baseline;
+			justify-content: space-between;
+			gap: 12px;
+			margin-bottom: 10px;
+
+			.mlabel {
+				margin-bottom: 0;
+			}
+
+			.count {
+				font-family: var(--font-mono);
+				font-size: 12px;
+				color: var(--muted);
+				transition: color 0.15s;
+
+				&.full {
+					color: var(--accent);
+				}
+			}
+		}
+
+		.dz {
+			border: 1.5px dashed var(--line);
+			border-radius: 4px;
+			padding: 34px 20px;
+			text-align: center;
+			cursor: pointer;
+			background: var(--bg-primary);
+			transition:
+				border-color 0.15s,
+				background 0.15s;
+
+			&.dragover {
+				border-color: var(--accent);
+				background: color-mix(in srgb, var(--accent) 7%, var(--bg-primary));
+			}
+
+			.dzicon {
+				font-size: 26px;
+				color: var(--accent);
+				margin-bottom: 8px;
+			}
+
+			.dztitle {
+				font-weight: 600;
+				font-size: 15px;
+			}
+
+			.dzsub {
+				font-size: 13px;
+				color: var(--muted);
+				margin-top: 4px;
+			}
+		}
+
+		.thumbs {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+			gap: 10px;
+			margin-top: 14px;
+
+			.thumb {
+				position: relative;
+				aspect-ratio: 1;
+				border-radius: 3px;
+				overflow: hidden;
+				border: 1px solid var(--line);
+				background: var(--bg-primary);
+
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					display: block;
+				}
+
+				.rm {
+					position: absolute;
+					top: 4px;
+					right: 4px;
+					width: 22px;
+					height: 22px;
+					border: none;
+					border-radius: 3px;
+					background: rgba(0, 0, 0, 0.7);
+					color: #fff;
+					font-size: 13px;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					transition: background 0.15s;
+
+					&:hover {
+						background: var(--danger);
+					}
+				}
+			}
+		}
+	}
+
+	.details {
+		margin-top: 30px;
+
+		.dlabel {
+			display: block;
+			font-weight: 700;
+			font-size: 16px;
+			letter-spacing: 0.1px;
+			margin-bottom: 6px;
+		}
+
+		.dhint {
+			font-size: 13px;
+			color: var(--muted);
+			margin-bottom: 11px;
+			line-height: 1.5;
+		}
+	}
+
+	.actions {
+		margin-top: 32px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 18px;
+
+		.submit {
+			background: var(--accent);
+			color: var(--on-accent);
+			border: none;
+			border-radius: 3px;
+			padding: 16px 34px;
+			font-weight: 700;
+			font-size: 15.5px;
+			letter-spacing: 0.3px;
+			cursor: pointer;
+			white-space: nowrap;
+			transition: background 0.15s;
+
+			&:hover {
+				background: var(--accent-hover);
+			}
+		}
+
+		.summary {
+			display: none;
+			color: var(--danger);
+			font-size: 13px;
+			font-family: var(--font-mono);
+			letter-spacing: 0.3px;
+		}
+	}
+}
+
+.success {
+	border: 1px solid var(--accent);
+	border-radius: 5px;
+	background: var(--bg-secondary);
+	padding: 40px 36px;
+	opacity: 1;
+	transition:
+		opacity 0.3s,
+		display 0.3s allow-discrete;
+
+	@starting-style {
+		opacity: 0;
+	}
+
+	&[hidden] {
+		display: none;
+		opacity: 0;
+	}
+
+	.shead {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+
+		.scheck {
+			width: 44px;
+			height: 44px;
+			border-radius: 50%;
+			background: var(--accent);
+			color: var(--on-accent);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 24px;
+			font-weight: 800;
+		}
+
+		h3 {
+			margin: 0;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: -0.3px;
+			font-size: 26px;
+		}
+	}
+
+	.sbody {
+		margin: 22px 0 0;
+		font-size: 15.5px;
+		line-height: 1.6;
+		color: var(--muted);
+
+		strong {
+			color: var(--text);
+		}
+	}
+
+	.again {
+		margin-top: 28px;
+		background: transparent;
+		color: var(--text);
+		border: 1px solid var(--line);
+		border-radius: 3px;
+		padding: 12px 22px;
+		font-weight: 600;
+		font-size: 14px;
+		cursor: pointer;
+		transition:
+			border-color 0.15s,
+			color 0.15s;
+
+		&:hover {
+			border-color: var(--accent);
+			color: var(--accent);
+		}
+	}
+}
+</style>

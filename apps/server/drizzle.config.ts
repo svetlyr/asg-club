@@ -1,11 +1,11 @@
-import { DATABASE_URL } from "@env";
+import { DATABASE_PATH } from "@env";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
     out: "./drizzle",
     schema: "./src/db/schema.ts",
-    dialect: "postgresql",
+    dialect: "sqlite",
     dbCredentials: {
-        url: DATABASE_URL,
+        url: DATABASE_PATH,
     },
 });

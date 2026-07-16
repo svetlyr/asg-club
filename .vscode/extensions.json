@@ -1,4 +1,4 @@
 {
-    "recommendations": ["astro-build.astro-vscode", "edwinhuish.better-comments-next"],
-    "unwantedRecommendations": []
+    "recommendations": ["astro-build.astro-vscode", "biomejs.biome"],
+    "unwantedRecommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
 }

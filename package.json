@@ -1,34 +1,25 @@
 {
     "name": "asg-club",
     "private": true,
+    "type": "module",
     "workspaces": [
         "apps/*"
     ],
     "scripts": {
-        "dev:client": "bun run --filter=client dev",
-        "up": "bun update"
+        "dev:frontend": "bun run --filter=frontend dev",
+        "dev:server": "bun run --filter=server dev",
+        "check": "biome check .",
+        "fix": "biome check --write .",
+        "typecheck": "bun run --filter='*' typecheck",
+        "up": "bun update --latest"
     },
     "devDependencies": {
-        "@eslint/js": "^9.39.2",
-        "@total-typescript/ts-reset": "^0.6.1",
-        "@types/node": "^22.19.3",
-        "@typescript-eslint/parser": "^8.50.1",
-        "eslint": "^9.39.2",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.4",
-        "globals": "^16.5.0",
-        "prettier": "^3.7.4",
-        "typescript": "^5.9.3",
-        "typescript-eslint": "^8.50.1"
-    },
-    "resolutions": {
-        "drizzle-orm": "^0.44.3"
+        "@biomejs/biome": "^2.5.4",
+        "typescript": "^7.0.2"
     },
     "trustedDependencies": [
-        "@parcel/watcher",
-        "deasync",
+        "@biomejs/biome",
         "esbuild",
-        "sharp",
-        "unrs-resolver"
+        "sharp"
     ]
 }

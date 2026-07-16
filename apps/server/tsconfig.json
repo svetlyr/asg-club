@@ -1,20 +1,11 @@
 {
     "extends": ["../../tsconfig.json"],
 
-    "files": ["../../reset.d.ts"],
     "include": ["src", "**/*.d.ts", "./*.config.ts"],
-    "exclude": ["**/dist", "**/node_modules", ".git", ".github", ".vscode"],
+    "exclude": ["**/dist", "**/node_modules"],
 
     "compilerOptions": {
-        "target": "esnext",
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
         "esModuleInterop": true,
-
-        // * Handled by eslint
-        "noUnusedLocals": false,
-        "noUnusedParameters": false,
-
         "types": ["bun-types"],
 
         "paths": {

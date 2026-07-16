@@ -1,0 +1,104 @@
+---
+import { steps } from "../data/site";
+---
+
+<section id="process" class="band">
+	<div class="inner">
+		<div class="kicker">02 / HOW IT WORKS</div>
+		<h2>Three steps, no surprises</h2>
+		<div class="grid">
+			{
+				steps.map((s) => (
+					<div class="step">
+						<div class="tick" />
+						<div class="num">{s.num}</div>
+						<div class="title">{s.title}</div>
+						<div class="body">{s.body}</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+.band {
+	border-top: 1px solid var(--line);
+	background: var(--bg-secondary);
+}
+.inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 96px 24px;
+
+	@media (max-width: 760px) {
+		padding-top: 64px;
+		padding-bottom: 64px;
+	}
+
+	.kicker {
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 3px;
+		color: var(--accent);
+		margin-bottom: 14px;
+	}
+
+	h2 {
+		margin: 0 0 48px;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: -0.5px;
+		font-size: clamp(28px, 4vw, 42px);
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 18px;
+
+		.step {
+			border: 1px solid var(--line);
+			border-radius: 4px;
+			background: var(--bg-primary);
+			padding: 30px 26px;
+			position: relative;
+			transition: border-color 0.15s;
+
+			&:hover {
+				border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+			}
+
+			.tick {
+				border-top: 2px solid var(--accent);
+				width: 46px;
+				margin-bottom: 24px;
+			}
+
+			.num {
+				font-family: var(--font-mono);
+				font-size: 44px;
+				font-weight: 600;
+				color: color-mix(in srgb, var(--accent) 80%, var(--text));
+				line-height: 1;
+				letter-spacing: -2px;
+			}
+
+			.title {
+				margin-top: 18px;
+				font-weight: 700;
+				font-size: 18px;
+				text-transform: uppercase;
+				letter-spacing: 0.2px;
+			}
+
+			.body {
+				margin-top: 10px;
+				font-size: 14.5px;
+				line-height: 1.55;
+				color: var(--muted);
+			}
+		}
+	}
+}
+</style>

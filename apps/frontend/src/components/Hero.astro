@@ -1,0 +1,160 @@
+---
+import { site, stats } from "../data/site";
+---
+
+<section class="mast">
+	<div class="inner">
+		<div class="kicker"><span class="dash"></span>Custom Merchandise — Made To Order</div>
+		<h1>{site.headline}</h1>
+		<p class="tagline">{site.tagline}</p>
+		<div class="cta">
+			<a class="btn primary" href="#products">Start Your Order →</a>
+			<a class="btn ghost" href="#process">See How It Works</a>
+		</div>
+		<div class="stats">
+			{
+				stats.map((s) => (
+					<div>
+						<div class="label">{s.label}</div>
+						<div class="value">{s.value}</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+.mast {
+	position: relative;
+	border-bottom: 1px solid var(--line);
+	background:
+		radial-gradient(
+			120% 140% at 80% -10%,
+			color-mix(in srgb, var(--accent) 9%, transparent),
+			transparent 55%
+		),
+		repeating-linear-gradient(
+			90deg,
+			transparent,
+			transparent 38px,
+			color-mix(in srgb, var(--line) 40%, transparent) 38px,
+			color-mix(in srgb, var(--line) 40%, transparent) 39px
+		);
+}
+.inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 84px 24px 76px;
+
+	@media (max-width: 760px) {
+		padding-top: 52px;
+		padding-bottom: 56px;
+	}
+
+	.kicker {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--font-mono);
+		font-size: 11.5px;
+		letter-spacing: 3px;
+		color: var(--accent);
+		text-transform: uppercase;
+		margin-bottom: 26px;
+
+		.dash {
+			width: 26px;
+			height: 1px;
+			background: var(--accent);
+		}
+	}
+
+	h1 {
+		margin: 0;
+		max-width: 16ch;
+		font-weight: 900;
+		text-transform: uppercase;
+		line-height: 0.95;
+		letter-spacing: -1.5px;
+		font-size: clamp(40px, 7vw, 82px);
+		text-wrap: balance;
+	}
+
+	.tagline {
+		margin: 26px 0 0;
+		max-width: 54ch;
+		font-size: clamp(16px, 2vw, 19px);
+		line-height: 1.55;
+		color: var(--muted);
+	}
+
+	.cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 14px;
+		margin-top: 38px;
+
+		.btn {
+			display: inline-block;
+			border-radius: 3px;
+			font-size: 15px;
+			text-decoration: none;
+			cursor: pointer;
+			transition:
+				background 0.15s,
+				border-color 0.15s,
+				color 0.15s;
+
+			&.primary {
+				background: var(--accent);
+				color: var(--on-accent);
+				border: none;
+				padding: 15px 30px;
+				font-weight: 700;
+				letter-spacing: 0.3px;
+
+				&:hover {
+					background: var(--accent-hover);
+				}
+			}
+
+			&.ghost {
+				background: transparent;
+				color: var(--text);
+				border: 1px solid var(--line);
+				padding: 15px 28px;
+				font-weight: 600;
+
+				&:hover {
+					border-color: var(--accent);
+					color: var(--accent);
+				}
+			}
+		}
+	}
+
+	.stats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 40px;
+		margin-top: 52px;
+		padding-top: 30px;
+		border-top: 1px solid var(--line);
+		font-family: var(--font-mono);
+
+		.label {
+			font-size: 11px;
+			letter-spacing: 2px;
+			color: var(--muted);
+			text-transform: uppercase;
+		}
+
+		.value {
+			font-size: 16px;
+			font-weight: 600;
+			margin-top: 6px;
+		}
+	}
+}
+</style>

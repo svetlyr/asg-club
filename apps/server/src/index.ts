@@ -1,187 +1,200 @@
-import { InlineKeyboard, InputFile, InputMediaBuilder } from "grammy";
-import { env } from "@yolk-oss/elysia-env";
-import { cors } from "@elysiajs/cors";
-import { Elysia, t } from "elysia";
+import "./env-check";
 
+import { eq } from "drizzle-orm";
+import * as v from "valibot";
+import { advanceOrder, notifyPaid } from "./bot";
+import { products } from "./config";
 import { db } from "./db";
-import { bot, transporter } from "./bot";
-import { orders } from "./db/schema";
-// import { OAuth2Client } from "google-auth-library";
-// import { GoogleSpreadsheet } from "google-spreadsheet";
-import { eq, sql } from "drizzle-orm";
+import { orders, productIds } from "./db/schema";
+import { sendOwnerEmail } from "./mail";
+import { verifyWebhookSignature } from "./paypal";
 
-const orderDto = t.Object({
-    images: t.Optional(t.Files({ format: ["image/jpg", "image/jpeg", "image/png", "image/webp"] })),
-    order: t.File({ format: "application/json" }),
+const MAX_FILES = 10;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+
+const orderSchema = v.object({
+    firstName: v.pipe(v.string(), v.trim(), v.minLength(1), v.maxLength(100)),
+    lastName: v.pipe(v.string(), v.trim(), v.minLength(1), v.maxLength(100)),
+    email: v.pipe(v.string(), v.email(), v.maxLength(200)),
+    tel: v.optional(v.pipe(v.string(), v.maxLength(40))),
+    product: v.picklist(productIds),
+    // * Checkbox — arrives as "on"/"true" when checked, absent otherwise
+    needsDesign: v.optional(v.string()),
+    description: v.pipe(v.string(), v.minLength(10), v.maxLength(5000)),
+    // * Honeypot — must stay empty, bots fill it
+    website: v.optional(v.string()),
 });
 
-type orderSchema = {
-    url?: string;
-    email: string;
-    fullname: string;
-    tel: string;
-    serviceType:
-        | "Graphic Design"
-        | "Stickers/Decals"
-        | "Jacket Pins"
-        | "Wall Posters/Banners"
-        | "T-Shirts"
-        | "Mugs"
-        | "Keychains"
-        | "Metal Badges and Medals"
-        | "Custom Merch";
-    description: string;
-    quantity: number;
-    width: number;
-    height: number;
-    unitType: "cm" | "inch";
-    comments: string;
+const CORS_HEADERS = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
 };
 
-const envSchema = {
-    BOT_TOKEN: t.String(),
-    DATABASE_URL: t.String(),
-
-    OWNER_CHAT_ID: t.Number(),
-    DESIGNER_CHAT_ID: t.Number(),
-    PRINTER_CHAT_ID: t.Number(),
-    FACTORY_CHAT_ID: t.Number(),
-
-    GOOGLE_CLIENT_ID: t.String(),
-    GOOGLE_CLIENT_SECRET: t.String(),
-    GOOGLE_REFRESH_TOKEN: t.String(),
-};
-
-// TODO: uncomment after client will acquire personal server
-// export const flowControl = new Map<number, { counter: number; response: string[] }>();
-
-async function sendImages(chatId: number, images: File[]): Promise<void> {
-    const mediaGroup = await Promise.all(
-        images.map(async (img) => InputMediaBuilder.photo(new InputFile(await img.bytes()))),
-    );
-
-    await bot.api.sendMediaGroup(chatId, mediaGroup);
-
-    // const fileIds = sentMessages.map((msg) => msg.photo[msg.photo.length - 1].file_id as string);
-
-    // const mediaGroupWithFileIds = fileIds.map((fileId) => InputMediaBuilder.photo(fileId));
-
-    // await bot.api.sendMediaGroup(PRINTER_CHAT, mediaGroupWithFileIds);
+function json(data: unknown, status = 200): Response {
+    return Response.json(data, { status, headers: CORS_HEADERS });
 }
 
-async function sendMessage(
-    order: orderSchema,
-    orderId: number,
-    chatId: number,
-    flow: "designer" | "printer" | "factory",
-): Promise<void> {
-    let text = `New order with ID: ${orderId}`;
+// --- rate limiting (in-memory, per IP) ---
 
-    for (const [key, value] of Object.entries(order)) {
-        if (value) text += `\n${key}: ${value}`;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT = 5;
+
+const hits = new Map<string, { count: number; resetAt: number }>();
+
+function isRateLimited(ip: string): boolean {
+    const now = Date.now();
+    const entry = hits.get(ip);
+
+    if (!entry || entry.resetAt < now) {
+        hits.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+        return false;
     }
 
-    await db
-        .update(orders)
-        .set({ counter: sql`${orders.counter} + 1` })
-        .where(eq(orders.id, orderId));
-
-    await bot.api.sendMessage(chatId, text, {
-        reply_markup: new InlineKeyboard().text("Поставить цену", `${flow}Flow:${orderId}`),
-    });
+    entry.count += 1;
+    return entry.count > RATE_LIMIT;
 }
 
-// const oauthClient = new OAuth2Client({
-//     clientId: process.env.GOOGLE_CLIENT_ID,
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     credentials: {
-//         refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-//     },
-// });
+setInterval(() => {
+    const now = Date.now();
+    for (const [ip, entry] of hits) {
+        if (entry.resetAt < now) hits.delete(ip);
+    }
+}, RATE_WINDOW_MS);
 
-new Elysia()
-    .use(
-        env(envSchema, {
-            onError: (env) => {
-                console.log("Missing environment variables:", env);
-            },
-            onSuccess: (env) => {
-                console.log("Successfully loaded environment variables:", env);
-            },
-        }),
-    )
-    .use(cors())
-    .post(
-        "/orders",
-        async ({ body: { images, order }, env }) => {
-            console.log("Received order:", order);
+// --- handlers ---
 
-            // * Custom validation
-            const parsedOrder = (await order.json()) as orderSchema;
+async function handleOrder(request: Request, server: Bun.Server<unknown>): Promise<Response> {
+    const ip =
+        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+        server.requestIP(request)?.address ??
+        "unknown";
 
-            if (parsedOrder.serviceType === "Custom Merch") {
-                let text = `New order for custom merch.`;
+    if (isRateLimited(ip)) return json({ ok: false, error: "Too many requests, try again later" }, 429);
 
-                for (const [key, value] of Object.entries(parsedOrder)) {
-                    if (value) text += `\n${key}: ${value}`;
-                }
+    const formData = await request.formData().catch(() => null);
+    if (!formData) return json({ ok: false, error: "Expected multipart/form-data" }, 400);
 
-                const mail = {
-                    from: '"ASG Designs" <asgdesigns.store@gmail.com>',
-                    to: "asgdesigns.store@gmail.com",
-                    subject: "Custome Merch Order",
-                    text,
-                    attachments: images
-                        ? await Promise.all(
-                              images.map(async (image) => {
-                                  return {
-                                      filename: `${Date.now()}.jpg`,
-                                      content: Buffer.from(await image.arrayBuffer()),
-                                      encoding: "base64",
-                                  };
-                              }),
-                          )
-                        : undefined,
-                };
-
-                await transporter.sendMail(mail);
-                return;
-            }
-
-            // try {
-            //     await db.insert(orders).values(parsedOrder).returning({ orderId: orders.id });
-            // } catch (error) {
-            //     console.log(error);
-            // }
-            const result = await db.insert(orders).values(parsedOrder).returning({ orderId: orders.id });
-
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const orderId = result[0]!.orderId;
-
-            const DESIGNER_CHAT = env.DESIGNER_CHAT_ID;
-            const PRINTER_CHAT = env.PRINTER_CHAT_ID;
-            const FACTORY_CHAT = env.FACTORY_CHAT_ID;
-
-            if (images) {
-                await sendImages(DESIGNER_CHAT, images);
-            }
-
-            await sendMessage(parsedOrder, orderId, DESIGNER_CHAT, "designer");
-
-            if (parsedOrder.serviceType === "Graphic Design") {
-                return;
-            }
-
-            if (parsedOrder.serviceType === "Stickers/Decals" || parsedOrder.serviceType === "Wall Posters/Banners") {
-                await sendMessage(parsedOrder, orderId, PRINTER_CHAT, "printer");
-            } else {
-                await sendMessage(parsedOrder, orderId, FACTORY_CHAT, "factory");
-            }
-        },
-        {
-            body: orderDto,
-        },
-    )
-    .listen(3000, () => {
-        console.log("Elysia server running on http://localhost:3000");
+    const parsed = v.safeParse(orderSchema, {
+        firstName: formData.get("firstName") ?? undefined,
+        lastName: formData.get("lastName") ?? undefined,
+        email: formData.get("email") ?? undefined,
+        tel: formData.get("tel") ?? undefined,
+        product: formData.get("product") ?? undefined,
+        needsDesign: formData.get("needsDesign") ?? undefined,
+        description: formData.get("description") ?? undefined,
+        website: formData.get("website") ?? undefined,
     });
+
+    if (!parsed.success) {
+        const issue = parsed.issues[0];
+        return json(
+            { ok: false, error: `${issue.path?.map((p) => p.key).join(".") ?? "body"}: ${issue.message}` },
+            422,
+        );
+    }
+
+    const body = parsed.output;
+
+    // * Honeypot filled — pretend success, drop silently
+    if (body.website) return json({ ok: true });
+
+    // * Cast: undici's FormDataEntryValue type clashes with Bun's File, runtime values are Bun Files
+    const images = formData.getAll("images").filter((entry) => entry instanceof File) as unknown as File[];
+
+    if (images.length > MAX_FILES) return json({ ok: false, error: `At most ${MAX_FILES} photos allowed` }, 422);
+
+    for (const image of images) {
+        if (!ALLOWED_TYPES.includes(image.type)) {
+            return json({ ok: false, error: "Only JPG, PNG and WEBP images are allowed" }, 422);
+        }
+        if (image.size > MAX_FILE_SIZE) return json({ ok: false, error: "Each photo must be under 10 MB" }, 422);
+    }
+
+    const manual = products[body.product].kind === "manual";
+    const needsDesign = body.needsDesign === "on" || body.needsDesign === "true";
+
+    const [row] = await db
+        .insert(orders)
+        .values({
+            firstName: body.firstName,
+            lastName: body.lastName,
+            email: body.email,
+            tel: body.tel || null,
+            product: body.product,
+            needsDesign,
+            description: body.description,
+            status: manual ? "manual" : "new",
+        })
+        .returning({ orderId: orders.id });
+
+    const orderId = row!.orderId;
+
+    // * Email failure must not block the pricing pipeline
+    try {
+        await sendOwnerEmail(
+            {
+                id: orderId,
+                firstName: body.firstName,
+                lastName: body.lastName,
+                email: body.email,
+                tel: body.tel ?? null,
+                product: body.product,
+                needsDesign,
+                description: body.description,
+            },
+            images,
+        );
+    } catch (error) {
+        console.error(`Owner email failed for order #${orderId}:`, error);
+    }
+
+    // * Manual orders (Custom Merch) stop here — the owner takes over
+    if (!manual) await advanceOrder(orderId, images.length ? images : undefined);
+
+    return json({ ok: true, orderId });
+}
+
+async function handlePaypalWebhook(request: Request): Promise<Response> {
+    let event: { event_type?: string; resource?: { invoice?: { id?: string } } };
+    try {
+        event = (await request.json()) as typeof event;
+    } catch {
+        return json({ ok: false }, 400);
+    }
+
+    const valid = await verifyWebhookSignature(Object.fromEntries(request.headers), event);
+    if (!valid) return json({ ok: false }, 400);
+
+    if (event.event_type === "INVOICING.INVOICE.PAID") {
+        const invoiceId = event.resource?.invoice?.id;
+
+        if (invoiceId) {
+            const [order] = await db.select().from(orders).where(eq(orders.paypalInvoiceId, invoiceId));
+
+            if (order && order.status !== "paid") {
+                await db.update(orders).set({ status: "paid" }).where(eq(orders.id, order.id));
+                await notifyPaid(order);
+            }
+        }
+    }
+
+    return json({ ok: true });
+}
+
+Bun.serve({
+    port: 3000,
+    routes: {
+        "/orders": {
+            POST: handleOrder,
+            OPTIONS: () => new Response(null, { status: 204, headers: CORS_HEADERS }),
+        },
+        "/paypal/webhook": {
+            POST: handlePaypalWebhook,
+        },
+    },
+    fetch: () => new Response("Not found", { status: 404 }),
+});
+
+console.log("Bun server running on http://localhost:3000");

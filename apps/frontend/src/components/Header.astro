@@ -1,0 +1,101 @@
+---
+import { site } from "../data/site";
+import Logo from "./Logo.astro";
+---
+
+<header class="topbar">
+	<div class="bar">
+		<div class="brand">
+			<Logo />
+			<div class="names">
+				<span class="name">{site.brand}</span>
+				<span class="sub">{site.sub}</span>
+			</div>
+		</div>
+		<nav class="nav">
+			<a href="#products">Products</a>
+			<a href="#process">Process</a>
+			<a href="#order">Order</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+.topbar {
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	backdrop-filter: blur(10px);
+	background: color-mix(in srgb, var(--bg-primary) 82%, transparent);
+	border-bottom: 1px solid var(--line);
+}
+
+.bar {
+	position: relative;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 24px;
+	height: 66px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 20px;
+
+	@media (max-width: 760px) {
+		justify-content: center;
+	}
+
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 13px;
+
+		.names {
+			display: flex;
+			flex-direction: column;
+			line-height: 1;
+
+			.name {
+				font-weight: 800;
+				font-size: 18px;
+				letter-spacing: 0.5px;
+			}
+
+			.sub {
+				font-family: var(--font-mono);
+				font-size: 9.5px;
+				letter-spacing: 2px;
+				color: var(--muted);
+				margin-top: 3px;
+			}
+		}
+	}
+
+	.nav {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		align-items: center;
+		gap: 30px;
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 1.5px;
+
+		@media (max-width: 760px) {
+			display: none;
+		}
+
+		a {
+			color: var(--muted);
+			text-decoration: none;
+			text-transform: uppercase;
+			transition: color 0.15s;
+
+			&:hover {
+				color: var(--text);
+			}
+		}
+	}
+}
+</style>
